@@ -1,0 +1,1254 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css">
+
+
+  <meta name="keywords" content="React Native,Redux,Flux,JavaScript,">
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="Lee 的笔记本" type="application/atom+xml">
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.jpg?v=5.1.0">
+
+
+
+
+
+
+<meta name="description" content="自从 Facebook 把 React Native 给开源了之后，使用前端技术进行移动应用开发的趋势已经越来越明显，现在连微软爸爸都用上了 React Native（ReactXP），我们还有什么理由不来一点前端技术尝尝呢？">
+<meta name="keywords" content="React Native,Redux,Flux,JavaScript">
+<meta property="og:type" content="article">
+<meta property="og:title" content="基于 Redux 的 React Native 应用架构（1&#x2F;2）">
+<meta property="og:url" content="http://davidleee.com/2017/04/20/Build-App-With-Redux/index.html">
+<meta property="og:site_name" content="Lee 的笔记本">
+<meta property="og:description" content="自从 Facebook 把 React Native 给开源了之后，使用前端技术进行移动应用开发的趋势已经越来越明显，现在连微软爸爸都用上了 React Native（ReactXP），我们还有什么理由不来一点前端技术尝尝呢？">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://davidleee.com/uploads/Build-App-With-Redux/flux.png">
+<meta property="og:updated_time" content="2020-05-05T03:43:31.441Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="基于 Redux 的 React Native 应用架构（1&#x2F;2）">
+<meta name="twitter:description" content="自从 Facebook 把 React Native 给开源了之后，使用前端技术进行移动应用开发的趋势已经越来越明显，现在连微软爸爸都用上了 React Native（ReactXP），我们还有什么理由不来一点前端技术尝尝呢？">
+<meta name="twitter:image" content="http://davidleee.com/uploads/Build-App-With-Redux/flux.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://davidleee.com/2017/04/20/Build-App-With-Redux/">
+
+
+
+
+
+  <title> 基于 Redux 的 React Native 应用架构（1/2） | Lee 的笔记本 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Lee 的笔记本</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description"></h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocapitalize="off" autocomplete="off" autocorrect="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://davidleee.com/2017/04/20/Build-App-With-Redux/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Lee">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Lee 的笔记本">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+            
+            
+              
+                基于 Redux 的 React Native 应用架构（1/2）
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-04-20T09:47:03+08:00">
+                2017-04-20
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2017/04/20/Build-App-With-Redux/" class="leancloud_visitors" data-flag-title="基于 Redux 的 React Native 应用架构（1/2）">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长</span>
+                
+                <span title="阅读时长">
+                  8
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+<p>自从 Facebook 把 <a href="https://facebook.github.io/react-native/" target="_blank" rel="noopener">React Native</a> 给开源了之后，使用前端技术进行移动应用开发的趋势已经越来越明显，现在连微软爸爸都用上了 React Native（<a href="https://github.com/Microsoft/reactxp" target="_blank" rel="noopener">ReactXP</a>），我们还有什么理由不来一点前端技术尝尝呢？</p>
+</blockquote>
+<a id="more"></a>
+<p>这篇文章是学习了公司现有项目框架、外加查阅一些官方文档之后的总结，受限于我仅有的一丢丢前端知识，如果有错误或没讲清楚的地方，欢迎在评论里给我留言 :)</p>
+<p>因为要把现有项目讲清楚内容较多，所以分为两个部分来总结。这篇是第一个部分，主要涉及 Redux 思想的简单应用。</p>
+<hr>
+<h1>试想一下…</h1>
+<p>我们从一个实际可能会遇到的需求出发，考虑一下 Native 的实现和 React Native 的实现有什么不同。</p>
+<h2 id="来需求了">来需求了</h2>
+<blockquote>
+<p>用户在登录之后，在首页要显示用户的头像和名字，然后还应该可以在某个地方看到自己的全部信息。</p>
+</blockquote>
+<p>( ºωº ) 那还不简单！用户登录之后拉一下服务器上的用户信息，找个合适的界面把信息一股脑显示出来就好了，done！</p>
+<h2 id="简单地改一下">简单地改一下</h2>
+<blockquote>
+<p>用户想要在我们的 App 上编辑自己的信息，我们简单点来，直接在信息显示的界面提供个编辑的入口就好了。</p>
+</blockquote>
+<p>∑(￣□￣;) …嗯，这个要求也合情合理。</p>
+<p>编辑之后发个消息通知其他地方，比如首页的头像和名字就可能要更新…某个列表似乎会根据用户性别来决定显示的内容，不过什么人会用着用着修改性别？！</p>
+<h2 id="来-这个更加简单">来，这个更加简单</h2>
+<blockquote>
+<p>果然修改一下用户信息很简单嘛，那再改回去也是一个道理吧，提供一个撤销修改的按钮吧。</p>
+</blockquote>
+<p>Σ(°Д°; 这！</p>
+<hr>
+<h1>为什么用 Redux</h1>
+<p>如何优雅地实现上面的需求呢？如果我们的界面是与数据绑定的，并且数据的每一个状态我们都可以追踪到，那我们就不需要理会界面的更新，而可以专注于数据的修改了。</p>
+<p>React Native 已经为我们提供了视图与数据绑定的机制，那么状态要怎么追踪呢？</p>
+<h2 id="什么是-redux">什么是 Redux</h2>
+<blockquote>
+<p><a href="https://github.com/reactjs/redux" target="_blank" rel="noopener">Redux</a> 是一个为 JavaScript 应用设计的可预测的状态容器。</p>
+</blockquote>
+<p>简单来说，Redux 使用了一种叫做 Action 的东西，每一次对状态的变更（也就是对数据的变更）都需要通过 Action 来进行，然后通过另一个叫做 Reducer 的东西将 Action 和数据联系起来。下面这张流程图应该可以帮助你理解：</p>
+<img src="/uploads/Build-App-With-Redux/flux.png" class="center" width="600" height="600" title="Flux">
+<blockquote>
+<p>这张图来自 <a href="https://facebook.github.io/flux/docs/in-depth-overview.html#content" target="_blank" rel="noopener">Flux</a>，Redux 可以被理解为是 Flux 的具体实践。</p>
+</blockquote>
+<p>顾名思义，Action 是一个操作，也可以理解为将要发生的事件，例如“修改用户名”、“撤销修改”；而 Reducer 则位于上图 Dispatcher 和 Store 之间，负责将 Action 反应到对 Store 的修改上。</p>
+<h2 id="初衷">初衷</h2>
+<p>在上面的需求中，如果可以记录下用户的每一个操作和操作后的状态，那么当用户想要撤销某项操作时，只需要将上一个操作给无效掉就可以了。更暴力一些，我们把应用启动至今的所有用户操作都重播一遍，唯独不执行最后一次操作，就实现了“撤销”的功能了吧？</p>
+<p>Redux 提供的机制正好满足了这个需求。</p>
+<h2 id="不止如此">不止如此</h2>
+<p>React Native 实现的应用可以类比为使用 JavaScript 实现的单页应用，随着开发日趋复杂，我们的应用需要管理的状态（state）会变得越来越多，管理的难度也将成倍增加。</p>
+<p>Redux 提供的机制，通过限制数据更新发生的时间和方式，使得 state 的变化变得可以预测，后续的开发也可以放手施展了。</p>
+<hr>
+<h1>那该怎么做呢？</h1>
+<p>接下来我们分别看看 Redux 中主要的三部分是怎么实现的。</p>
+<h2 id="action">Action</h2>
+<p>为了描述一个动作，我们需要给这个动作一个名字和这个动作要操作的数据。举个栗子，对于用户想要改变用户名的情况，我们可以这样声明这个动作：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// actions.js</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">const</span> CHANGE_USERNAME = <span class="string">'CHANGE_USERNAME'</span> <span class="comment">// 1</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 2</span></span><br><span class="line"><span class="keyword">export</span> <span class="function"><span class="keyword">function</span> <span class="title">changeUsername</span>(<span class="params">username</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> &#123; <span class="attr">type</span>: CHANGE_USERNAME, username&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ol>
+<li>首先我们将这个动作称为 <code>CHANGE_USERNAME</code>，理论上每一个 Action 都应该有一个独一无二的名字</li>
+<li>通过一个创建函数，创建这个 Action 对象返回给调用方</li>
+</ol>
+<p>例子里的动作名和创建函数都是 <code>export</code> 的，因为一般会把同一个模块的动作声明放到一起，方便外部的调用。</p>
+<h2 id="reducer">Reducer</h2>
+<p>需要注意的是，Reducer 必须是一个<a href="https://en.wikipedia.org/wiki/Pure_function" target="_blank" rel="noopener">纯函数</a>。它不能修改传入的参数并且不能有任何副作用，它必须要保证只要两次传入的参数相同，得出的结果也要相同。</p>
+<p>先看代码：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// reducers.js</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> &#123; CHANGE_USERNAME &#125; <span class="keyword">from</span> <span class="string">'./actions'</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 1</span></span><br><span class="line"><span class="keyword">const</span> initialState = &#123;</span><br><span class="line">  username: <span class="string">""</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">demoApp</span>(<span class="params">state = initialState, action</span>) </span>&#123; <span class="comment">// 2</span></span><br><span class="line">  <span class="keyword">switch</span> (action.type) &#123; <span class="comment">// 3</span></span><br><span class="line">    <span class="keyword">case</span> CHANGE_USERNAME:</span><br><span class="line">      <span class="keyword">return</span> &#123; <span class="comment">// 4</span></span><br><span class="line">        ...state,</span><br><span class="line">        username: action.username</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="keyword">default</span>:</span><br><span class="line">      	<span class="keyword">return</span> state <span class="comment">// 5</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> demoApp</span><br></pre></td></tr></table></figure>
+<ol>
+<li>在 Redux 应用中，所有的 <code>state</code> 都被保存在一个单一的对象中</li>
+<li>这里用到了 ES6 中的参数默认值语法，省去了初始化 <code>state</code> 的过程</li>
+<li>当需要处理多个 Action 的时候，可以用 <code>switch</code>、<code>if/else</code> 等方式区分不同的处理方式</li>
+<li>再次强调，Reducer 必须是一个纯函数，所以使用对象展开运算符把传入的 <code>state</code> 展开，避免修改到里面的参数</li>
+<li>还是因为纯函数的原因，在不处理任何 Action 的时候，需要将传入的 <code>state</code> 原封不动地再传回去</li>
+</ol>
+<p>通过上面的 Reducer，当有 <code>CHANGE_USERNAME</code> 这个动作发生时，应用会通过 <code>demoApp</code> 方法来更新 <code>state</code> 中的 <code>username</code> 参数，如果有视图绑定在这个参数上，则界面也会发生相应的改变。</p>
+<h2 id="store">Store</h2>
+<p>有了 Action 和 Reducer，我们还需要将这二者联系起来的途径，称为 Store。</p>
+<p>Store 还具有维持应用 <code>state</code> 的职责，所以它在应用中也是单一存在的。当需要拆分数据处理逻辑的时候，应该做的是拆分 Reducer 而不是创建多个 Store。</p>
+<p>继续来看代码：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// store.js</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> &#123; createStore &#125; <span class="keyword">from</span> <span class="string">'redux'</span></span><br><span class="line"><span class="keyword">import</span> demoApp <span class="keyword">from</span> <span class="string">'./reducers'</span></span><br><span class="line"><span class="keyword">let</span> store = createStore(demoApp)</span><br></pre></td></tr></table></figure>
+<p>没啦！我们需要用到的是 <code>store</code> 里面的方法，所以主要还是来看看怎么使用它们吧。</p>
+<h2 id="调用">调用</h2>
+<p>直接来看代码，我们假设已经存在一个用户信息界面，用户将在这里修改自己的名字：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// UserInfo.js</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> &#123; changeUsername &#125; <span class="keyword">from</span> <span class="string">'./actions'</span></span><br><span class="line"><span class="keyword">import</span> &#123; store &#125; <span class="keyword">from</span> <span class="string">'./store'</span></span><br><span class="line"></span><br><span class="line">store.dispatch(changeUsername(<span class="string">"Lee"</span>))</span><br></pre></td></tr></table></figure>
+<p>在这里，我们通过 <code>changeUsername</code> 方法构造了一个 Action，并告诉它我们要把名字改成什么；通过 <code>store</code> 中的 <code>dispatch</code> 方法，这个 Action 就会被发送 Reducer 中进行处理。</p>
+<p>只是写到这里，得益于纯函数的实现，我们就已经可以给上述代码中的所有方法写单元测试了，就是这么简单。</p>
+<hr>
+<h1>结语</h1>
+<p>上面的例子只涉及到了 Redux 最基本的使用方式，到目前为止还不能做出什么有用的东西来，不过用来让我们感受 Redux 的主要思想应该是足够了。</p>
+<p>在下一篇文章中，才会讲到 Redux 应用框架的搭建。其中会用到一些能有效减少代码量的第三方框架（从上面的例子应该不难想象，当程序变复杂之后，这几个类会变得多么庞大）。如果在学习了基础知识之后还是看不懂一些现有项目的代码的话，看完这些第三方框架的使用说不定就懂了呢！</p>
+<p>更多更详细的资料可以看参考资料中的网站。关于 React Native 的部分建议上官网看原版，我发现中文网的翻译稍有缺失，更新也可能不那么及时。</p>
+<hr>
+<p>参考资料：<br>
+<a href="https://facebook.github.io/react-native/" target="_blank" rel="noopener">React Native</a><br>
+<a href="http://reactnative.cn/" target="_blank" rel="noopener">React Native 中文网</a><br>
+<a href="http://cn.redux.js.org/" target="_blank" rel="noopener">Redux 中文文档</a><br>
+<a href="https://github.com/luhui/RNPlayground" target="_blank" rel="noopener">RNPlayground</a></p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+  <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+    <div>你的支持和鼓励，是我分享的最大动力！</div>
+    <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+      <span>赏</span>
+    </button>
+    <div id="QR" style="display: none;">
+      
+        <div id="wechat" style="display: inline-block">
+          <img id="wechat_qr" src="/uploads/wechatpay.jpeg" alt="Lee WeChat Pay">
+          <p>微信打赏</p>
+        </div>
+      
+      
+        <div id="alipay" style="display: inline-block">
+          <img id="alipay_qr" src="/uploads/alipay.jpeg" alt="Lee Alipay">
+          <p>支付宝打赏</p>
+        </div>
+      
+    </div>
+  </div>
+
+
+      
+    </div>
+
+    <div>
+      
+        
+  <ul class="post-copyright">
+    <li class="post-copyright-author">
+      <strong>本文作者：</strong>
+      Lee
+    </li>
+    <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="http://davidleee.com/2017/04/20/Build-App-With-Redux/" title="基于 Redux 的 React Native 应用架构（1/2）">http://davidleee.com/2017/04/20/Build-App-With-Redux/</a>
+    </li>
+    <li class="post-copyright-license">
+      <strong>版权声明： </strong>
+      本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 3.0</a> 许可协议。转载请注明出处！
+    </li>
+  </ul>
+
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/React-Native/" rel="tag"># React Native</a>
+          
+            <a href="/tags/Redux/" rel="tag"># Redux</a>
+          
+            <a href="/tags/Flux/" rel="tag"># Flux</a>
+          
+            <a href="/tags/JavaScript/" rel="tag"># JavaScript</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/03/29/Custom-Gesture-Recognizers/" rel="next" title="Gesture Recognizers for iOS - The Customization">
+                <i class="fa fa-chevron-left"></i> Gesture Recognizers for iOS - The Customization
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/06/23/android-unit-test/" rel="prev" title="Android 单元测试入门">
+                Android 单元测试入门 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        
+  <div class="bdsharebuttonbox">
+    <a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+    <a href="#" class="bds_douban" data-cmd="douban" title="分享到豆瓣网"></a>
+    <a href="#" class="bds_sqq" data-cmd="sqq" title="分享到QQ好友"></a>
+    <a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a>
+    <a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a>
+    <a href="#" class="bds_tieba" data-cmd="tieba" title="分享到百度贴吧"></a>
+    <a href="#" class="bds_twi" data-cmd="twi" title="分享到Twitter"></a>
+    <a href="#" class="bds_fbook" data-cmd="fbook" title="分享到Facebook"></a>
+    <a href="#" class="bds_more" data-cmd="more"></a>
+    <a class="bds_count" data-cmd="count"></a>
+  </div>
+  <script>
+    window._bd_share_config = {
+      "common": {
+        "bdText": "",
+        "bdMini": "2",
+        "bdMiniList": false,
+        "bdPic": ""
+      },
+      "share": {
+        "bdSize": "16",
+        "bdStyle": "0"
+      },
+      "image": {
+        "viewList": ["tsina", "douban", "sqq", "qzone", "weixin", "twi", "fbook"],
+        "viewText": "分享到：",
+        "viewSize": "16"
+      }
+    }
+  </script>
+
+<script>
+  with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='//bdimg.share.baidu.com/static/api/js/share.js?cdnversion='+~(-new Date()/36e5)];
+</script>
+
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="lv-container" data-id="city" data-uid="MTAyMC8zOTA5Ni8xNTYyMw=="></div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image" src="/avatar.jpg" alt="Lee">
+          <p class="site-author-name" itemprop="name">Lee</p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+           
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">38</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">109</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/davidleee" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+          <div class="links-of-blogroll motion-element links-of-blogroll-inline">
+            <div class="links-of-blogroll-title">
+              <i class="fa  fa-fw fa-globe"></i>
+              友情链接
+            </div>
+            <ul class="links-of-blogroll-list">
+              
+                <li class="links-of-blogroll-item">
+                  <a href="http://www.yantinglam.com/" title="Yanting Lam" target="_blank">Yanting Lam</a>
+                </li>
+              
+                <li class="links-of-blogroll-item">
+                  <a href="http://www.enkichen.com/" title="Enki's Notes" target="_blank">Enki's Notes</a>
+                </li>
+              
+                <li class="links-of-blogroll-item">
+                  <a href="http://www.wxtlife.com/" title="Android技术特工队" target="_blank">Android技术特工队</a>
+                </li>
+              
+                <li class="links-of-blogroll-item">
+                  <a href="http://www.devhua.com/" title="Devhua's Blog" target="_blank">Devhua's Blog</a>
+                </li>
+              
+                <li class="links-of-blogroll-item">
+                  <a href="http://www.freehacker.cn" title="小熊糖否" target="_blank">小熊糖否</a>
+                </li>
+              
+                <li class="links-of-blogroll-item">
+                  <a href="https://debbiefu.github.io/" title="Debbie Fu" target="_blank">Debbie Fu</a>
+                </li>
+              
+                <li class="links-of-blogroll-item">
+                  <a href="https://hays.github.io/" title="Hays' Blog" target="_blank">Hays' Blog</a>
+                </li>
+              
+            </ul>
+          </div>
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#null"><span class="nav-number">1.</span> <span class="nav-text">试想一下…</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#来需求了"><span class="nav-number">1.1.</span> <span class="nav-text">来需求了</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#简单地改一下"><span class="nav-number">1.2.</span> <span class="nav-text">简单地改一下</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#来-这个更加简单"><span class="nav-number">1.3.</span> <span class="nav-text">来，这个更加简单</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#null"><span class="nav-number">2.</span> <span class="nav-text">为什么用 Redux</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#什么是-redux"><span class="nav-number">2.1.</span> <span class="nav-text">什么是 Redux</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#初衷"><span class="nav-number">2.2.</span> <span class="nav-text">初衷</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#不止如此"><span class="nav-number">2.3.</span> <span class="nav-text">不止如此</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#null"><span class="nav-number">3.</span> <span class="nav-text">那该怎么做呢？</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#action"><span class="nav-number">3.1.</span> <span class="nav-text">Action</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#reducer"><span class="nav-number">3.2.</span> <span class="nav-text">Reducer</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#store"><span class="nav-number">3.3.</span> <span class="nav-text">Store</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#调用"><span class="nav-number">3.4.</span> <span class="nav-text">调用</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#null"><span class="nav-number">4.</span> <span class="nav-text">结语</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Lee</span>
+
+  &nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;Hosted by <a href="https://pages.coding.me" style="font-weight: bold">Coding Pages</a>
+</div>
+
+
+<div class="powered-by">
+  Powered by <a class="theme-link" href="https://hexo.io">Hexo</a> 
+</div>
+
+<div class="theme-info">
+  Theme -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
+  
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length == 0) {
+      search_path = "search.xml";
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.popup').toggle();
+    }
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+      $.ajax({
+        url: path,
+        dataType: "xml",
+        async: true,
+        success: function( xmlResponse ) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = $( "entry", xmlResponse ).map(function() {
+            return {
+              title: $( "title", this ).text(),
+              content: $("content",this).text(),
+              url: $( "url" , this).text()
+            };
+          }).get();
+          var $input = document.getElementById(search_id);
+          var $resultContent = document.getElementById(content_id);
+          $input.addEventListener('input', function(){
+            var matchcounts = 0;
+            var str='<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length > 1) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var content_index = [];
+                var data_title = data.title.trim().toLowerCase();
+                var data_content = data.content.trim().replace(/<[^>]+>/g,"").toLowerCase();
+                var data_url = decodeURIComponent(data.url);
+                var index_title = -1;
+                var index_content = -1;
+                var first_occur = -1;
+                // only match artiles with not empty titles and contents
+                if(data_title != '') {
+                  keywords.forEach(function(keyword, i) {
+                    index_title = data_title.indexOf(keyword);
+                    index_content = data_content.indexOf(keyword);
+                    if( index_title >= 0 || index_content >= 0 ){
+                      isMatch = true;
+                      if (i == 0) {
+                        first_occur = index_content;
+                      }
+                    }
+
+                  });
+                }
+                // show search results
+                if (isMatch) {
+                  matchcounts += 1;
+                  str += "<li><a href='"+ data_url +"' class='search-result-title'>"+ data_title +"</a>";
+                  var content = data.content.trim().replace(/<[^>]+>/g,"");
+                  if (first_occur >= 0) {
+                    // cut out 100 characters
+                    var start = first_occur - 20;
+                    var end = first_occur + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if(start == 0){
+                      end = 50;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    var match_content = content.substring(start, end);
+                    // highlight all keywords
+                    keywords.forEach(function(keyword){
+                      var regS = new RegExp(keyword, "gi");
+                      match_content = match_content.replace(regS, "<b class=\"search-keyword\">"+keyword+"</b>");
+                    });
+
+                    str += "<p class=\"search-result\">" + match_content +"...</p>"
+                  }
+                  str += "</li>";
+                }
+              })};
+            str += "</ul>";
+            if (matchcounts == 0) { str = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>' }
+            if (keywords == "") { str = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>' }
+            $resultContent.innerHTML = str;
+          });
+          proceedsearch();
+        }
+      });}
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched == false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(function(e){
+      $('.popup').hide();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    });
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("rWbFyKbV9jV1Gm1Gplpfydst-gzGzoHsz", "AeJ3NJoYXFmMj6k9LCFSR62a");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+
+  
+
+</body>
+</html>

@@ -1,0 +1,1250 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css">
+
+
+  <meta name="keywords" content="iOS,Core Data,">
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="Lee 的笔记本" type="application/atom+xml">
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.jpg?v=5.1.0">
+
+
+
+
+
+
+<meta name="description" content="也不知道是我搜索的方法不对还是别的什么问题，网络上很少见 Core Data 的入门教程，所以这篇东西就这样定位了：比看官方文档轻松得多，却可以马上在自己的 App 里用上 Core Data。 不求深入到可以拿出去显摆，但是起码要可以用上手，并且能分享一篇入门指南，就像现在这样:)">
+<meta name="keywords" content="iOS,Core Data">
+<meta property="og:type" content="article">
+<meta property="og:title" content="简易 Core Data 入门">
+<meta property="og:url" content="http://davidleee.com/2016/05/09/easy-core-data/index.html">
+<meta property="og:site_name" content="Lee 的笔记本">
+<meta property="og:description" content="也不知道是我搜索的方法不对还是别的什么问题，网络上很少见 Core Data 的入门教程，所以这篇东西就这样定位了：比看官方文档轻松得多，却可以马上在自己的 App 里用上 Core Data。 不求深入到可以拿出去显摆，但是起码要可以用上手，并且能分享一篇入门指南，就像现在这样:)">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://davidleee.com/uploads/easy-core-data/use_core_data.png">
+<meta property="og:image" content="http://davidleee.com/uploads/easy-core-data/model_document.png">
+<meta property="og:image" content="http://davidleee.com/uploads/easy-core-data/persistence_stack.png">
+<meta property="og:image" content="http://davidleee.com/uploads/easy-core-data/r_u_kidding.png">
+<meta property="og:image" content="http://davidleee.com/uploads/easy-core-data/attributes.png">
+<meta property="og:image" content="http://davidleee.com/uploads/easy-core-data/create_subclasses.png">
+<meta property="og:image" content="http://davidleee.com/uploads/easy-core-data/choose_model.png">
+<meta property="og:image" content="http://davidleee.com/uploads/easy-core-data/choose_entity.png">
+<meta property="og:image" content="http://davidleee.com/uploads/easy-core-data/accept_challenge.png">
+<meta property="og:image" content="http://davidleee.com/uploads/easy-core-data/main_vc.png">
+<meta property="og:image" content="http://davidleee.com/uploads/easy-core-data/let_run.png">
+<meta property="og:image" content="http://davidleee.com/uploads/easy-core-data/result.png">
+<meta property="og:updated_time" content="2020-05-05T03:43:31.443Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="简易 Core Data 入门">
+<meta name="twitter:description" content="也不知道是我搜索的方法不对还是别的什么问题，网络上很少见 Core Data 的入门教程，所以这篇东西就这样定位了：比看官方文档轻松得多，却可以马上在自己的 App 里用上 Core Data。 不求深入到可以拿出去显摆，但是起码要可以用上手，并且能分享一篇入门指南，就像现在这样:)">
+<meta name="twitter:image" content="http://davidleee.com/uploads/easy-core-data/use_core_data.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://davidleee.com/2016/05/09/easy-core-data/">
+
+
+
+
+
+  <title> 简易 Core Data 入门 | Lee 的笔记本 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Lee 的笔记本</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description"></h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocapitalize="off" autocomplete="off" autocorrect="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://davidleee.com/2016/05/09/easy-core-data/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Lee">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Lee 的笔记本">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+            
+            
+              
+                简易 Core Data 入门
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-05-09T09:59:27+08:00">
+                2016-05-09
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2016/05/09/easy-core-data/" class="leancloud_visitors" data-flag-title="简易 Core Data 入门">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长</span>
+                
+                <span title="阅读时长">
+                  8
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>也不知道是我搜索的方法不对还是别的什么问题，网络上很少见 Core Data 的入门教程，所以这篇东西就这样定位了：比看官方文档轻松得多，却可以马上在自己的 App 里用上 Core Data。<br>
+不求深入到可以拿出去显摆，但是起码要可以用上手，并且能分享一篇入门指南，就像现在这样:)</p>
+<a id="more"></a>
+<h2 id="launch-our-xcode">Launch our Xcode!</h2>
+<p>不管怎么样，先把咱熟悉的 Xcode 召唤起来，创建一个新项目。本项目的完整代码可以在<a href="https://github.com/davidleee/CoreDataTryout" target="_blank" rel="noopener">这里</a>找到。对了，创建项目的时候记得把下面这个小勾给勾上，让 Xcode 帮我们创建模型文件。</p>
+<img src="/uploads/easy-core-data/use_core_data.png" class="center" title="创建项目">
+<p>然后就可以看到项目中出现一个后缀为 xcdatamodeld 的文件，这个文件相当于 Core Data 的 storyboard （不知道 <a href="https://developer.apple.com/videos/wwdc/2012/?id=407" target="_blank" rel="noopener">storyboard</a>？）。选中它，你会看到这样几个东西：</p>
+<img src="/uploads/easy-core-data/model_document.png" class="center" title="xcdatamodeld">
+<p>在这篇文章里，我们就只关注 Entities 部分。</p>
+<h2 id="浅入浅出">浅入浅出</h2>
+<p>想要详细了解 Core Data 里面的结构关系的话，可以去翻翻<a href="https://developer.apple.com/library/ios/documentation/Cocoa/Conceptual/CoreData/cdProgrammingGuide.html#//apple_ref/doc/uid/TP40001075" target="_blank" rel="noopener">官方文档</a>。但是一开始接触的时候，不外乎就是这么几个类：</p>
+<ul>
+<li>NSManagedObjectModel</li>
+</ul>
+<p>这玩意儿是什么呢？说白了，你可以认为它就是我们的 xcdatamodeld 。它包含了我们自己定义的实体( Entitiy )、实体内部的属性( Attribute )和实体之间的关系( Relationship )，就像是我们在设计数据库的时候画的E-R图。原则上，这个模型越是完善，你的 App 对 Core Data 的支持就越好。</p>
+<ul>
+<li>NSManagedObjectContext</li>
+</ul>
+<p>按照官方文档的<a href="https://developer.apple.com/library/ios/documentation/Cocoa/Conceptual/CoreData/Articles/cdBasics.html#//apple_ref/doc/uid/TP40001650-SW3" target="_blank" rel="noopener">说法</a>，<code>NSManagedObjectContext</code> 就像是一个智能的工作台。当你想从数据库中获取数据的时候，这些数据会被暂时复制一份到这个工作台上，然后你就可以对它们进行操作了。这样，除非你确实进行了一次保存，否则数据库里的真实数据是不会被改变的。</p>
+<p>而在实际使用中，我们最频繁接触的也是这个 <code>NSManagedObjectContext</code>。</p>
+<ul>
+<li>NSPersistentStoreCoordinator</li>
+</ul>
+<p>从名字大概可以猜到，这个类是不同数据库存储之间的协调者。</p>
+<p>在 App 里面创建出来的数据对象和实际保存着的数据之间，存在着一个持久栈( Persistence Stack )。这个栈的最顶层是 <code>NSManagedObjectContext</code>，而它的最底层则是一个个数据文件( Persistent Object Store )，在它们之间的就是 <code>NSPersistentStoreCoordinator</code>。我们因为 <code>NSManagedObjectContext</code>的存在，而不需要直接操作这些数据文件；而且 Persistent Store Coordinator 的存在，是基于外观模式的设计，这就使得 <code>NSManagedObjectContext</code> 不需要面对多个数据文件，只和 Coordinator 打交道就可以了。</p>
+<p>整个持久栈看起来就是这个样子：<br>
+￼<img src="/uploads/easy-core-data/persistence_stack.png" class="center" title="Persistence Stack"></p>
+<p>好，铺垫了那么久，也该用实践来检验一下真理了。</p>
+<h2 id="准备工作">准备工作</h2>
+<p>什么？上面讲了那么久的三个东西，Xcode 已经帮我们在 AppDelegate 里都准备好了？<br>
+嗯，没错，很贴心嘛。<br>
+￼<img src="/uploads/easy-core-data/r_u_kidding.png" class="center" width="250" height="250"></p>
+<p>不过我们还是来简单理一理这些代码里面的关系吧。</p>
+<p>可以发现，这几个对象的创建顺序是这样的 NSManagedObjectModel -&gt; NSPersistentStoreCoordinator -&gt; NSManagedObjectContext，跟持久栈的关系很一致。<br>
+不过在此之前，我们还是需要拿到我们的 xcdatamodeld 才可以创建我们的模型：</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">NSURL</span> *modelURL = [[<span class="built_in">NSBundle</span> mainBundle] URLForResource:<span class="string">@"CoreDataTryout"</span> withExtension:<span class="string">@"momd"</span>];</span><br><span class="line">_managedObjectModel = [[<span class="built_in">NSManagedObjectModel</span> alloc] initWithContentsOfURL:modelURL];</span><br></pre></td></tr></table></figure>
+<p>然后用这个模型来创建 <code>NSPersistentStoreCoordinator</code>：</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">_persistentStoreCoordinator = [[<span class="built_in">NSPersistentStoreCoordinator</span> alloc] initWithManagedObjectModel:[<span class="keyword">self</span> managedObjectModel]];</span><br><span class="line"> <span class="built_in">NSURL</span> *storeURL = [[<span class="keyword">self</span> applicationDocumentsDirectory] URLByAppendingPathComponent:<span class="string">@"CoreDataTryout.sqlite"</span>];</span><br><span class="line"></span><br><span class="line"> ...</span><br><span class="line"></span><br><span class="line"> <span class="keyword">if</span> (![_persistentStoreCoordinator addPersistentStoreWithType:<span class="built_in">NSSQLiteStoreType</span> configuration:<span class="literal">nil</span> URL:storeURL options:<span class="literal">nil</span> error:&amp;error]) &#123;...&#125;</span><br></pre></td></tr></table></figure>
+<p>程序会在 App 的 document 目录中创建一个名为 CoreDataTryout.sqlite 的文件，<code>NSSQLiteStoreType</code> 是我们选择的数据库类型，我们还可以选择 XML（ iOS 上不支持）、Atomic 或者 In-Memory，如果这些类型你都不喜欢，你还可以创建<a href="https://developer.apple.com/library/ios/documentation/Cocoa/Conceptual/CoreData/Articles/cdPersistentStores.html#//apple_ref/doc/uid/TP40002875-SW6" target="_blank" rel="noopener">自定义存储类型</a>。</p>
+<p>最后，在 <code>managedObjectContext</code> 的 setter 里面，我们给它装上准备好的 <code>persistentStoreCoordinator</code> 就大功告成了：</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">_managedObjectContext = [[<span class="built_in">NSManagedObjectContext</span> alloc] init];</span><br><span class="line">[_managedObjectContext setPersistentStoreCoordinator:coordinator];</span><br></pre></td></tr></table></figure>
+<p>注意到在 <code>application:didFinishLaunchingWithOptions:</code> 的最后还调用了一个 <code>saveContext</code> 方法。</p>
+<p>Core Data 里面的数据都是自动保存的，也就是说，你完全可以在代码里把实体的对象创建出来，乱改一通，然后留下一个帅气的背影，奔向下一段代码。<br>
+<code>managedObjectContext</code> 在发现有数据被改动了之后，会在一个<em>合适的时机</em>保存这些更改。这个保存也许不是数据变化后马上进行的，但是也足够智能可以让我们免去时不时保存一下的烦恼。有些时候（比如你暂停了你运行中的程序） <code>managedObjectContext</code> 会来不及做这些工作，或者你想要确保当下的数据被写进了数据库里，那么这个 <code>saveContext</code> 就会派上用场了。</p>
+<h2 id="创建实体">创建实体</h2>
+<p>一切准备就绪，我们终于要真正开始操作我们的数据库了！</p>
+<p>先在我们的 xcdatamodeld 文件里面添加一个 Entity ，随便起个名字叫 User 好了，然后在右边 Attributes 那一栏里面添加一些属性。</p>
+<img src="/uploads/easy-core-data/attributes.png" class="center" title="Attributes">
+<p>Attributes 都是强类型的，所以如果你不手动给它们指定类型，编译器就会直接报错。能够写入数据库的类型还是挺丰富的，值得一提的是，数字和布尔值最终都会被转换成 <code>NSNumber</code> 来处理，而图片这一类比较大的文件就必须转换成 <code>NSData</code> 再写入了。</p>
+<p>接下来，让 Xcode 帮我们生成这个实体的子类：</p>
+<img src="/uploads/easy-core-data/create_subclasses.png" class="center" title="创建子类">
+<p>选择一下 Model 和想要子类化的 Entity （有的项目会使用多个 Model，我们这里就只有一个）：</p>
+<img src="/uploads/easy-core-data/choose_model.png" class="center" title="选择 Model">
+<img src="/uploads/easy-core-data/choose_entity.png" class="center" title="选择 Entity">
+<p>然后点 create ，你会发现项目文件夹中多两个文件 User.h/m。这两个文件由 Xcode 生成也由 Xcode 管理，所以如果我们改动了里面的内容，Xcode 可能就会跟我们发牢骚了。（如果确实需要添加某些功能，可以使用 category ）</p>
+<p>如今这个类已经全权代表了我们在模型里面创建的实体，它的 property 和我们添加的 attributes 是一一对应的关系，也就是可以直接从这些属性访问到实体的变量了。</p>
+<p>多说无益，赶紧来动动手！</p>
+<img src="/uploads/easy-core-data/accept_challenge.png" width="250" height="250">
+<h2 id="write-the-code-change-the-world">Write the code, change the world!</h2>
+<p>首先拉一个简陋的界面出来给我们的用户输入信息，下面放一个输出信息的地方，省的我们每次都跑到 Debug Area 里面看：</p>
+<img src="/uploads/easy-core-data/main_vc.png" class="center" width="500" height="500" title="Main VC">
+<p>把所有控件都 hook 起来，然后在“写进去”和&quot;读出来&quot;两个按钮的 IBAction 里写代码。<br>
+首先把数据写进数据库：</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">- (<span class="keyword">IBAction</span>)writeAction:(<span class="keyword">id</span>)sender</span><br><span class="line">&#123;</span><br><span class="line">    AppDelegate *appDelegate = [[<span class="built_in">UIApplication</span> sharedApplication] delegate];</span><br><span class="line">    <span class="built_in">NSManagedObjectContext</span> *context = appDelegate.managedObjectContext;</span><br><span class="line"></span><br><span class="line">    User *newUser = [<span class="built_in">NSEntityDescription</span> insertNewObjectForEntityForName:<span class="string">@"User"</span> inManagedObjectContext:context];</span><br><span class="line">    newUser.name = <span class="keyword">self</span>.nameTextField.text;</span><br><span class="line">    newUser.age = @([<span class="keyword">self</span>.ageTextField.text intValue]);</span><br><span class="line">    newUser.height = @([<span class="keyword">self</span>.heightTextField.text intValue]);</span><br><span class="line">    newUser.weight = @([<span class="keyword">self</span>.weightTextField.text intValue]);</span><br><span class="line"></span><br><span class="line"><span class="comment">//    [context save:NULL];</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>Core Data 用起来还是挺直观的吧？<br>
+我们从 AppDelegate 里面拿到了老早就创建好了的 <code>managedObjectContext</code>，通过 <code>NSEntityDescription</code> 新建了一个准备插入到数据库中的 User；<br>
+然后把用户输入的数据填充到 User 里面，保存一下。</p>
+<p>等等！ Core Data 是会自动保存的，所以最后一句注释掉也没有影响咯。</p>
+<p>接下来是读取数据：</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">- (<span class="keyword">IBAction</span>)readAction:(<span class="keyword">id</span>)sender</span><br><span class="line">&#123;</span><br><span class="line">    AppDelegate *appDelegate = [[<span class="built_in">UIApplication</span> sharedApplication] delegate];</span><br><span class="line">    <span class="built_in">NSManagedObjectContext</span> *context = appDelegate.managedObjectContext;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">NSFetchRequest</span> *fetchRequest = [[<span class="built_in">NSFetchRequest</span> alloc] initWithEntityName:<span class="string">@"User"</span>];</span><br><span class="line">    <span class="built_in">NSError</span> *error;</span><br><span class="line">    <span class="built_in">NSArray</span> *results = [context executeFetchRequest:fetchRequest error:&amp;error];</span><br><span class="line">    <span class="keyword">if</span> ([results count]) &#123;</span><br><span class="line">        <span class="keyword">self</span>.consoleTextView.text = [results description];</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="keyword">self</span>.consoleTextView.text = [error localizedDescription];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>认识一个新伙伴—— <code>NSFetchRequest</code>，数据库的读取基本都是靠这家伙了，你还可以对它加上各式各样的条件和约束，进行更精确的数据库查询。查询的结果会保存在一个 NSArray 里面，不管它，直接输出给我们看看。</p>
+<p>这就够了！让我们的程序跑起来吧！<br>
+￼<img src="/uploads/easy-core-data/let_run.png" width="250" height="250"></p>
+<h2 id="结果">结果</h2>
+<p>随便录入点数据，按下“写进去”，嗯，和预期的一样，什么反应也没有。<br>
+然后按下&quot;读出来&quot;：</p>
+<img src="/uploads/easy-core-data/result.png" class="center" width="500" height="500" title="Result">
+<p>嗯？输出的结果看起来有点奇怪？<br>
+那是因为我们直接把数组的 description 打印了出来。这个数组里面其实就是我们之前创建好的 User 对象，直接拿出来当Model用就可以了。</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+  <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+    <div>你的支持和鼓励，是我分享的最大动力！</div>
+    <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+      <span>赏</span>
+    </button>
+    <div id="QR" style="display: none;">
+      
+        <div id="wechat" style="display: inline-block">
+          <img id="wechat_qr" src="/uploads/wechatpay.jpeg" alt="Lee WeChat Pay">
+          <p>微信打赏</p>
+        </div>
+      
+      
+        <div id="alipay" style="display: inline-block">
+          <img id="alipay_qr" src="/uploads/alipay.jpeg" alt="Lee Alipay">
+          <p>支付宝打赏</p>
+        </div>
+      
+    </div>
+  </div>
+
+
+      
+    </div>
+
+    <div>
+      
+        
+  <ul class="post-copyright">
+    <li class="post-copyright-author">
+      <strong>本文作者：</strong>
+      Lee
+    </li>
+    <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="http://davidleee.com/2016/05/09/easy-core-data/" title="简易 Core Data 入门">http://davidleee.com/2016/05/09/easy-core-data/</a>
+    </li>
+    <li class="post-copyright-license">
+      <strong>版权声明： </strong>
+      本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 3.0</a> 许可协议。转载请注明出处！
+    </li>
+  </ul>
+
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/iOS/" rel="tag"># iOS</a>
+          
+            <a href="/tags/Core-Data/" rel="tag"># Core Data</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/04/29/using-autolayout-in-uitableviewcells/" rel="next" title="老生常谈的自适应高度UITableViewCell">
+                <i class="fa fa-chevron-left"></i> 老生常谈的自适应高度UITableViewCell
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/05/12/Use-Swift-framework-in-OC-project/" rel="prev" title="在 OC 项目中使用基于 Swift 的 CocoaPods 库">
+                在 OC 项目中使用基于 Swift 的 CocoaPods 库 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        
+  <div class="bdsharebuttonbox">
+    <a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+    <a href="#" class="bds_douban" data-cmd="douban" title="分享到豆瓣网"></a>
+    <a href="#" class="bds_sqq" data-cmd="sqq" title="分享到QQ好友"></a>
+    <a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a>
+    <a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a>
+    <a href="#" class="bds_tieba" data-cmd="tieba" title="分享到百度贴吧"></a>
+    <a href="#" class="bds_twi" data-cmd="twi" title="分享到Twitter"></a>
+    <a href="#" class="bds_fbook" data-cmd="fbook" title="分享到Facebook"></a>
+    <a href="#" class="bds_more" data-cmd="more"></a>
+    <a class="bds_count" data-cmd="count"></a>
+  </div>
+  <script>
+    window._bd_share_config = {
+      "common": {
+        "bdText": "",
+        "bdMini": "2",
+        "bdMiniList": false,
+        "bdPic": ""
+      },
+      "share": {
+        "bdSize": "16",
+        "bdStyle": "0"
+      },
+      "image": {
+        "viewList": ["tsina", "douban", "sqq", "qzone", "weixin", "twi", "fbook"],
+        "viewText": "分享到：",
+        "viewSize": "16"
+      }
+    }
+  </script>
+
+<script>
+  with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='//bdimg.share.baidu.com/static/api/js/share.js?cdnversion='+~(-new Date()/36e5)];
+</script>
+
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="lv-container" data-id="city" data-uid="MTAyMC8zOTA5Ni8xNTYyMw=="></div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image" src="/avatar.jpg" alt="Lee">
+          <p class="site-author-name" itemprop="name">Lee</p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+           
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">38</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">109</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/davidleee" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+          <div class="links-of-blogroll motion-element links-of-blogroll-inline">
+            <div class="links-of-blogroll-title">
+              <i class="fa  fa-fw fa-globe"></i>
+              友情链接
+            </div>
+            <ul class="links-of-blogroll-list">
+              
+                <li class="links-of-blogroll-item">
+                  <a href="http://www.yantinglam.com/" title="Yanting Lam" target="_blank">Yanting Lam</a>
+                </li>
+              
+                <li class="links-of-blogroll-item">
+                  <a href="http://www.enkichen.com/" title="Enki's Notes" target="_blank">Enki's Notes</a>
+                </li>
+              
+                <li class="links-of-blogroll-item">
+                  <a href="http://www.wxtlife.com/" title="Android技术特工队" target="_blank">Android技术特工队</a>
+                </li>
+              
+                <li class="links-of-blogroll-item">
+                  <a href="http://www.devhua.com/" title="Devhua's Blog" target="_blank">Devhua's Blog</a>
+                </li>
+              
+                <li class="links-of-blogroll-item">
+                  <a href="http://www.freehacker.cn" title="小熊糖否" target="_blank">小熊糖否</a>
+                </li>
+              
+                <li class="links-of-blogroll-item">
+                  <a href="https://debbiefu.github.io/" title="Debbie Fu" target="_blank">Debbie Fu</a>
+                </li>
+              
+                <li class="links-of-blogroll-item">
+                  <a href="https://hays.github.io/" title="Hays' Blog" target="_blank">Hays' Blog</a>
+                </li>
+              
+            </ul>
+          </div>
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#launch-our-xcode"><span class="nav-number">1.</span> <span class="nav-text">Launch our Xcode!</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#浅入浅出"><span class="nav-number">2.</span> <span class="nav-text">浅入浅出</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#准备工作"><span class="nav-number">3.</span> <span class="nav-text">准备工作</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#创建实体"><span class="nav-number">4.</span> <span class="nav-text">创建实体</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#write-the-code-change-the-world"><span class="nav-number">5.</span> <span class="nav-text">Write the code, change the world!</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#结果"><span class="nav-number">6.</span> <span class="nav-text">结果</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Lee</span>
+
+  &nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;Hosted by <a href="https://pages.coding.me" style="font-weight: bold">Coding Pages</a>
+</div>
+
+
+<div class="powered-by">
+  Powered by <a class="theme-link" href="https://hexo.io">Hexo</a> 
+</div>
+
+<div class="theme-info">
+  Theme -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
+  
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length == 0) {
+      search_path = "search.xml";
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.popup').toggle();
+    }
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+      $.ajax({
+        url: path,
+        dataType: "xml",
+        async: true,
+        success: function( xmlResponse ) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = $( "entry", xmlResponse ).map(function() {
+            return {
+              title: $( "title", this ).text(),
+              content: $("content",this).text(),
+              url: $( "url" , this).text()
+            };
+          }).get();
+          var $input = document.getElementById(search_id);
+          var $resultContent = document.getElementById(content_id);
+          $input.addEventListener('input', function(){
+            var matchcounts = 0;
+            var str='<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length > 1) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var content_index = [];
+                var data_title = data.title.trim().toLowerCase();
+                var data_content = data.content.trim().replace(/<[^>]+>/g,"").toLowerCase();
+                var data_url = decodeURIComponent(data.url);
+                var index_title = -1;
+                var index_content = -1;
+                var first_occur = -1;
+                // only match artiles with not empty titles and contents
+                if(data_title != '') {
+                  keywords.forEach(function(keyword, i) {
+                    index_title = data_title.indexOf(keyword);
+                    index_content = data_content.indexOf(keyword);
+                    if( index_title >= 0 || index_content >= 0 ){
+                      isMatch = true;
+                      if (i == 0) {
+                        first_occur = index_content;
+                      }
+                    }
+
+                  });
+                }
+                // show search results
+                if (isMatch) {
+                  matchcounts += 1;
+                  str += "<li><a href='"+ data_url +"' class='search-result-title'>"+ data_title +"</a>";
+                  var content = data.content.trim().replace(/<[^>]+>/g,"");
+                  if (first_occur >= 0) {
+                    // cut out 100 characters
+                    var start = first_occur - 20;
+                    var end = first_occur + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if(start == 0){
+                      end = 50;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    var match_content = content.substring(start, end);
+                    // highlight all keywords
+                    keywords.forEach(function(keyword){
+                      var regS = new RegExp(keyword, "gi");
+                      match_content = match_content.replace(regS, "<b class=\"search-keyword\">"+keyword+"</b>");
+                    });
+
+                    str += "<p class=\"search-result\">" + match_content +"...</p>"
+                  }
+                  str += "</li>";
+                }
+              })};
+            str += "</ul>";
+            if (matchcounts == 0) { str = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>' }
+            if (keywords == "") { str = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>' }
+            $resultContent.innerHTML = str;
+          });
+          proceedsearch();
+        }
+      });}
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched == false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(function(e){
+      $('.popup').hide();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    });
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("rWbFyKbV9jV1Gm1Gplpfydst-gzGzoHsz", "AeJ3NJoYXFmMj6k9LCFSR62a");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+
+  
+
+</body>
+</html>

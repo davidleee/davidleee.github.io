@@ -1,0 +1,1236 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css">
+
+
+  <meta name="keywords" content="iOS,Crash,">
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="Lee 的笔记本" type="application/atom+xml">
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.jpg?v=5.1.0">
+
+
+
+
+
+
+<meta name="description" content="原文链接：Symbolicating Your iOS Crash Reports  你拿到一份 App 的崩溃报告，结果发现里面全是难以理解的内存地址。作为一名合格的开发，应该做些什么呢？简单来说，你需要把调试符号应用到崩溃日志上，让它变得更可读，这个过程叫做符号化（Symbolication）。">
+<meta name="keywords" content="iOS,Crash">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【译】符号化iOS崩溃报告">
+<meta property="og:url" content="http://davidleee.com/2018/03/08/Symbolicating-Your-iOS-Crash-Reports/index.html">
+<meta property="og:site_name" content="Lee 的笔记本">
+<meta property="og:description" content="原文链接：Symbolicating Your iOS Crash Reports  你拿到一份 App 的崩溃报告，结果发现里面全是难以理解的内存地址。作为一名合格的开发，应该做些什么呢？简单来说，你需要把调试符号应用到崩溃日志上，让它变得更可读，这个过程叫做符号化（Symbolication）。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2020-05-05T03:43:31.442Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="【译】符号化iOS崩溃报告">
+<meta name="twitter:description" content="原文链接：Symbolicating Your iOS Crash Reports  你拿到一份 App 的崩溃报告，结果发现里面全是难以理解的内存地址。作为一名合格的开发，应该做些什么呢？简单来说，你需要把调试符号应用到崩溃日志上，让它变得更可读，这个过程叫做符号化（Symbolication）。">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://davidleee.com/2018/03/08/Symbolicating-Your-iOS-Crash-Reports/">
+
+
+
+
+
+  <title> 【译】符号化iOS崩溃报告 | Lee 的笔记本 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Lee 的笔记本</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description"></h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocapitalize="off" autocomplete="off" autocorrect="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://davidleee.com/2018/03/08/Symbolicating-Your-iOS-Crash-Reports/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Lee">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Lee 的笔记本">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+            
+            
+              
+                【译】符号化iOS崩溃报告
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-08T15:09:39+08:00">
+                2018-03-08
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/03/08/Symbolicating-Your-iOS-Crash-Reports/" class="leancloud_visitors" data-flag-title="【译】符号化iOS崩溃报告">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长</span>
+                
+                <span title="阅读时长">
+                  7
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+<p>原文链接：<a href="https://possiblemobile.com/2015/03/symbolicating-your-ios-crash-reports/" target="_blank" rel="noopener">Symbolicating Your iOS Crash Reports</a></p>
+</blockquote>
+<p>你拿到一份 App 的崩溃报告，结果发现里面全是难以理解的内存地址。作为一名合格的开发，应该做些什么呢？简单来说，你需要把调试符号应用到崩溃日志上，让它变得更可读，这个过程叫做符号化（Symbolication）。</p>
+<a id="more"></a>
+<p>崩溃报告通常是一个 <code>.crash</code> 格式的文件。要拿到这个玩意儿有这几种方式：</p>
+<ol>
+<li>从 iTunes Connect 上获取</li>
+<li>通过 Xcode 从连接的设备上直接获取（Windows -&gt; Devices）</li>
+<li>直接从连接设备上获取（ iOS 11 上的位置是：设置 -&gt; 隐私 -&gt; 分析）</li>
+<li>通过第三方的框架去获取</li>
+</ol>
+<p>如果你已经在用第三方的崩溃收集服务的话，崩溃日志应该已经是符号化之后的可读格式了。</p>
+<p>然后我们还需要拿到下面两个文件之一，来帮我们定位问题：</p>
+<ol>
+<li>崩溃应用的 <code>.app</code> 文件。这个包里面存有应用的二进制文件，可能还直接保存了调试符号（如果你手上的是 <code>.ipa</code> 文件，你可以直接把它当成一个压缩包去解压，里面会找到 <code>.app</code> 文件的）</li>
+<li>编译崩溃应用时生成的 <code>.dSYM</code> 文件。如果你编译应用的时候，没有指定把调试符号添加到 <code>.app</code> 文件里，那它们就会把这些符号单独放到这个 <code>.dSYM</code> 文件里</li>
+</ol>
+<p>到底要拿哪一个呢？到 Xcode 项目里的 Build Setting 里面找一个叫 “Strip Debug Symbols During Copy”（<code>COPY_PHASE_STRIP</code>） 的字段，如果它是 <code>YES</code> 的话，调试符号就会从 <code>.app</code> 文件里剔除，并放到 <code>.dSYM</code> 文件里面。</p>
+<blockquote>
+<p>默认情况下，出于代码混淆的考虑，打包 release 版本的时候调试信息会被放到 <code>.dSYM</code> 文件里。</p>
+</blockquote>
+<h2 id="等等-调试符号是什么鬼？">等等，调试符号是什么鬼？</h2>
+<p>从程序员的角度看，调试符号就相当于我们给方法起的那个可读性高的名字。为了提高代码的混淆度，编译器会在编译过程中把我们的调试符号替换成它自己的。而且编译器每一次编译都可能会改变它自己的符号，即使我们的代码完全没有变化。</p>
+<h2 id="开始调试崩溃">开始调试崩溃</h2>
+<p>如果你是从 Xcode 的 Organizer 里拿到的崩溃日志，那它里面与 iOS 框架（UIKit 等）相关的部分可能已经被符号化了，而且如果 Xcode 还记得这一次编译的话，整个崩溃日志的符号化过程也可以省掉了。</p>
+<p>那在没那么好运的情况下呢？</p>
+<h3 id="symbolicatecrash-工具">Symbolicatecrash 工具</h3>
+<p>最简单的方式就是使用苹果官方提供的 Symbolicatecrash 工具了，本质上它就是一个脚本，可以帮我们拿到调试符号并应用到指定的崩溃日志上。</p>
+<p>在 Xcode 7.3 之后，这个工具在这个位置：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/Applications/Xcode.app/Contents/SharedFrameworks/DVTFoundation.framework/Versions/A/Resources/symbolicatecrash</span><br></pre></td></tr></table></figure>
+<p>在 Xcode 6 到 7.2 的版本下，它在这里：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/Applications/Xcode.app/Contents/SharedFrameworks/DTDeviceKitBase.framework/Versions/Current/Resources/symbolicatecrash</span><br></pre></td></tr></table></figure>
+<p>如果是更早的版本，可以到这里碰碰运气：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/Library/PrivateFrameworks/DTDeviceKitBase.framework/Versions/Current/Resources/symbolicatecrash</span><br></pre></td></tr></table></figure>
+<p>用这个工具之前，要先配置一个环境变量：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">export DEVELOPER_DIR=”/Applications/Xcode.app/Contents/Developer”</span><br></pre></td></tr></table></figure>
+<p>然后把 <code>.crash</code>、<code>.app</code> 和 <code>.dSYM</code> 文件都放到同一个目录下，并执行：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">symbolicatecrash &lt;#YourAppName&gt;.crash &gt; Symbolicated.crash</span><br><span class="line"></span><br><span class="line">// 如果需要明确指定应用二进制文件的话...</span><br><span class="line">// symbolicatecrash &lt;#YourAppName&gt;.crash ./&lt;#YourAppName&gt;.app/&lt;#YourAppName&gt; &gt; Symbolicated.crash</span><br></pre></td></tr></table></figure>
+<h3 id="验证文件是否正确">验证文件是否正确</h3>
+<p>如果符号化的过程碰到了问题，可以加上 <code>-v</code> 参数让 Symbolicatecrash 告诉我们更多信息。大多数情况下是因为 <code>.dSYM</code> 文件或者 <code>.app</code> 文件拿错了，可以用下面的指令来验证一下 UUID 是否正确：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">// App 文件</span><br><span class="line">dwarfdump -u &lt;#YourAppName&gt;.app/&lt;#YourAppName&gt;</span><br><span class="line"></span><br><span class="line">// dSYM 文件</span><br><span class="line">dwarfdump -u &lt;#YourAppName&gt;.app.dSYM/Contents/Resources/DWARF/&lt;#YourAppName&gt;</span><br></pre></td></tr></table></figure>
+<p>对比看看两次输出的 UUID 是不是一致的，然后看看崩溃日志里的 UUID 是不是输出的这一个。</p>
+<h3 id="定位-symbolicatecrash-的问题">定位 Symbolicatecrash 的问题</h3>
+<p>经过上面的步骤之后，如果还是没法输出有效的信息，那就要仔细看看符号化之后的日志了。官方符号化的工具会尝试寻找与崩溃 App 的 UUID 相匹配的文件和动态库，如果符号化失败的话，从输出的日志里确认它寻找的 App 名称和 UUID 是不是你要的。一般来说，会有这样的输出：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">......fetching symbol file for Crasher[K–[undef] Searching []…– NO MATCH Searching in Spotlight for dsym with UUID of b00cdf0c29653095b1e86078b12d79e5 ... Number of symbols in /Users/You/Workspace/Crasher.app/Crasher: 1 + 106 = 107 Found executable /Users/You/Workspace/Crasher.app/Crasher — MATCH</span><br></pre></td></tr></table></figure>
+<p>如果 Spotlight 找不到 <code>.dSYM</code> 文件，输出是这样子的：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Did not find executable for dsym Warning: Can’t find any unstripped binary that matches version of /private/var/mobile/Containers/Bundle/Application/956755E3-6C66-4E87-A8BC-352FD4BE3711/Crasher.app/Crasher</span><br></pre></td></tr></table></figure>
+<p>如果 <code>.dSYM</code> 文件有问题：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Number of symbols in ./Crasher: + = 0 ./Crasher appears to be stripped, skipping.</span><br></pre></td></tr></table></figure>
+<p>非法输入的情况：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">fatal error: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/lipo: can’t figure out the architecture type of: ./Crasher.app.dSYM.zip ./Crasher.app.dSYM.zip doesn’t contain armv7 slice</span><br></pre></td></tr></table></figure>
+<p>Xcode 6 上的 <code>symbolicatecrash</code> 会尝试修复 Xcode 5 上没办法解决的 Spotlight 问题，如果你的 <code>symbolicatecrash</code> 版本比较旧，可以尝试手动修复一下 Spotlight 的索引问题：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mdimport -g /Applications/Xcode.app/Contents/Library/Spotlight/uuid.mdimporter</span><br></pre></td></tr></table></figure>
+<h3 id="命令行工具链">命令行工具链</h3>
+<p>让我们再深入一步，使用命令行工具去一行行符号化堆栈信息。</p>
+<p>先看一行崩溃日志里的堆栈信息：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">... 13 Crasher 0x000aeef6 0xa8000 + 28406 ...</span><br></pre></td></tr></table></figure>
+<p>第一段十六进制数（<code>0x000aeef6</code>）是栈地址。第二段十六进制数（<code>0xa8000</code>）是程序加载地址。接下来的运算操作（<code>+ 28406</code>）是一个十进制的加法操作，这三个信息表示了一个等式：0x000aeef6 = 0xa8000 + 0x6EF6（== 28406）。</p>
+<p>顺着崩溃日志往下看，会发现 “Binary Images” 这个字段的内容里包含了我们的程序加载地址，它代表了崩溃应用里加载了的一系列动态库占用的内存地址：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Binary Images: 0xa8000 – 0xaffff Crasher armv7 /var/mobile/Containers/Bundle/Application/956755E3-6C66-4E87-A8BC-352FD4BE3711/Crasher.app/Crasher</span><br></pre></td></tr></table></figure>
+<p>接下来，我们还需要看看崩溃应用的可执行文件的编译架构，可以用 <code>file</code> 或 <code>lipo -info</code> 命令查看：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">file Crasher.app/Crasher</span><br></pre></td></tr></table></figure>
+<p>输出会是这个样子的：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Crasher.app/Crasher: Mach-O universal binary with 2 architectures Crasher.app/Crasher (for architecture armv7): Mach-O executable arm Crasher.app/Crasher (for architecture arm64): Mach-O 64-bit executable</span><br></pre></td></tr></table></figure>
+<p>现在我们知道所有需要的信息了。使用 <code>atos</code> 指令，可以把地址信息转化为调试符号：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">atos -arch armv7 -o Crasher.app/Crasher -l 0xa8000 0x000aeef6</span><br></pre></td></tr></table></figure>
+<p>这里我们需要知道的参数是：应用的编译架构、应用位置、加载地址和栈地址。</p>
+<p>输出会是这样的：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">main (in Crasher) (main.m:14)</span><br></pre></td></tr></table></figure>
+<p>完成！如果你还有兴趣继续深入，可以了解一下 Mach-O 对象文件的格式，并尝试使用以下 Mach-O 相关的命令行工具，比如 <code>otool</code> 和 <code>lipo</code>。</p>
+<h2 id="延伸阅读">延伸阅读</h2>
+<ul>
+<li><a href="https://developer.apple.com/library/ios/technotes/tn2151/_index.html#//apple_ref/doc/uid/DTS40008184" target="_blank" rel="noopener">Technical Note TN2151: Understanding and Analyzing iOS Application Crash Reports</a></li>
+<li><a href="https://developer.apple.com/library/ios/qa/qa1765/_index.html#//apple_ref/doc/uid/DTS40012196" target="_blank" rel="noopener">Technical Q&amp;A QA1765: How to Match a Crash Report to a Build</a></li>
+<li><a href="https://developer.apple.com/library/mac/documentation/DeveloperTools/Conceptual/MachOTopics/0-Introduction/introduction.html" target="_blank" rel="noopener">Mach-O Programming Topics</a></li>
+<li><a href="http://www.objc.io/issue-6/mach-o-executables.html" target="_blank" rel="noopener">Objc.io on Mach-O Executables</a></li>
+</ul>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+  <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+    <div>你的支持和鼓励，是我分享的最大动力！</div>
+    <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+      <span>赏</span>
+    </button>
+    <div id="QR" style="display: none;">
+      
+        <div id="wechat" style="display: inline-block">
+          <img id="wechat_qr" src="/uploads/wechatpay.jpeg" alt="Lee WeChat Pay">
+          <p>微信打赏</p>
+        </div>
+      
+      
+        <div id="alipay" style="display: inline-block">
+          <img id="alipay_qr" src="/uploads/alipay.jpeg" alt="Lee Alipay">
+          <p>支付宝打赏</p>
+        </div>
+      
+    </div>
+  </div>
+
+
+      
+    </div>
+
+    <div>
+      
+        
+  <ul class="post-copyright">
+    <li class="post-copyright-author">
+      <strong>本文作者：</strong>
+      Lee
+    </li>
+    <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="http://davidleee.com/2018/03/08/Symbolicating-Your-iOS-Crash-Reports/" title="【译】符号化iOS崩溃报告">http://davidleee.com/2018/03/08/Symbolicating-Your-iOS-Crash-Reports/</a>
+    </li>
+    <li class="post-copyright-license">
+      <strong>版权声明： </strong>
+      本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 3.0</a> 许可协议。转载请注明出处！
+    </li>
+  </ul>
+
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/iOS/" rel="tag"># iOS</a>
+          
+            <a href="/tags/Crash/" rel="tag"># Crash</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/09/11/Windows-in-macOS/" rel="next" title="20分钟手把手教你写 macOS 文本编辑器">
+                <i class="fa fa-chevron-left"></i> 20分钟手把手教你写 macOS 文本编辑器
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/04/24/Top-Mistakes-in-RxSwift/" rel="prev" title="小心避开 RxSwift 里的坑（Top Mistakes in RxSwift you want to avoid）">
+                小心避开 RxSwift 里的坑（Top Mistakes in RxSwift you want to avoid） <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        
+  <div class="bdsharebuttonbox">
+    <a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+    <a href="#" class="bds_douban" data-cmd="douban" title="分享到豆瓣网"></a>
+    <a href="#" class="bds_sqq" data-cmd="sqq" title="分享到QQ好友"></a>
+    <a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a>
+    <a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a>
+    <a href="#" class="bds_tieba" data-cmd="tieba" title="分享到百度贴吧"></a>
+    <a href="#" class="bds_twi" data-cmd="twi" title="分享到Twitter"></a>
+    <a href="#" class="bds_fbook" data-cmd="fbook" title="分享到Facebook"></a>
+    <a href="#" class="bds_more" data-cmd="more"></a>
+    <a class="bds_count" data-cmd="count"></a>
+  </div>
+  <script>
+    window._bd_share_config = {
+      "common": {
+        "bdText": "",
+        "bdMini": "2",
+        "bdMiniList": false,
+        "bdPic": ""
+      },
+      "share": {
+        "bdSize": "16",
+        "bdStyle": "0"
+      },
+      "image": {
+        "viewList": ["tsina", "douban", "sqq", "qzone", "weixin", "twi", "fbook"],
+        "viewText": "分享到：",
+        "viewSize": "16"
+      }
+    }
+  </script>
+
+<script>
+  with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='//bdimg.share.baidu.com/static/api/js/share.js?cdnversion='+~(-new Date()/36e5)];
+</script>
+
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="lv-container" data-id="city" data-uid="MTAyMC8zOTA5Ni8xNTYyMw=="></div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image" src="/avatar.jpg" alt="Lee">
+          <p class="site-author-name" itemprop="name">Lee</p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+           
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">38</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">109</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/davidleee" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+          <div class="links-of-blogroll motion-element links-of-blogroll-inline">
+            <div class="links-of-blogroll-title">
+              <i class="fa  fa-fw fa-globe"></i>
+              友情链接
+            </div>
+            <ul class="links-of-blogroll-list">
+              
+                <li class="links-of-blogroll-item">
+                  <a href="http://www.yantinglam.com/" title="Yanting Lam" target="_blank">Yanting Lam</a>
+                </li>
+              
+                <li class="links-of-blogroll-item">
+                  <a href="http://www.enkichen.com/" title="Enki's Notes" target="_blank">Enki's Notes</a>
+                </li>
+              
+                <li class="links-of-blogroll-item">
+                  <a href="http://www.wxtlife.com/" title="Android技术特工队" target="_blank">Android技术特工队</a>
+                </li>
+              
+                <li class="links-of-blogroll-item">
+                  <a href="http://www.devhua.com/" title="Devhua's Blog" target="_blank">Devhua's Blog</a>
+                </li>
+              
+                <li class="links-of-blogroll-item">
+                  <a href="http://www.freehacker.cn" title="小熊糖否" target="_blank">小熊糖否</a>
+                </li>
+              
+                <li class="links-of-blogroll-item">
+                  <a href="https://debbiefu.github.io/" title="Debbie Fu" target="_blank">Debbie Fu</a>
+                </li>
+              
+                <li class="links-of-blogroll-item">
+                  <a href="https://hays.github.io/" title="Hays' Blog" target="_blank">Hays' Blog</a>
+                </li>
+              
+            </ul>
+          </div>
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#等等-调试符号是什么鬼？"><span class="nav-number">1.</span> <span class="nav-text">等等，调试符号是什么鬼？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#开始调试崩溃"><span class="nav-number">2.</span> <span class="nav-text">开始调试崩溃</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#symbolicatecrash-工具"><span class="nav-number">2.1.</span> <span class="nav-text">Symbolicatecrash 工具</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#验证文件是否正确"><span class="nav-number">2.2.</span> <span class="nav-text">验证文件是否正确</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#定位-symbolicatecrash-的问题"><span class="nav-number">2.3.</span> <span class="nav-text">定位 Symbolicatecrash 的问题</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#命令行工具链"><span class="nav-number">2.4.</span> <span class="nav-text">命令行工具链</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#延伸阅读"><span class="nav-number">3.</span> <span class="nav-text">延伸阅读</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Lee</span>
+
+  &nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;Hosted by <a href="https://pages.coding.me" style="font-weight: bold">Coding Pages</a>
+</div>
+
+
+<div class="powered-by">
+  Powered by <a class="theme-link" href="https://hexo.io">Hexo</a> 
+</div>
+
+<div class="theme-info">
+  Theme -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
+  
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length == 0) {
+      search_path = "search.xml";
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.popup').toggle();
+    }
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+      $.ajax({
+        url: path,
+        dataType: "xml",
+        async: true,
+        success: function( xmlResponse ) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = $( "entry", xmlResponse ).map(function() {
+            return {
+              title: $( "title", this ).text(),
+              content: $("content",this).text(),
+              url: $( "url" , this).text()
+            };
+          }).get();
+          var $input = document.getElementById(search_id);
+          var $resultContent = document.getElementById(content_id);
+          $input.addEventListener('input', function(){
+            var matchcounts = 0;
+            var str='<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length > 1) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var content_index = [];
+                var data_title = data.title.trim().toLowerCase();
+                var data_content = data.content.trim().replace(/<[^>]+>/g,"").toLowerCase();
+                var data_url = decodeURIComponent(data.url);
+                var index_title = -1;
+                var index_content = -1;
+                var first_occur = -1;
+                // only match artiles with not empty titles and contents
+                if(data_title != '') {
+                  keywords.forEach(function(keyword, i) {
+                    index_title = data_title.indexOf(keyword);
+                    index_content = data_content.indexOf(keyword);
+                    if( index_title >= 0 || index_content >= 0 ){
+                      isMatch = true;
+                      if (i == 0) {
+                        first_occur = index_content;
+                      }
+                    }
+
+                  });
+                }
+                // show search results
+                if (isMatch) {
+                  matchcounts += 1;
+                  str += "<li><a href='"+ data_url +"' class='search-result-title'>"+ data_title +"</a>";
+                  var content = data.content.trim().replace(/<[^>]+>/g,"");
+                  if (first_occur >= 0) {
+                    // cut out 100 characters
+                    var start = first_occur - 20;
+                    var end = first_occur + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if(start == 0){
+                      end = 50;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    var match_content = content.substring(start, end);
+                    // highlight all keywords
+                    keywords.forEach(function(keyword){
+                      var regS = new RegExp(keyword, "gi");
+                      match_content = match_content.replace(regS, "<b class=\"search-keyword\">"+keyword+"</b>");
+                    });
+
+                    str += "<p class=\"search-result\">" + match_content +"...</p>"
+                  }
+                  str += "</li>";
+                }
+              })};
+            str += "</ul>";
+            if (matchcounts == 0) { str = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>' }
+            if (keywords == "") { str = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>' }
+            $resultContent.innerHTML = str;
+          });
+          proceedsearch();
+        }
+      });}
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched == false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(function(e){
+      $('.popup').hide();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    });
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("rWbFyKbV9jV1Gm1Gplpfydst-gzGzoHsz", "AeJ3NJoYXFmMj6k9LCFSR62a");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+
+  
+
+</body>
+</html>

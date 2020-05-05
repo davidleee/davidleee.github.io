@@ -1,0 +1,1312 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css">
+
+
+  <meta name="keywords" content="Swift,SwiftUI,List,NavigationView,NavigationButton,Form,Picker,Toggle,Section,Stepper,">
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="Lee 的笔记本" type="application/atom+xml">
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.jpg?v=5.1.0">
+
+
+
+
+
+
+<meta name="description" content="咱们最有意思的第四篇 SwiftUI 教程来啦！为什么说是“最有意思”的呢？因为按照约定，在这篇文章里我们会一起来看看用 SwiftUI 开发界面的快捷便利体现在什么地方。相信这会让许多苹果开发者们耳目一新。  信了苹果教之后，每次有什么更新，我最期待的都是隐藏在大功能下的小细节，不知道有多少人跟我一样？">
+<meta name="keywords" content="Swift,SwiftUI,List,NavigationView,NavigationButton,Form,Picker,Toggle,Section,Stepper">
+<meta property="og:type" content="article">
+<meta property="og:title" content="SwiftUI 系列教程（4）—— UIKit 老相好在 SwiftUI 下的实现">
+<meta property="og:url" content="http://davidleee.com/2019/08/15/swiftui-serial-tutorial-4/index.html">
+<meta property="og:site_name" content="Lee 的笔记本">
+<meta property="og:description" content="咱们最有意思的第四篇 SwiftUI 教程来啦！为什么说是“最有意思”的呢？因为按照约定，在这篇文章里我们会一起来看看用 SwiftUI 开发界面的快捷便利体现在什么地方。相信这会让许多苹果开发者们耳目一新。  信了苹果教之后，每次有什么更新，我最期待的都是隐藏在大功能下的小细节，不知道有多少人跟我一样？">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://davidleee.com/uploads/swiftui-serial-tutorial-4/B1BE86B5-7B16-46DF-8DE8-C6AD6B23565D.png">
+<meta property="og:image" content="http://davidleee.com/uploads/swiftui-serial-tutorial-4/D66F6EDE-FA01-489B-A8D3-4EDC81B5E18A.png">
+<meta property="og:image" content="http://davidleee.com/uploads/swiftui-serial-tutorial-4/38B4C8E5-0363-4674-AB1D-F078915AAF24.png">
+<meta property="og:image" content="http://davidleee.com/uploads/swiftui-serial-tutorial-4/ACCBAF94-47D3-43B5-B924-5589A3F68C9D.png">
+<meta property="og:image" content="http://davidleee.com/uploads/swiftui-serial-tutorial-4/IMG_E91EAE65D877-1.jpeg">
+<meta property="og:image" content="http://davidleee.com/uploads/swiftui-serial-tutorial-4/00BD9E2A-5EFD-4B06-86E1-E008B2FA3D55.png">
+<meta property="og:image" content="http://davidleee.com/uploads/swiftui-serial-tutorial-4/1BCC5384-E073-417C-A7AA-DF85A6253099.png">
+<meta property="og:image" content="http://davidleee.com/uploads/swiftui-serial-tutorial-4/%E6%88%AA%E5%B1%8F2019-08-13%E4%B8%8B%E5%8D%8810.18.33.png">
+<meta property="og:updated_time" content="2020-05-05T03:43:31.445Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="SwiftUI 系列教程（4）—— UIKit 老相好在 SwiftUI 下的实现">
+<meta name="twitter:description" content="咱们最有意思的第四篇 SwiftUI 教程来啦！为什么说是“最有意思”的呢？因为按照约定，在这篇文章里我们会一起来看看用 SwiftUI 开发界面的快捷便利体现在什么地方。相信这会让许多苹果开发者们耳目一新。  信了苹果教之后，每次有什么更新，我最期待的都是隐藏在大功能下的小细节，不知道有多少人跟我一样？">
+<meta name="twitter:image" content="http://davidleee.com/uploads/swiftui-serial-tutorial-4/B1BE86B5-7B16-46DF-8DE8-C6AD6B23565D.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://davidleee.com/2019/08/15/swiftui-serial-tutorial-4/">
+
+
+
+
+
+  <title> SwiftUI 系列教程（4）—— UIKit 老相好在 SwiftUI 下的实现 | Lee 的笔记本 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Lee 的笔记本</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description"></h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocapitalize="off" autocomplete="off" autocorrect="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://davidleee.com/2019/08/15/swiftui-serial-tutorial-4/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Lee">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Lee 的笔记本">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+            
+            
+              
+                SwiftUI 系列教程（4）—— UIKit 老相好在 SwiftUI 下的实现
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-08-15T08:44:32+08:00">
+                2019-08-15
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2019/08/15/swiftui-serial-tutorial-4/" class="leancloud_visitors" data-flag-title="SwiftUI 系列教程（4）—— UIKit 老相好在 SwiftUI 下的实现">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长</span>
+                
+                <span title="阅读时长">
+                  16
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>咱们最有意思的第四篇 SwiftUI 教程来啦！为什么说是“最有意思”的呢？因为按照约定，在这篇文章里我们会一起来看看用 SwiftUI 开发界面的快捷便利体现在什么地方。相信这会让许多苹果开发者们耳目一新。</p>
+<blockquote>
+<p>信了苹果教之后，每次有什么更新，我最期待的都是隐藏在大功能下的小细节，不知道有多少人跟我一样？</p>
+</blockquote>
+<a id="more"></a>
+<h2 id="uitableview-uitableviewcell">UITableView &amp; UITableViewCell</h2>
+<p>首先要说的是 UI 中最常见的列表：在萌新们刚开始学习 iOS 开发的时候，列表的实现也许就是其中一个劝退点。虽然 UIKit 的 API 已经做了比较友好的封装，但在这个前提下，开发者还必须要了解 UITableViewDelegate、UITableViewDataSource、Cell 与列表的关系，如果想要构造一个高性能的列表，还需要了解 Cell 的重用等等等等。</p>
+<p>那么在 SwiftUI 里构造一个列表的操作是怎样的呢？我们分三步走：</p>
+<ol>
+<li>单个列表项的布局</li>
+<li>准备数据</li>
+<li>全部塞到一个列表里显示出来</li>
+</ol>
+<h3 id="列表项布局">列表项布局</h3>
+<p>假设我们就构造一个最基础的列表项布局好了，一种 UIKit 直接就支持的显示模式：图片 + 标题 + 详情描述。</p>
+<p>经过前面几篇文章的训练，我们对这种类型的 UI 构造应该熟门熟路了：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">HStack</span>() &#123;</span><br><span class="line">	<span class="type">Image</span>(systemName: <span class="string">"photo"</span>) <span class="comment">// 1</span></span><br><span class="line">	<span class="type">VStack</span>(alignment: .leading) &#123;</span><br><span class="line">		<span class="type">Text</span>(<span class="string">"Title"</span>)</span><br><span class="line">		<span class="type">Text</span>(<span class="string">"Detail description"</span>)</span><br><span class="line">			.font(.subheadline)</span><br><span class="line">			.foregroundColor(.secondary) <span class="comment">// 2</span></span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ol>
+<li>我们这里用了一张名为“photo”的图片，这个图片是 iOS 13 送给我们的，就是那个常见的图片占位符图标</li>
+<li>UIKit 默认的详情描述用的是一种灰色的偏小一点的字体，我们直接用系统提供的属性就能模仿出来</li>
+</ol>
+<p>完成这一步之后，预览会是这个样子的：<br>
+<img src="/uploads/swiftui-serial-tutorial-4/B1BE86B5-7B16-46DF-8DE8-C6AD6B23565D.png" alt></p>
+<p>OK，学习完前面三篇文章之后，这里并没有什么新鲜的知识。下一步是准备数据。</p>
+<h3 id="准备数据">准备数据</h3>
+<p>这一步跟直接用 Swift 来实现没有太多区别，我就直接用 WWDC 视频里的数据结构了：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> Foundation</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Room</span> </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> id = <span class="type">UUID</span>()</span><br><span class="line">    <span class="keyword">var</span> name: <span class="type">String</span></span><br><span class="line">    <span class="keyword">var</span> capacity: <span class="type">Int</span></span><br><span class="line">    <span class="keyword">var</span> hasVideo: <span class="type">Bool</span> = <span class="literal">false</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">var</span> imageName: <span class="type">String</span> &#123; <span class="keyword">return</span> name &#125;</span><br><span class="line">    <span class="keyword">var</span> thumbnailName: <span class="type">String</span> &#123; <span class="keyword">return</span> name + <span class="string">"Thumb"</span> &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">#<span class="keyword">if</span> <span class="type">DEBUG</span></span><br><span class="line"><span class="keyword">let</span> testData = [</span><br><span class="line">    <span class="type">Room</span>(name: <span class="string">"Observation Deck"</span>, capacity: <span class="number">6</span>, hasVideo: <span class="literal">true</span>),</span><br><span class="line">    <span class="type">Room</span>(name: <span class="string">"Executive Suite"</span>, capacity: <span class="number">8</span>, hasVideo: <span class="literal">false</span>),</span><br><span class="line">    <span class="type">Room</span>(name: <span class="string">"Charter Jet"</span>, capacity: <span class="number">16</span>, hasVideo: <span class="literal">true</span>),</span><br><span class="line">    <span class="type">Room</span>(name: <span class="string">"Dungeon"</span>, capacity: <span class="number">10</span>, hasVideo: <span class="literal">true</span>),</span><br><span class="line">    <span class="type">Room</span>(name: <span class="string">"Panorama"</span>, capacity: <span class="number">12</span>, hasVideo: <span class="literal">false</span>),</span><br><span class="line">    <span class="type">Room</span>(name: <span class="string">"Oceanfront"</span>, capacity: <span class="number">8</span>, hasVideo: <span class="literal">false</span>),</span><br><span class="line">    <span class="type">Room</span>(name: <span class="string">"Rainbow Room"</span>, capacity: <span class="number">10</span>, hasVideo: <span class="literal">true</span>),</span><br><span class="line">    <span class="type">Room</span>(name: <span class="string">"Pastoral"</span>, capacity: <span class="number">7</span>, hasVideo: <span class="literal">false</span>),</span><br><span class="line">    <span class="type">Room</span>(name: <span class="string">"Elephant Room"</span>, capacity: <span class="number">1</span>, hasVideo: <span class="literal">true</span>)</span><br><span class="line">]</span><br><span class="line">#endif</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>这是我照着手敲的…如果有人知道哪里能弄来 WWDC 视频里的 Demo 项目源文件，请务必告诉我！</p>
+</blockquote>
+<p>到这一步为止还没什么不同，唯一比较不常见的可能是下面的 <code>testData</code>，这是方便我们调试用的假数据。</p>
+<p>为了让 SwiftUI 的 <code>List</code> 能正常使用这个数据结构，我们还需要进行一点点改造：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> SwiftUI</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Room</span>: <span class="title">Identifiable</span> </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> id = <span class="type">UUID</span>()</span><br><span class="line">	  ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><code>List</code> 能使用的数据结构必须遵循 SwiftUI 里新加入的 <code>Identifiable</code> 协议，它要求这个数据结构里必须有一个符合 <code>Hashable</code> 协议的变量 <code>id</code>，我们这里用到的 <code>id</code> 是 <code>UUID</code> 类型的，本身已经满足这个要求，所以这里就不需要做更多修改了。</p>
+<h2 id="列表显示">列表显示</h2>
+<p>现在我们把 UI 和数据都准备好了，接下来就让它们组合起来，显示成一个列表！</p>
+<p>对于 <code>List</code> 来说，列表项的默认布局就是水平方向的，所以我们可以直接 Cmd + 鼠标左键点击列表项 UI 里的 <code>HStack</code>，然后选择“Convert to List…”：<br>
+<img src="/uploads/swiftui-serial-tutorial-4/D66F6EDE-FA01-489B-A8D3-4EDC81B5E18A.png" alt></p>
+<blockquote>
+<p>也许是 Xcode 的版本问题，在我这里显示的是“Embed in List”，但是最后的效果也是把选中了的 <code>HStack</code> 替换成了 <code>List</code></p>
+</blockquote>
+<p>得益于 <code>List</code> 构造方法里的数组类型参数，这段 UI 代码看起来就像是一个 for…in 的语句一样！回头看看预览，一个像模像样的列表已经出来了：<br>
+<img src="/uploads/swiftui-serial-tutorial-4/38B4C8E5-0363-4674-AB1D-F078915AAF24.png" alt></p>
+<p>接下来我们把准备好的数据对接上去：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">ListView</span>: <span class="title">View</span> </span>&#123;</span><br><span class="line">	<span class="keyword">var</span> rooms: [<span class="type">Room</span>] <span class="comment">// 1</span></span><br><span class="line">	<span class="keyword">var</span> body: some <span class="type">View</span> &#123;</span><br><span class="line">		<span class="type">List</span>(rooms) &#123; room <span class="keyword">in</span> <span class="comment">// 2</span></span><br><span class="line">			<span class="type">Image</span>(room.thumbnailName)</span><br><span class="line">			<span class="type">VStack</span>(alignment: .leading) &#123;</span><br><span class="line">				<span class="type">Text</span>(room.name)</span><br><span class="line">				<span class="type">Text</span>(<span class="string">"\(room.capacity) people"</span>)</span><br><span class="line">					.font(.subheadline)</span><br><span class="line">					.foregroundColor(.secondary)</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">#<span class="keyword">if</span> <span class="type">DEBUG</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">ListView_Previews</span>: <span class="title">PreviewProvider</span> </span>&#123;</span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">var</span> previews: some <span class="type">View</span> &#123;</span><br><span class="line">        <span class="type">ListView</span>(rooms: testData) <span class="comment">// 3</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">#endif</span><br></pre></td></tr></table></figure>
+<ol>
+<li>先定义一个成员变量来保管数据，这一行为符合单一数据源的原则，这个数据是由调用方负责构建和传入的</li>
+<li>把 <code>List</code> 的参数缓存我们真实的数组，然后把内部的硬编码数据换成传进来的数据</li>
+<li>这里我们能看到预览视图的另一个好处，就是它完全模拟了真实情况下的代码逻辑，所以我们可以直接把上一步准备好的测试数据传进去</li>
+</ol>
+<p><img src="/uploads/swiftui-serial-tutorial-4/ACCBAF94-47D3-43B5-B924-5589A3F68C9D.png" alt></p>
+<p>对比导入数据前后的界面，我们可以发现：默认情况下 Cell 的高度为 44pt，但是当塞进去的内容（比如图片）需要用到的高度大于这个值时，Cell 会自动调整自己的高度以适应内容的大小，并填充合适的间距来美化我们的列表项。这些小细节全都是免费的！</p>
+<blockquote>
+<p>预览里的图片当然是要我们事先导入的，因为跟 SwiftUI 没什么关系，所以这里也就跳过了这一步；而且我也懒得找图片来代替它们了，所以截图里看到的还是之前默认图的样子…</p>
+</blockquote>
+<h2 id="navigationviewcontroller-navigationbar">NavigationViewController &amp; NavigationBar</h2>
+<p>孤零零的一个列表可能还不够有意思，一般来说列表是罗列概要数据用的，为了看到更完整的信息，我们通常会在用户点击列表项的时候跳转到一个详情界面，这就涉及到了界面导航的概念。</p>
+<p>在原来的开发过程里，这时候我们就会实现一个 <code>NavigationViewController</code> 去把我们列表的视图控制器包裹起来，然后通过 push &amp; pop 这样的操作来实现界面的切换。</p>
+<p>一起来看看 SwiftUI 是怎么做的：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">NavigationView</span> &#123; <span class="comment">// 1</span></span><br><span class="line">    <span class="type">List</span>(rooms) &#123; </span><br><span class="line">		  <span class="comment">// 列表项的布局 </span></span><br><span class="line">	  &#125;</span><br><span class="line">	  .navigationBarTitle(<span class="type">Text</span>(<span class="string">"Rooms"</span>)) <span class="comment">// 2</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ol>
+<li>我们用一个 <code>NavigationView</code> 把原本 <code>body</code> 里的全部内容包裹起来，就像我们原来用 <code>NavigationViewController</code> 把 <code>UIViewController</code> 包起来一个道理</li>
+<li>然后，我们给 <code>NavigationView</code> 里的最外层子视图（在这里就是 <code>List</code>）加一个修饰器来配置导航栏的标题；注意我们这里传的是一个 <code>View</code>，也就是说它不仅限于显示文字，还可以是各种各样遵循 <code>View</code> 协议的视图</li>
+</ol>
+<p>完成这两步就可以在原有的视图之上显示一个导航栏了，不过还不够，我们要给列表项加上点击事件以便跳转到详情界面：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">List</span>(rooms) &#123; </span><br><span class="line">    <span class="type">NavigationButton</span>(destination: <span class="type">Text</span>(room.name)) &#123;</span><br><span class="line">        <span class="comment">// 列表项的布局</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这里就只有一步：把原先用于布局列表项的代码用一个 <code>NavigationButton</code> 包起来，同时通过参数来指定这个导航事件的目的地。如例子的代码所示，实现的效果是点击列表项之后跳转到一个新的界面，界面中会居中显示房间的名字：<br>
+<img src="/uploads/swiftui-serial-tutorial-4/IMG_E91EAE65D877-1.jpeg" alt></p>
+<p>在加上 <code>NavigationButton</code> 之后，细心的童鞋们可能已经发现我们列表项的变化了：每一项的尾部都显示了一个小尖角，这是 iOS 里用于表示列表可以“点击查看更多”的常见元素了。</p>
+<p>OK，用 Live Mode 运行一下预览，可以看到 SwiftUI 已经把转场过程中的标题动画处理好了，界面跳转、手势返回，全都丝般顺滑。</p>
+<h2 id="表单">表单</h2>
+<p>两个典型的常用组件我们已经看完了，接下来我们要实现一个更复杂一些的界面。往常要实现这么一个界面，虽说没有太多的智力活，但体力活是肯定少不了的。</p>
+<p>一图胜千言，先来看看效果图：<br>
+<img src="/uploads/swiftui-serial-tutorial-4/00BD9E2A-5EFD-4B06-86E1-E008B2FA3D55.png" alt><br>
+这种界面在用户注册的过程中也是挺常见的，借用一个前端的概念——它叫做“表单（Form）”。</p>
+<h3 id="环境准备">环境准备</h3>
+<p>接下来的代码里，有些类需要在 Xcode11 beta 4 版本上才能使用（其实我只知道 Beta 1 用不了，但具体哪个版本变化的就不清楚了），建议大家先更新一下 Xcode，不然就只能在文章里过过眼瘾啦。虽说 WWDC 展示的时候那个讲师明明就已经用上了，果然发布会要用特供版本在哪里都是惯例啊。</p>
+<p>顺带一提，这种变化除了更新软件之后上手试试之外，还能在哪里看到呢？答案就是：官方文档！<br>
+<img src="/uploads/swiftui-serial-tutorial-4/1BCC5384-E073-417C-A7AA-DF85A6253099.png" alt><br>
+在网页上找到你想看的 API 之后，把图示右上角的 “API Changes” 打开，选择要比较的版本（对于 Beta 版的软件，一般不会给出每个版本之间的变化，所以如上所述我也不知道 <code>Form</code> 这位兄弟是什么时候加进来的），然后就能在 “SDKs” 下面看到特定版本的需求是什么时候加进来的了。上面的截图就表示 macOS App 在 Xcode beta 4 版本上是无法使用 <code>Form</code> 的，因为它在 beta 5 才被正式加进来。</p>
+<h3 id="需求梳理">需求梳理</h3>
+<p>让我们用前三篇文章加上上面两个小节的知识，来判断一下要怎么实现它。</p>
+<ol>
+<li>我们要有一个大大的标题在界面左上角，也许是一个 <code>navigationBarTitle</code> 可以搞定的事情</li>
+<li>标题下面的内容样式看起来像是一个 <code>UITableView</code></li>
+<li>这个列表分了好几个 Section，有些 Section 有属于自己的标题、有些却没有</li>
+<li>每一行都有自己的样式，可能要定制好几种 <code>UITableViewCell</code>，而最后一行起到的是按钮的作用，可以真的用按钮去实现，也可以用文字加上列表项点击事件的方式来做</li>
+</ol>
+<h3 id="那就动手吧">那就动手吧！</h3>
+<p>看看上面的需求，每一点都不难，可它们胜在多啊！如果用 UIKit 去实现，光是把界面做出来就已经要花不少代码，更别说界面背后的数据逻辑了。</p>
+<p>于是 SwiftUI 应运而生，这种简单元素组合而成的复杂页面正是它的强项！</p>
+<p>我们直接看最终的界面代码，不过你也不用看得太仔细，我们会在下面把它一点点拆开来讲：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">FormView</span> : <span class="title">View</span> </span>&#123;</span><br><span class="line">    @<span class="type">State</span> <span class="keyword">var</span> userInfo = <span class="type">UserInfo</span>() <span class="comment">// 1</span></span><br><span class="line">    <span class="keyword">var</span> body: some <span class="type">View</span> &#123;</span><br><span class="line">        <span class="type">Form</span> &#123; <span class="comment">// 2</span></span><br><span class="line">            <span class="type">Section</span>(header: <span class="type">Text</span>(“账号注册”).font(.title)) &#123; <span class="comment">// 3</span></span><br><span class="line">                <span class="type">TextField</span>(“请输入用户名”, text: $userInfo.name)</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="type">Section</span>(header: <span class="type">Text</span>(“种族”).font(.headline)) &#123;</span><br><span class="line">                <span class="type">Picker</span>(selection: $userInfo.race, label: <span class="type">Text</span>(“种族”)) &#123; <span class="comment">// 4</span></span><br><span class="line">                    <span class="type">ForEach</span>(<span class="type">Race</span>.allCases) &#123; race <span class="keyword">in</span> <span class="comment">// 4.1</span></span><br><span class="line">                        <span class="type">Text</span>(race.name).tag(race)</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;.pickerStyle(<span class="type">SegmentedPickerStyle</span>())</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="type">Section</span>(header: <span class="type">Text</span>(“口味”).font(.headline)) &#123;</span><br><span class="line">                <span class="type">Toggle</span>(isOn: $userInfo.loveSweet) &#123; <span class="comment">// 5</span></span><br><span class="line">                    <span class="type">Text</span>(“喜好甜食”)</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="type">Toggle</span>(isOn: $userInfo.loveSpicy) &#123;</span><br><span class="line">                    <span class="type">Text</span>(“爱吃辣”)</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="type">Section</span>(header: <span class="type">Text</span>(<span class="string">"年龄"</span>).font(.headline)) &#123;</span><br><span class="line">                <span class="type">Stepper</span>(value: $userInfo.age, <span class="keyword">in</span>: <span class="number">1</span>…<span class="number">120</span>)&#123; <span class="comment">// 6</span></span><br><span class="line">                    <span class="type">Text</span>(<span class="string">"年龄：\(userInfo.age)"</span>)</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="type">Section</span> &#123;</span><br><span class="line">                <span class="type">Button</span>(action: &#123;</span><br><span class="line">                    <span class="built_in">print</span>(“register with info: \(<span class="keyword">self</span>.userInfo)”)</span><br><span class="line">                &#125;) &#123;</span><br><span class="line">                    <span class="type">Text</span>(“<span class="type">Register</span>”)</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>尽管有前几篇文章的知识作为铺垫，但这段代码里还是有不少的新面孔啊。</p>
+<h4 id="userinfo">UserInfo</h4>
+<p><code>UserInfo</code> 的类型定义是这样的：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">UserInfo</span> </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> name: <span class="type">String</span> = “”</span><br><span class="line">    <span class="keyword">var</span> loveSweet = <span class="literal">false</span></span><br><span class="line">    <span class="keyword">var</span> loveSpicy = <span class="literal">false</span></span><br><span class="line">    <span class="keyword">var</span> age: <span class="type">Int</span> = <span class="number">18</span></span><br><span class="line">    <span class="keyword">var</span> race: <span class="type">Race</span> = .<span class="type">Yellow</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>它其实就是一个普通的结构体，用来表示这位用户的个人信息。</p>
+<p>在上一篇文章里我们讲过，如果要把一个完整的自定义对象绑定到视图上，那么这个对象的类型就需要遵循 <code>BindableObject</code> 协议。但在这个例子里，我们只是将对象的属性绑定到了视图上，我们只在意这些属性而不是对象这个整体，所以可以直接通过 <code>@State</code> 来进行对象局部的绑定。</p>
+<h4 id="form">Form</h4>
+<p>如前面的文档截图里所述：<code>Form</code> 是一个用于组合一系列数据入口的视图，比如应用的设置页面，或者是例子里的用户信息录入界面。</p>
+<p>话说回来，这么多新玩具，在开发过程中怎么知道有没有可以对症下药的呢？其实它们都整整齐齐码在了原来我们用于挑选 xib 或者 storyboard 组件的地方，我们可以用 Cmd + L 把这个界面弄出来：<br>
+<img src="/uploads/swiftui-serial-tutorial-4/%E6%88%AA%E5%B1%8F2019-08-13%E4%B8%8B%E5%8D%8810.18.33.png" alt></p>
+<h4 id="section">Section</h4>
+<p>顾名思义，这是一个用于分区的控件，它也可以被用在 <code>List</code> 里面，就组成了所谓的 “SectionList”，例如通讯录里按首字母分区的样式。</p>
+<p>例子中的 <code>Section</code> 用于给 <code>Form</code> 里的不同数据进行分类，并提供统一样式的 Header，它显示的内容也可以通过构造方法里的 <code>header</code> 参数来进行修改。</p>
+<h4 id="picker">Picker</h4>
+<p>这是目前为止碰到的最复杂的组件了，它有点类似于 UIKit 里的 <code>PickerView</code>，不过它是更广义的“选择器”，在样式上也会有更多的变化可供选择，比如例子里的 <code>SegmentedPickerStyle</code>（有些样式是平台相关的，在使用的时候要留意编译器的提醒）。</p>
+<p>其实只要明白 <code>$</code> 变量的含义，这个构造方法也很好理解，就是把选择器里选中的内容与 <code>userInfo</code> 对象里的 <code>race</code> 属性绑定起来。</p>
+<h5 id="foreach">ForEach</h5>
+<p>这个写法本质上跟往 <code>List</code> 的构造方法里传一个数组的意思差不多，这样拆开来可以让列表型视图的内容样式更丰富，感兴趣的童鞋们可以详细看看<a href="https://developer.apple.com/videos/play/wwdc2019/204/" target="_blank" rel="noopener">这个视频</a>，这里就不展开讲了。</p>
+<p>其中的 <code>Race</code> 是一个枚举类型，它的实现也很有意思：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">enum</span> <span class="title">Race</span> : <span class="title">CaseIterable</span>, <span class="title">Hashable</span>, <span class="title">Identifiable</span> </span>&#123; <span class="comment">// 1</span></span><br><span class="line">    <span class="keyword">case</span> <span class="type">Yellow</span></span><br><span class="line">    <span class="keyword">case</span> <span class="type">Black</span></span><br><span class="line">    <span class="keyword">case</span> <span class="type">White</span></span><br><span class="line">    <span class="keyword">case</span> <span class="type">Mixed</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">var</span> id: <span class="type">UUID</span> &#123; <span class="type">UUID</span>() &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">var</span> name: <span class="type">String</span> &#123;</span><br><span class="line">        <span class="keyword">switch</span> <span class="keyword">self</span> &#123;</span><br><span class="line">            <span class="keyword">case</span> .<span class="type">Yellow</span>: <span class="keyword">return</span> <span class="string">"黄种人"</span></span><br><span class="line">            <span class="keyword">case</span> .<span class="type">Black</span>: <span class="keyword">return</span> <span class="string">"黑种人"</span></span><br><span class="line">            <span class="keyword">case</span> .<span class="type">White</span>: <span class="keyword">return</span> <span class="string">"白种人"</span></span><br><span class="line">            <span class="keyword">case</span> .<span class="type">Mixed</span>: <span class="keyword">return</span> <span class="string">"混血"</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>例子里的 <code>Race.allCase</code> 是遵循 <code>CaseIterable</code> 协议带给我们的一个福利，意思是“枚举所有可能的值”，于是我们就可以把它用在需要数组类型参数的地方了。</p>
+<p>而 <code>Hashable</code> 和 <code>Identifiable</code> 是为了让这个枚举的对象可以被作为唯一标识符来使用。之所以这样做，是因为 <code>Picker</code> 的列表项必须要设置 <code>tag</code> 以区分用户的选择，于是例子中就直接用了枚举对象本身来作为选项的 <code>tag</code>。</p>
+<h4 id="toggle">Toggle</h4>
+<p>这个控件看名字就该知道是干嘛用的了，正如 Swift 4.2 之后的布尔值有了一个叫 <code>toggle</code> 的语法糖，这个控件就是用来标识开关状态的，也就是原来的 <code>UISwitch</code>。</p>
+<h4 id="stepper">Stepper</h4>
+<p>直译过来应该叫“步进器”。对于重视用户体验的苹果来说，这样看上去简单，但要正确实现逻辑还需要费点心思的小玩意儿，当然是选择封装成一个系统组件！相信看了前面那些五花八门的组件之后，这个 <code>Stepper</code> 的用法也是不需要再多加解释了。</p>
+<h3 id="小结">小结</h3>
+<p>好了，这短短不到40行的代码（好吧，算上那个结构体和枚举也有60行左右了），就已经实现了我们这一小节开头截图里的那种表单效果。不仅如此，SwiftUI 还默默为我们做了大量的优化工作，我可以拍胸脯说这些代码在效率上也会是远超 UIKit 版本的。</p>
+<h2 id="总结">总结</h2>
+<p>四篇文章下来，这个系列的 SwiftUI 教程也算是告一段落了。显然这仅仅是一个入门教程，更多有意思的新元素还在后面等着你。</p>
+<p>文章里面的例子都是通过 Xcode 的新功能 Canvas 预览和截图出来的，目前它也只有个 iPhone 的外框样式，这难免有点限制了我们的想象，所以我必须要在最后提醒大家一句：</p>
+<p><strong>用 SwiftUI 构建的界面天生就是跨全苹果平台的！</strong></p>
+<p>也就是说，之前例子里的<strong>所有代码放到 macOS 和 watchOS 上都是适用的</strong>！（当然要除掉跟 UIKit 混合的那部分）而且所有界面的样式都会根据平台的不同而自动调整，几乎不需要开发者的介入就可以做到全平台适配！</p>
+<p>写到这的时候我居然感觉挺兴奋的，就像是回到了刚刚接触 Xcode 和在 iOS 5 上做开发的那个年代。那个时候 Android 已经有好些机型要适配，而我只要把应用在我手里的 iPhone 上跑顺就八九不离十了:)</p>
+<h2 id="参考文章">参考文章</h2>
+<ul>
+<li><a href="https://developer.apple.com/videos/play/wwdc2019/204/" target="_blank" rel="noopener">Introducing SwiftUI: Building Your First App - WWDC 2019 - Videos - Apple Developer</a></li>
+<li><a href="https://developer.apple.com/videos/play/wwdc2019/216/" target="_blank" rel="noopener">SwiftUI Essentials - WWDC 2019 - Videos - Apple Developer</a></li>
+<li><a href="https://onevcat.com/2019/06/swift-ui-firstlook-2/" target="_blank" rel="noopener">SwiftUI 的一些初步探索 (二)</a></li>
+</ul>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+  <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+    <div>你的支持和鼓励，是我分享的最大动力！</div>
+    <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+      <span>赏</span>
+    </button>
+    <div id="QR" style="display: none;">
+      
+        <div id="wechat" style="display: inline-block">
+          <img id="wechat_qr" src="/uploads/wechatpay.jpeg" alt="Lee WeChat Pay">
+          <p>微信打赏</p>
+        </div>
+      
+      
+        <div id="alipay" style="display: inline-block">
+          <img id="alipay_qr" src="/uploads/alipay.jpeg" alt="Lee Alipay">
+          <p>支付宝打赏</p>
+        </div>
+      
+    </div>
+  </div>
+
+
+      
+    </div>
+
+    <div>
+      
+        
+  <ul class="post-copyright">
+    <li class="post-copyright-author">
+      <strong>本文作者：</strong>
+      Lee
+    </li>
+    <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="http://davidleee.com/2019/08/15/swiftui-serial-tutorial-4/" title="SwiftUI 系列教程（4）—— UIKit 老相好在 SwiftUI 下的实现">http://davidleee.com/2019/08/15/swiftui-serial-tutorial-4/</a>
+    </li>
+    <li class="post-copyright-license">
+      <strong>版权声明： </strong>
+      本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 3.0</a> 许可协议。转载请注明出处！
+    </li>
+  </ul>
+
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Swift/" rel="tag"># Swift</a>
+          
+            <a href="/tags/SwiftUI/" rel="tag"># SwiftUI</a>
+          
+            <a href="/tags/List/" rel="tag"># List</a>
+          
+            <a href="/tags/NavigationView/" rel="tag"># NavigationView</a>
+          
+            <a href="/tags/NavigationButton/" rel="tag"># NavigationButton</a>
+          
+            <a href="/tags/Form/" rel="tag"># Form</a>
+          
+            <a href="/tags/Picker/" rel="tag"># Picker</a>
+          
+            <a href="/tags/Toggle/" rel="tag"># Toggle</a>
+          
+            <a href="/tags/Section/" rel="tag"># Section</a>
+          
+            <a href="/tags/Stepper/" rel="tag"># Stepper</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/07/25/swiftui-serial-tutorial-3/" rel="next" title="SwiftUI 系列教程（3）—— SwiftUI 数据流">
+                <i class="fa fa-chevron-left"></i> SwiftUI 系列教程（3）—— SwiftUI 数据流
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        
+  <div class="bdsharebuttonbox">
+    <a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+    <a href="#" class="bds_douban" data-cmd="douban" title="分享到豆瓣网"></a>
+    <a href="#" class="bds_sqq" data-cmd="sqq" title="分享到QQ好友"></a>
+    <a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a>
+    <a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a>
+    <a href="#" class="bds_tieba" data-cmd="tieba" title="分享到百度贴吧"></a>
+    <a href="#" class="bds_twi" data-cmd="twi" title="分享到Twitter"></a>
+    <a href="#" class="bds_fbook" data-cmd="fbook" title="分享到Facebook"></a>
+    <a href="#" class="bds_more" data-cmd="more"></a>
+    <a class="bds_count" data-cmd="count"></a>
+  </div>
+  <script>
+    window._bd_share_config = {
+      "common": {
+        "bdText": "",
+        "bdMini": "2",
+        "bdMiniList": false,
+        "bdPic": ""
+      },
+      "share": {
+        "bdSize": "16",
+        "bdStyle": "0"
+      },
+      "image": {
+        "viewList": ["tsina", "douban", "sqq", "qzone", "weixin", "twi", "fbook"],
+        "viewText": "分享到：",
+        "viewSize": "16"
+      }
+    }
+  </script>
+
+<script>
+  with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='//bdimg.share.baidu.com/static/api/js/share.js?cdnversion='+~(-new Date()/36e5)];
+</script>
+
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="lv-container" data-id="city" data-uid="MTAyMC8zOTA5Ni8xNTYyMw=="></div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image" src="/avatar.jpg" alt="Lee">
+          <p class="site-author-name" itemprop="name">Lee</p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+           
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">38</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">109</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/davidleee" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+          <div class="links-of-blogroll motion-element links-of-blogroll-inline">
+            <div class="links-of-blogroll-title">
+              <i class="fa  fa-fw fa-globe"></i>
+              友情链接
+            </div>
+            <ul class="links-of-blogroll-list">
+              
+                <li class="links-of-blogroll-item">
+                  <a href="http://www.yantinglam.com/" title="Yanting Lam" target="_blank">Yanting Lam</a>
+                </li>
+              
+                <li class="links-of-blogroll-item">
+                  <a href="http://www.enkichen.com/" title="Enki's Notes" target="_blank">Enki's Notes</a>
+                </li>
+              
+                <li class="links-of-blogroll-item">
+                  <a href="http://www.wxtlife.com/" title="Android技术特工队" target="_blank">Android技术特工队</a>
+                </li>
+              
+                <li class="links-of-blogroll-item">
+                  <a href="http://www.devhua.com/" title="Devhua's Blog" target="_blank">Devhua's Blog</a>
+                </li>
+              
+                <li class="links-of-blogroll-item">
+                  <a href="http://www.freehacker.cn" title="小熊糖否" target="_blank">小熊糖否</a>
+                </li>
+              
+                <li class="links-of-blogroll-item">
+                  <a href="https://debbiefu.github.io/" title="Debbie Fu" target="_blank">Debbie Fu</a>
+                </li>
+              
+                <li class="links-of-blogroll-item">
+                  <a href="https://hays.github.io/" title="Hays' Blog" target="_blank">Hays' Blog</a>
+                </li>
+              
+            </ul>
+          </div>
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#uitableview-uitableviewcell"><span class="nav-number">1.</span> <span class="nav-text">UITableView &amp; UITableViewCell</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#列表项布局"><span class="nav-number">1.1.</span> <span class="nav-text">列表项布局</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#准备数据"><span class="nav-number">1.2.</span> <span class="nav-text">准备数据</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#列表显示"><span class="nav-number">2.</span> <span class="nav-text">列表显示</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#navigationviewcontroller-navigationbar"><span class="nav-number">3.</span> <span class="nav-text">NavigationViewController &amp; NavigationBar</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#表单"><span class="nav-number">4.</span> <span class="nav-text">表单</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#环境准备"><span class="nav-number">4.1.</span> <span class="nav-text">环境准备</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#需求梳理"><span class="nav-number">4.2.</span> <span class="nav-text">需求梳理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#那就动手吧"><span class="nav-number">4.3.</span> <span class="nav-text">那就动手吧！</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#userinfo"><span class="nav-number">4.3.1.</span> <span class="nav-text">UserInfo</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#form"><span class="nav-number">4.3.2.</span> <span class="nav-text">Form</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#section"><span class="nav-number">4.3.3.</span> <span class="nav-text">Section</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#picker"><span class="nav-number">4.3.4.</span> <span class="nav-text">Picker</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#foreach"><span class="nav-number">4.3.4.1.</span> <span class="nav-text">ForEach</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#toggle"><span class="nav-number">4.3.5.</span> <span class="nav-text">Toggle</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#stepper"><span class="nav-number">4.3.6.</span> <span class="nav-text">Stepper</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#小结"><span class="nav-number">4.4.</span> <span class="nav-text">小结</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结"><span class="nav-number">5.</span> <span class="nav-text">总结</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考文章"><span class="nav-number">6.</span> <span class="nav-text">参考文章</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Lee</span>
+
+  &nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;Hosted by <a href="https://pages.coding.me" style="font-weight: bold">Coding Pages</a>
+</div>
+
+
+<div class="powered-by">
+  Powered by <a class="theme-link" href="https://hexo.io">Hexo</a> 
+</div>
+
+<div class="theme-info">
+  Theme -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
+  
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length == 0) {
+      search_path = "search.xml";
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.popup').toggle();
+    }
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+      $.ajax({
+        url: path,
+        dataType: "xml",
+        async: true,
+        success: function( xmlResponse ) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = $( "entry", xmlResponse ).map(function() {
+            return {
+              title: $( "title", this ).text(),
+              content: $("content",this).text(),
+              url: $( "url" , this).text()
+            };
+          }).get();
+          var $input = document.getElementById(search_id);
+          var $resultContent = document.getElementById(content_id);
+          $input.addEventListener('input', function(){
+            var matchcounts = 0;
+            var str='<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length > 1) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var content_index = [];
+                var data_title = data.title.trim().toLowerCase();
+                var data_content = data.content.trim().replace(/<[^>]+>/g,"").toLowerCase();
+                var data_url = decodeURIComponent(data.url);
+                var index_title = -1;
+                var index_content = -1;
+                var first_occur = -1;
+                // only match artiles with not empty titles and contents
+                if(data_title != '') {
+                  keywords.forEach(function(keyword, i) {
+                    index_title = data_title.indexOf(keyword);
+                    index_content = data_content.indexOf(keyword);
+                    if( index_title >= 0 || index_content >= 0 ){
+                      isMatch = true;
+                      if (i == 0) {
+                        first_occur = index_content;
+                      }
+                    }
+
+                  });
+                }
+                // show search results
+                if (isMatch) {
+                  matchcounts += 1;
+                  str += "<li><a href='"+ data_url +"' class='search-result-title'>"+ data_title +"</a>";
+                  var content = data.content.trim().replace(/<[^>]+>/g,"");
+                  if (first_occur >= 0) {
+                    // cut out 100 characters
+                    var start = first_occur - 20;
+                    var end = first_occur + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if(start == 0){
+                      end = 50;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    var match_content = content.substring(start, end);
+                    // highlight all keywords
+                    keywords.forEach(function(keyword){
+                      var regS = new RegExp(keyword, "gi");
+                      match_content = match_content.replace(regS, "<b class=\"search-keyword\">"+keyword+"</b>");
+                    });
+
+                    str += "<p class=\"search-result\">" + match_content +"...</p>"
+                  }
+                  str += "</li>";
+                }
+              })};
+            str += "</ul>";
+            if (matchcounts == 0) { str = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>' }
+            if (keywords == "") { str = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>' }
+            $resultContent.innerHTML = str;
+          });
+          proceedsearch();
+        }
+      });}
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched == false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(function(e){
+      $('.popup').hide();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    });
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("rWbFyKbV9jV1Gm1Gplpfydst-gzGzoHsz", "AeJ3NJoYXFmMj6k9LCFSR62a");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+
+  
+
+</body>
+</html>

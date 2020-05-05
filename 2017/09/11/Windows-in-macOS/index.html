@@ -1,0 +1,1436 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css">
+
+
+  <meta name="keywords" content="macOS,Window,Controller,TextView,Modal,Document,Menu,">
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="Lee 的笔记本" type="application/atom+xml">
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.jpg?v=5.1.0">
+
+
+
+
+
+
+<meta name="description" content="相较于 iOS 上火热的开发势头，macOS 开发简直就是一片蓝海。让人不禁有些好奇，本是同根生的 macOS 开发究竟是一番怎样的光景？在略微接触之后发现，除了 UIKit 被 AppKit 替换之外，最明显的是 macOS 对待 Window 的态度转变，想想也是，毕竟桌面端应用的效率优势很大一部分就是体现在窗口多开上。然而找了找现有的资料，关于 macOS 开发的实在不多，于是就在学习的过程">
+<meta name="keywords" content="macOS,Window,Controller,TextView,Modal,Document,Menu">
+<meta property="og:type" content="article">
+<meta property="og:title" content="20分钟手把手教你写 macOS 文本编辑器">
+<meta property="og:url" content="http://davidleee.com/2017/09/11/Windows-in-macOS/index.html">
+<meta property="og:site_name" content="Lee 的笔记本">
+<meta property="og:description" content="相较于 iOS 上火热的开发势头，macOS 开发简直就是一片蓝海。让人不禁有些好奇，本是同根生的 macOS 开发究竟是一番怎样的光景？在略微接触之后发现，除了 UIKit 被 AppKit 替换之外，最明显的是 macOS 对待 Window 的态度转变，想想也是，毕竟桌面端应用的效率优势很大一部分就是体现在窗口多开上。然而找了找现有的资料，关于 macOS 开发的实在不多，于是就在学习的过程">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://davidleee.com/uploads/Windows-in-macOS/create-project.png">
+<meta property="og:image" content="http://davidleee.com/uploads/Windows-in-macOS/raw-window.png">
+<meta property="og:image" content="http://davidleee.com/uploads/Windows-in-macOS/Open-Many.png">
+<meta property="og:image" content="http://davidleee.com/uploads/Windows-in-macOS/DocArchitecture.png">
+<meta property="og:image" content="http://davidleee.com/uploads/Windows-in-macOS/TargetAction.png">
+<meta property="og:image" content="http://davidleee.com/uploads/Windows-in-macOS/no-saving-for-you.jpg">
+<meta property="og:image" content="http://davidleee.com/uploads/Windows-in-macOS/menuDisabled.png">
+<meta property="og:image" content="http://davidleee.com/uploads/Windows-in-macOS/WindowController.png">
+<meta property="og:image" content="http://davidleee.com/uploads/Windows-in-macOS/windowcontroller-class.png">
+<meta property="og:image" content="http://davidleee.com/uploads/Windows-in-macOS/new-window.png">
+<meta property="og:image" content="http://davidleee.com/uploads/Windows-in-macOS/tabbing-mode-preferred.png">
+<meta property="og:image" content="http://davidleee.com/uploads/Windows-in-macOS/raw-windows-with-tabs.png">
+<meta property="og:image" content="http://davidleee.com/uploads/Windows-in-macOS/windowposition.png">
+<meta property="og:image" content="http://davidleee.com/uploads/Windows-in-macOS/contentVIew.png">
+<meta property="og:image" content="http://davidleee.com/uploads/Windows-in-macOS/autolayout.png">
+<meta property="og:image" content="http://davidleee.com/uploads/Windows-in-macOS/mini_text_editor.png">
+<meta property="og:image" content="http://davidleee.com/uploads/Windows-in-macOS/font-to-first-responder.png">
+<meta property="og:image" content="http://davidleee.com/uploads/Windows-in-macOS/rich_text.png">
+<meta property="og:image" content="http://davidleee.com/uploads/Windows-in-macOS/connect_outlet.png">
+<meta property="og:image" content="http://davidleee.com/uploads/Windows-in-macOS/RulerShowing.png">
+<meta property="og:image" content="http://davidleee.com/uploads/Windows-in-macOS/sheet-modal.png">
+<meta property="og:image" content="http://davidleee.com/uploads/Windows-in-macOS/newwindowcontroller.png">
+<meta property="og:image" content="http://davidleee.com/uploads/Windows-in-macOS/wc-window-frame.png">
+<meta property="og:image" content="http://davidleee.com/uploads/Windows-in-macOS/wc-view-frame.png">
+<meta property="og:image" content="http://davidleee.com/uploads/Windows-in-macOS/wordcount-props.png">
+<meta property="og:image" content="http://davidleee.com/uploads/Windows-in-macOS/word_count_ui.png">
+<meta property="og:image" content="http://davidleee.com/uploads/Windows-in-macOS/new_word_count_vc.png">
+<meta property="og:image" content="http://davidleee.com/uploads/Windows-in-macOS/wc-configure-custom-class-368x320.png">
+<meta property="og:image" content="http://davidleee.com/uploads/Windows-in-macOS/bind-wordcount.png">
+<meta property="og:image" content="http://davidleee.com/uploads/Windows-in-macOS/WCControllerStoryboardId.png">
+<meta property="og:image" content="http://davidleee.com/uploads/Windows-in-macOS/add-word-count-window.png">
+<meta property="og:image" content="http://davidleee.com/uploads/Windows-in-macOS/connect-menu.png">
+<meta property="og:updated_time" content="2020-05-05T03:43:31.443Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="20分钟手把手教你写 macOS 文本编辑器">
+<meta name="twitter:description" content="相较于 iOS 上火热的开发势头，macOS 开发简直就是一片蓝海。让人不禁有些好奇，本是同根生的 macOS 开发究竟是一番怎样的光景？在略微接触之后发现，除了 UIKit 被 AppKit 替换之外，最明显的是 macOS 对待 Window 的态度转变，想想也是，毕竟桌面端应用的效率优势很大一部分就是体现在窗口多开上。然而找了找现有的资料，关于 macOS 开发的实在不多，于是就在学习的过程">
+<meta name="twitter:image" content="http://davidleee.com/uploads/Windows-in-macOS/create-project.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://davidleee.com/2017/09/11/Windows-in-macOS/">
+
+
+
+
+
+  <title> 20分钟手把手教你写 macOS 文本编辑器 | Lee 的笔记本 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Lee 的笔记本</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description"></h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocapitalize="off" autocomplete="off" autocorrect="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://davidleee.com/2017/09/11/Windows-in-macOS/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Lee">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Lee 的笔记本">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+            
+            
+              
+                20分钟手把手教你写 macOS 文本编辑器
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-11T15:22:15+08:00">
+                2017-09-11
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2017/09/11/Windows-in-macOS/" class="leancloud_visitors" data-flag-title="20分钟手把手教你写 macOS 文本编辑器">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长</span>
+                
+                <span title="阅读时长">
+                  17
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>相较于 iOS 上火热的开发势头，macOS 开发简直就是一片蓝海。让人不禁有些好奇，本是同根生的 macOS 开发究竟是一番怎样的光景？在略微接触之后发现，除了 UIKit 被 AppKit 替换之外，最明显的是 macOS 对待 Window 的态度转变，想想也是，毕竟桌面端应用的效率优势很大一部分就是体现在窗口多开上。然而找了找现有的资料，关于 macOS 开发的实在不多，于是就在学习的过程中翻译一篇国外教程，为社区做点贡献。</p>
+<p>本文是 <a href="https://www.raywenderlich.com/" target="_blank" rel="noopener">RayWenderlich</a> 上的一篇翻译文，里面带着读者从无到有地构建了一个简单的文本编辑器，内容会涉及到 macOS 上 Window 相关的一些使用基础。翻译里加入了一点个人理解，但是技术部分是忠于原文的，不放心的可以直接到官网上看：</p>
+<p>原文链接：<a href="https://www.raywenderlich.com/159287/windows-windowcontroller-tutorial-macos" target="_blank" rel="noopener">Windows and WindowController Tutorial for macOS</a></p>
+<p>说太多了，来看正文啦！</p>
+<a id="more"></a>
+<p>Window 是一切 macOS 应用的界面载体，它定义了一个专属于某个应用的区域，并作为多任务处理的标识展现给用户。</p>
+<p>一切 macOS Apps 都不外乎是下面三种类型之一：</p>
+<ul>
+<li>单一窗口工具型应用（一个界面就完成所有功能），比如<strong>计算器</strong></li>
+<li>单一窗口图书馆式应用（一个窗口完成所有功能，但这个窗口里的界面可能有许多个），比如<strong>照片</strong></li>
+<li>多窗口的基于文档的应用，比如<strong>文本编辑</strong></li>
+</ul>
+<p>这篇教程将会涵盖下列知识：</p>
+<ul>
+<li>Windows 和 windowControllers</li>
+<li>文档（Document）架构</li>
+<li>NSTextView</li>
+<li>模态窗口</li>
+<li>菜单栏和菜单项</li>
+</ul>
+<p>而看这篇文章的读者们可能需要提前掌握这些知识：</p>
+<ul>
+<li>Swift 3 或更高版本的 Swift 语法</li>
+<li>Xcode 和 Storyboards 的基本操作</li>
+<li>在 Mac App 上实现一个 Hello world</li>
+<li>控件的响应链</li>
+</ul>
+<h2 id="那么就开始吧">那么就开始吧</h2>
+<p>同创建一个计算器 App 不同的是，我们将要创建的是一个基于文档的应用，在创建工程项目的时候，Xcode 会给出提示让你选择应用的类型：</p>
+<img src="/uploads/Windows-in-macOS/create-project.png" class="center" title="Create Project">
+<p>上面的内容可以自由发挥，唯独红框的部分要注意一下：</p>
+<ul>
+<li>Create Document-Based Application 要勾上，此时 Xcode 会为你生成基于文档型应用的示例代码，能省去我们不少工作量</li>
+<li>Document Extension 是告诉 Xcode 我们这个应用要操作的文档的后缀，我这个 Demo 的名字叫 “MyTextEditor”，所以我就取首字母 “mte” 作为后缀了</li>
+<li>下面是关于数据库和测试的部分，同样是勾了就会有示例代码，但我们这里不需要，所以不勾选它们以排除一些干扰</li>
+</ul>
+<p>项目创建好后马上就可以运行了，原始的 MyTextEditor 应该是这个样子的：</p>
+<img src="/uploads/Windows-in-macOS/raw-window.png" class="center" title="Empty Window">
+<p>而且它已经具有一些基本功能了，比如你已经可以新建很多个窗口（不过这些窗口是重叠在一起的，你可能要拖动一下才能看到后来的窗口）：</p>
+<img src="/uploads/Windows-in-macOS/Open-Many.png" class="center" title="New Windows">
+<h2 id="文档-documents">文档（Documents）</h2>
+<p>在继续之前，我们要先来了解一下文档类型应用是怎么工作的。</p>
+<h3 id="文档-document-架构">文档（Document）架构</h3>
+<p>一个文档对应的是一个 <code>NSDocument</code> 类型的对象，它相当于这个文档的控制器。通过它，我们可以读取文件的内容或往里面写东西，而且它既可以是本地硬盘上的文件，也可以是存在 iCloud 上的。</p>
+<p>NSDocument 是一个抽象类，也就是说你需要用一个子类去实现具体功能。在文档架构中还有两个很主要的类：<code>NSWindowController</code> 和 <code>NSDocumentController</code>，它们作用分别是：</p>
+<ul>
+<li><code>NSDocument</code>：创建和保管文档数据</li>
+<li><code>NSWindowController</code>：管理用来展示文档的窗口</li>
+<li><code>NSDocumentController</code>：管理一个应用中的所有文档对象</li>
+</ul>
+<img src="/uploads/Windows-in-macOS/DocArchitecture.png" class="center" title="Document Architecture">
+<h3 id="文档操作">文档操作</h3>
+<p>还记得创建工程的时候，我们告诉了 Xcode 这个 App 是一个文档型应用吗？聪明的 Xcode 知道了这一点之后，会给我们的应用內建许多文档操作，但一些具体的逻辑还是需要我们继承 <code>NSDocument</code> 去实现。（Xcode 其实已经给了我们一个叫 <code>Document</code> 的子类作为例子了）</p>
+<p>打开 <strong>Document.swift</strong>，可以看到已经有用于文件读写的空方法了（<code>data(ofType:)</code> 和 <code>read(from:ofType:)</code>）。运行这个 App 时，你可能已经发现顶部菜单栏里很多功能都是已经实现了的，比如新建、打开、保存等等，不过我们这个 Demo 里面不涉及“保存”，所以我们需要删除相关的逻辑，也借此看看 Xcode 帮我们做了些什么。</p>
+<p>打开项目里唯一的 Storyboard，然后像下图这样取消菜单项和实际逻辑之间的关联：</p>
+<img src="/uploads/Windows-in-macOS/TargetAction.png" class="center" title="Target-Action">
+<p>把 <strong>Open</strong>、<strong>Save</strong>、<strong>Save As</strong>、<strong>Revert to Saved</strong> 的关联都干掉，因为这些我们都不会用到。</p>
+<p>接下来打开 <strong>Document.swift</strong>，添加以下代码，我们要在用户尝试保存的时候弹一个提示：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">override</span> <span class="function"><span class="keyword">func</span> <span class="title">save</span><span class="params">(withDelegate delegate: <span class="keyword">Any</span>?, didSave didSaveSelector: Selector?, contextInfo: UnsafeMutableRawPointer?)</span></span> &#123;</span><br><span class="line">        <span class="keyword">let</span> userInfo = [<span class="type">NSLocalizedDescriptionKey</span>: <span class="string">"Sorry, no saving for you, sir! Click \"Don't save\" to quit."</span>]</span><br><span class="line">        <span class="keyword">let</span> error = <span class="type">NSError</span>(domain: <span class="type">NSOSStatusErrorDomain</span>, code: unimpErr, userInfo: userInfo)</span><br><span class="line">        <span class="type">NSAlert</span>(error: error).runModal()</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<img src="/uploads/Windows-in-macOS/no-saving-for-you.jpg" class="center" title="No saving for you">
+<p>现在重新运行项目，你会发现菜单栏里我们刚才取消关联的选项已经无法选中了：</p>
+<img src="/uploads/Windows-in-macOS/menuDisabled.png" class="center" title="Menu Disabled">
+<p>好了，清除掉了障碍，现在要开始真正的开工了！</p>
+<h2 id="窗口位置">窗口位置</h2>
+<p>首先我们要修复的一个问题是：新建的窗口都是死死盖在原来的窗口上面的。我们会通过继承一个窗口控制器来实现这部分逻辑。</p>
+<h3 id="继承一个-nswindowcontroller">继承一个 <code>NSWindowController</code></h3>
+<p>新建一个 <code>NSWindowController</code> 的子类，确保语言选了 Swift，并且不要勾选创建 xib 的那个选项：</p>
+<img src="/uploads/Windows-in-macOS/WindowController.png" class="center" title="New WindowController">
+<p>然后打开 Storyboard ，将里面的 Window Controller 的 Custom Class 配置为我们刚刚新建的 <code>WindowController</code>：</p>
+<img src="/uploads/Windows-in-macOS/windowcontroller-class.png" class="center" title="Set Custom Class">
+<p>然后开始解 Bug！在我们的 WindowController.swift 里面，重写父类的一个初始化方法：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">required</span> <span class="keyword">init</span>?(coder: <span class="type">NSCoder</span>) &#123;</span><br><span class="line">  <span class="keyword">super</span>.<span class="keyword">init</span>(coder: coder)</span><br><span class="line">  shouldCascadeWindows = <span class="literal">true</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>运行！</p>
+<img src="/uploads/Windows-in-macOS/new-window.png" class="center" title="New Windows">
+<p>除了第二个窗口不是很听话，后续的窗口都已经会排好队了。</p>
+<h3 id="用-tabs-绕过这个问题">用 Tabs 绕过这个问题</h3>
+<p>这第二个窗口是怎么回事呢？我们后面将初始化窗口位置的时候再回答，现在我们先用另一种新建窗口的方式去绕过这个问题~（正式开发中千万不能绕开问题啊！）</p>
+<p>其实将新建窗口变为新建 Tabs 超级简单，只需要在 Storyboard 里面配置一下就好了：</p>
+<img src="/uploads/Windows-in-macOS/tabbing-mode-preferred.png" class="center" title="Tabbing Mode">
+<p>重新运行，这次当你新建窗口时，这些窗口就会以一个个 Tab 的形式出现了：</p>
+<img src="/uploads/Windows-in-macOS/raw-windows-with-tabs.png" class="center" title="New Windows in Tabbing Mode">
+<h3 id="在-ib-中设置窗口的位置">在 IB 中设置窗口的位置</h3>
+<p>回到我们绕过的问题本身：窗口的位置。</p>
+<p>在 Storyboard 里，当 Window Controller 里的 Window 被选中时，可以在右侧的 Size Inspector 中看到对窗口位置和大小的配置，其中 “Initial Position” 里设置的就是窗口的初始化位置：</p>
+<img src="/uploads/Windows-in-macOS/windowposition.png" class="center" title="Initial Position">
+<blockquote>
+<p>在 macOS 中，坐标轴的原点在左下角，横轴是 X 轴，纵轴是 Y 轴，跟 iPhone 上的坐标系要区别开来。</p>
+</blockquote>
+<p>你也可以直接拖动那个小界面里的灰色窗口来设置初始位置。注意小界面下面的两个下拉框的内容变化：</p>
+<ul>
+<li>Proportional Horizontal/Vertical：初始化位置会根据屏幕的大小按比例来设置</li>
+<li>Fixed From Left/Right/Top/Bottom：写死一个固定的初始化位置</li>
+</ul>
+<p>在这个 Demo 里，我们会让窗口固定在左下角 (200,200) 的位置出现：</p>
+<ul>
+<li>设置下拉框内容为 Fixed From Left 和 Fixed From Bottom</li>
+<li>将初始值设置为 X:200 和 Y:200</li>
+</ul>
+<blockquote>
+<p>macOS 会记录每次应用启动后的窗口位置，所以为了看到这里的设置引起的变化，你要先把所有的窗口的关掉，再编译运行项目。</p>
+</blockquote>
+<h3 id="用代码设置窗口的位置">用代码设置窗口的位置</h3>
+<p>这一小节其实就是把上一节做的事情用代码重新做一遍，以防你们以为 Swift 程序员不会写代码。</p>
+<p>用代码设置还是有它的好处的，比如你可以在应用运行的过程中决定窗口要在哪里出现。</p>
+<p>打开 <strong>WindowController.swift</strong>，把里面的 <code>windowDidLoad</code> 方法的实现改成下面这样：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">override</span> <span class="function"><span class="keyword">func</span> <span class="title">windowDidLoad</span><span class="params">()</span></span> &#123;</span><br><span class="line">  <span class="keyword">super</span>.windowDidLoad()</span><br><span class="line">  <span class="comment">//1.</span></span><br><span class="line">  <span class="keyword">if</span> <span class="keyword">let</span> window = window, <span class="keyword">let</span> screen = window.screen &#123;</span><br><span class="line">    <span class="keyword">let</span> offsetFromLeftOfScreen: <span class="type">CGFloat</span> = <span class="number">100</span></span><br><span class="line">    <span class="keyword">let</span> offsetFromTopOfScreen: <span class="type">CGFloat</span> = <span class="number">100</span></span><br><span class="line">    <span class="comment">//2.</span></span><br><span class="line">    <span class="keyword">let</span> screenRect = screen.visibleFrame</span><br><span class="line">    <span class="comment">//3.</span></span><br><span class="line">    <span class="keyword">let</span> newOriginY = screenRect.maxY - window.frame.height - offsetFromTopOfScreen</span><br><span class="line">    <span class="comment">//4.</span></span><br><span class="line">    window.setFrameOrigin(<span class="type">NSPoint</span>(x: offsetFromLeftOfScreen, y: newOriginY))</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ol>
+<li>取到窗口和屏幕对象（还记得 Swift 是怎么安全的获取 Optional 对象的值吗？就是这样~）</li>
+<li>取得屏幕的可视范围</li>
+<li>计算 Y 坐标的值（别忘了坐标轴原点是左下角，这里计算的是底边的高度）</li>
+<li>更新窗口的坐标</li>
+</ol>
+<p><code>visibleFrame</code> 这个属性不包含 Dock 和菜单栏的范围，如果不用这个参数来计算的话，可能会出现窗口被这两个控件挡住的情况。</p>
+<p>重新编译运行，窗口应该就会出现在距离屏幕（不算菜单栏高度）左上角 (100,100) 的位置了。</p>
+<h2 id="打造一个迷你文字编辑器">打造一个迷你文字编辑器</h2>
+<p>Cocoa 自带了一些很神奇的 UI 和功能，就等着你把它们用起来了。接下来我们会接触到多才多艺的 <code>NSTextView</code>，但首先我们要先了解一下 <code>NSWindow</code> 自带的 content view。</p>
+<h3 id="the-content-view">The Content View</h3>
+<p><code>contentView</code> 是一个窗口中所有视图层级中的根视图，<code>NSWindow</code> 里的 content view 由它带着的 <code>ViewController</code> 来体现。</p>
+<img src="/uploads/Windows-in-macOS/contentVIew.png" class="center" title="Content View">
+<p>喏，那个蓝的发亮的就是 <code>contentView</code></p>
+<h3 id="添加-text-view">添加 Text View</h3>
+<p>打开 <strong>Main.storyboard</strong>，从右边栏拖一个 <code>NSTextView</code> 到上面说到的 <code>contentView</code> 里面去，把它调节到一个舒服的大小，然后点击右下角的小三角形，选择 <strong>Reset to Suggested Constraints</strong>。</p>
+<img src="/uploads/Windows-in-macOS/autolayout.png" class="center" title="AutoLayout">
+<p>这里我们让系统自动帮我们布局这个视图，省点事儿。</p>
+<p>编译运行，你应该能看到我们简陋的文字编辑器了。尝试拉伸一下窗口，Text View 会跟着窗口一起变大变小，这是 AutoLayout 的功劳，这个 Demo 里面不会讲咯。</p>
+<img src="/uploads/Windows-in-macOS/mini_text_editor.png" class="center" title="Mini Text Editor">
+<p>好好探索一下我们的第一个文字编辑器吧，你会发现 Format - Font - Show Font 功能并不可用，我们接下来就解决这个问题。</p>
+<h3 id="打开字体设置框">打开字体设置框</h3>
+<p>在 <strong>Main.storyboard</strong> 里的 Main Menu 上找到 Show Font 这个菜单项，按住 Ctrl 把 Show Font 拖到 First Responder 上，然后在随之出现的弹框中找到 <code>orderFrontFontPanel:</code> 并选择它：</p>
+<img src="/uploads/Windows-in-macOS/font-to-first-responder.png" class="center" title="Show Fonts">
+<p>然后重新编译运行项目，Show Font 功能就被打开啦！</p>
+<p>在不写一行代码的前提下，你实现了改变字体的功能，这是怎么做到的呢？其实是 <code>NSFontManager</code> 和 <code>NSTextView</code> 把所有的脏活累活都给干掉了。</p>
+<ul>
+<li><code>NSFontManager</code> 是一个管理字体变化系统的类，它就是刚刚弹框中 <code>orderFrontFontPanel:</code> 方法的实际实现的地方，我们刚才的操作是把响应链上的信息发送（forward）给了它，然后它负责展示系统默认的字体设置框</li>
+<li>当我们在字体设置框中对字体进行操作，<code>NSFontManager</code> 会发送一个 <code>changeFont</code> 消息给当前的第一响应对象（First Responder）</li>
+<li><code>NSTextView</code> 实现了 <code>changeFont</code> 方法，当我们操作它里面的文字时（比如选中某个单词），它就自动成为了第一响应对象，然后一切就联系起来了</li>
+</ul>
+<h3 id="富文本">富文本</h3>
+<p>要看到 <code>NSTextView</code> 的真正实力，你可以先从<a href="https://koenig-media.raywenderlich.com/uploads/2017/04/BabyScript.rtfd_.zip" target="_blank" rel="noopener">这里</a>下载一段富文本，然后把它设置为 <code>NSTextView</code> 的默认文字，编译运行！</p>
+<img src="/uploads/Windows-in-macOS/rich_text.png" class="center" title="RichText">
+<p>嗯？文本里的图片哪里去了呢？</p>
+<p>因为 IB 里面的设置默认文字的地方不能保存图片，所以图片就被丢弃掉了。不过我们还是可以通过复制粘贴或者拖拽的方式，把图片添加到 Text View 里面去。</p>
+<p>玩耍过后，在你想要关闭这个窗口的时候，你会发现我们在文章开头设置的弹窗生效了！（我们在前面禁用了保存功能）</p>
+<h3 id="把帅气的刻度尺显示出来">把帅气的刻度尺显示出来</h3>
+<p>打开 <strong>ViewController.swift</strong>，把 <code>viewDidLoad</code> 附近的代码替换成下面这段：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@IBOutlet</span> <span class="keyword">var</span> text: <span class="type">NSTextView!</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">override</span> <span class="function"><span class="keyword">func</span> <span class="title">viewDidLoad</span><span class="params">()</span></span> &#123;</span><br><span class="line">  <span class="keyword">super</span>.viewDidLoad()</span><br><span class="line">  text.toggleRuler(<span class="literal">nil</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>然后回到 <strong>Main.storyboard</strong>，把我们手写的 <code>text</code> 和 IB 里的 Text View 关联起来：按住 Ctrl，把代表 ViewController 的蓝色小圆圈拖向 Text View，选择 text。</p>
+<img src="/uploads/Windows-in-macOS/connect_outlet.png" class="center" title="Connect Outlets">
+<p>再跑一遍，看起来是不是高大上了一些：</p>
+<img src="/uploads/Windows-in-macOS/RulerShowing.png" class="center" title="Show Ruler">
+<h2 id="模态窗口">模态窗口</h2>
+<p>模态窗口是 Window 世界中最霸道的存在，一旦出现，它会吃掉所有的事件，知道它们被主动 dismiss 掉。保存和打开文件的弹窗就是模态窗口的范例，总的来说，有三种方式展示模态窗口：</p>
+<ol>
+<li>当做一个常规窗口使用，通过调用 <code>NSApplication.runModal(for:)</code> 显示</li>
+<li>当做一个表单（Sheet）用，通过调用 <code>NSWindow.beginSheet(_:completionHandler:)</code> 显示</li>
+<li>通过一个模态会话来展示，这是一个高级用法，这里不讲</li>
+</ol>
+<p>前面尝试关闭窗口时弹出的保存提醒框就是一个表单型的模态窗口：</p>
+<img src="/uploads/Windows-in-macOS/sheet-modal.png" class="center" title="Save Window">
+<p>嘛，这玩意儿就这样，我们在这里也不会接着深入了。但是我们会看看一个分离式的模态窗口怎么出现的。</p>
+<h3 id="添加一个新-window">添加一个新 Window</h3>
+<p>打开 <strong>Main.storyboard</strong>，从右边栏拖一个 Window Controller 到画面上，这会生成两个东西，一个 Window Controller Scene 和一个 View Controller Scene：</p>
+<img src="/uploads/Windows-in-macOS/newwindowcontroller.png" class="center" title="New Window with IB">
+<p>选中 Window Controller Scene 下面的 Window，把它的 Content Size 改为宽300高150，顺带也把 View Controller Scene 下面的 view 也做这样的修改：</p>
+<img src="/uploads/Windows-in-macOS/wc-window-frame.png" class="center" title="Set Content Size">
+<img src="/uploads/Windows-in-macOS/wc-view-frame.png" class="center" title="Set View Size">
+<p>然后我们要禁用这个窗口左上角的那些控制按钮，让用户必须沿着我们设定的交互走：</p>
+<img src="/uploads/Windows-in-macOS/wordcount-props.png" class="center" title="Window Controls">
+<h3 id="新窗口里的界面布局">新窗口里的界面布局</h3>
+<p>就像上文对 Text View 的布局那样，把我们的新窗口也进行一番鼓捣，留给大家自由发挥啦。Demo 里使用了4个 Label 和一个 Button，最终长这个样子：</p>
+<img src="/uploads/Windows-in-macOS/word_count_ui.png" class="center" title="WordCountWindow UI">
+<h3 id="创建对应的-view-controller-类">创建对应的 View Controller 类</h3>
+<p>为了控制这个窗口的内容，我们要从 <code>NSViewController</code> 继承一个子类：</p>
+<img src="/uploads/Windows-in-macOS/new_word_count_vc.png" class="center" title="New WordCountViewController">
+<p>接着在 IB 里关联一下界面和这个子类：</p>
+<img src="/uploads/Windows-in-macOS/wc-configure-custom-class-368x320.png" class="center" title="Set Custom Class for WordCountViewController">
+<h3 id="界面与数据绑定">界面与数据绑定</h3>
+<p>接下来，我们用 macOS 上的一个神奇功能，实现界面与数据的直接绑定。</p>
+<p>打开 <strong>WordCountViewController.swift</strong>，给这个类添加两个属性：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">dynamic</span> <span class="keyword">var</span> wordCount = <span class="number">0</span></span><br><span class="line"><span class="keyword">dynamic</span> <span class="keyword">var</span> paragraphCount = <span class="number">0</span></span><br></pre></td></tr></table></figure>
+<p><code>dynamic</code> 关键字使得这两个属性可以被用作 <strong>Cocoa Bindings</strong> 的绑定对象。</p>
+<p>回到我们的 <strong>Main.storyboard</strong>，选中上面添加的 “Word Count” 后面的那个 “0”，然后在右边栏进行设置，将这个 Text View 的内容跟 <code>wordCount</code> 属性的值进行绑定：</p>
+<img src="/uploads/Windows-in-macOS/bind-wordcount.png" class="center" title="Cocoa Bindings">
+<p>对 <strong>Paragraph Count</strong> 后面跟着的 Text View 也进行相同的操作，但是这次要绑定到 <code>paragrahCount</code> 属性上去。</p>
+<blockquote>
+<p><strong>Cocoa Bindings</strong> 是一个很有用的 UI 技巧，在文章<a href="https://www.raywenderlich.com/141297/cocoa-bindings-macos" target="_blank" rel="noopener">《Cocoa Bindings on macOS》</a>中会有更详细的介绍。（如果有机会，这里也会尝试翻译一下这篇文章）</p>
+</blockquote>
+<p>最后，给我们的 WordCountViewController 所属的 Window 加上一个 Storyboard ID，方便我们后续在代码里面找到它：</p>
+<img src="/uploads/Windows-in-macOS/WCControllerStoryboardId.png" class="center" title="Setting Storyboard ID">
+<blockquote>
+<p>这个 ID 是可以带有空格的，但是个人习惯不喜欢有空格，这张图是原文章里的。</p>
+</blockquote>
+<h2 id="模态窗口的显示与隐藏">模态窗口的显示与隐藏</h2>
+<p>有了前面的准备工作，这个可以显示字数和段落数的窗口已经是可用的了。接下来我们就找个合适的地方把它显示出来。</p>
+<h3 id="显示">显示</h3>
+<p>打开 <strong>ViewController.swift</strong>，添加一个按钮事件：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@IBAction</span> <span class="function"><span class="keyword">func</span> <span class="title">showWordCountWindow</span><span class="params">(<span class="number">_</span> sender: AnyObject)</span></span> &#123;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 1</span></span><br><span class="line">  <span class="keyword">let</span> storyboard = <span class="type">NSStoryboard</span>(name: <span class="string">"Main"</span>, bundle: <span class="literal">nil</span>)</span><br><span class="line">  <span class="keyword">let</span> wordCountWindowController = storyboard.instantiateController(withIdentifier: <span class="string">"Word Count Window Controller"</span>) <span class="keyword">as</span>! <span class="type">NSWindowController</span></span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> <span class="keyword">let</span> wordCountWindow = wordCountWindowController.window, <span class="keyword">let</span> textStorage = text.textStorage &#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 2</span></span><br><span class="line">    <span class="keyword">let</span> wordCountViewController = wordCountWindow.contentViewController <span class="keyword">as</span>! <span class="type">WordCountViewController</span></span><br><span class="line">    wordCountViewController.wordCount = textStorage.words.<span class="built_in">count</span></span><br><span class="line">    wordCountViewController.paragraphCount = textStorage.paragraphs.<span class="built_in">count</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// 3</span></span><br><span class="line">    <span class="keyword">let</span> application = <span class="type">NSApplication</span>.shared()</span><br><span class="line">    application.runModal(<span class="keyword">for</span>: wordCountWindow)</span><br><span class="line">    <span class="comment">// 4</span></span><br><span class="line">    wordCountWindow.close()</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>分解动作：</p>
+<ol>
+<li>通过刚刚设置的 Storyboard ID 初始化一个 WordCountWindowController（注意是 <strong>WindowController</strong>，不是我们自己创建的 <strong>ViewController</strong>）</li>
+<li>从我们的内容里取得字数和段落数，设置到 <strong>WordCountViewController</strong> 的属性里</li>
+<li>显示一个模态窗口</li>
+<li>关闭一个模态窗口</li>
+</ol>
+<p>你可能会觉得奇怪，我们在显示之后立马就把它给关闭了，那还看什么？</p>
+<p>事实上，当一个窗口以 <code>runModel(for:)</code> 的方式显示出来之后，应用会进入一个<strong>模态过程</strong>。这个动作相当于启动了一个阻塞的线程，启动方法调用之后的所有代码都会被阻塞住，只有在调用了 <code>stopModel</code> 停止 <strong>模态过程</strong> 后，代码才会继续执行。</p>
+<h3 id="隐藏">隐藏</h3>
+<p>关闭模态窗口的代码需要由模态窗口本身去调用，因为其他地方都被阻塞住了呀。在 <strong>WordCountViewController.swift</strong> 里加上这段代码：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@IBAction</span> <span class="function"><span class="keyword">func</span> <span class="title">dismissWordCountWindow</span><span class="params">(<span class="number">_</span> sender: NSButton)</span></span> &#123;</span><br><span class="line">  <span class="keyword">let</span> application = <span class="type">NSApplication</span>.shared()</span><br><span class="line">  application.stopModal()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这里只是让应用退出了 <strong>模态过程</strong>，真正关闭窗口的代码我们已经在上面写好了（就是 <code>close</code> 那个方法）</p>
+<p>好咯，这个按钮事件怎么关联到那个 “OK” 按钮呢？留给你们自己去发现~</p>
+<h3 id="触发窗口的显示">触发窗口的显示</h3>
+<p>显示的代码写好了，但是在哪里地方调用它好呢？不如在菜单里加一个选项吧。</p>
+<p>增加菜单项跟之前添加视图没有扫描区别，菜单项的名字叫 “Menu Item”，直接拖到菜单里面去就好了，然后在右边栏里进行一下设置：</p>
+<img src="/uploads/Windows-in-macOS/add-word-count-window.png" class="center" title="Add Menu Item">
+<blockquote>
+<p>Key Equivalent 设置的是快捷键</p>
+</blockquote>
+<p>然后 Ctrl + 拖动，把这个菜单项跟我们写的方法联系起来：</p>
+<img src="/uploads/Windows-in-macOS/connect-menu.png" class="center" title="Menu Action">
+<p>完成了！编译运行！我们的统计功能就上线了！</p>
+<h2 id="接下来呢？">接下来呢？</h2>
+<p>不知不觉，你其实已经学到了蛮多东西了：</p>
+<ul>
+<li>MVC 设计模式的一点应用</li>
+<li>创建一个多窗口 app</li>
+<li>macOS app 的常见结构</li>
+<li>通过 IB 和代码改变窗口的布局</li>
+<li>将 UI 中的事件传递到响应链上</li>
+<li>用模态窗口来展示附加信息</li>
+<li>…</li>
+</ul>
+<p>不过这都只是 macOS app 的冰山一角。<br>
+如果你对窗口感兴趣，可以看看苹果的官方文章 <a href="https://developer.apple.com/library/content/documentation/Cocoa/Conceptual/WinPanel/Introduction.html" target="_blank" rel="noopener">Window Programming Guide</a>。如果想要继续深入研究 Mac 应用开发，则推荐 <a href="https://developer.apple.com/library/content/documentation/General/Conceptual/MOSXAppProgrammingGuide/Introduction/Introduction.html" target="_blank" rel="noopener">Mac App Programming Guide</a>。</p>
+<p>这个 Demo 完整的代码在<a href="https://koenig-media.raywenderlich.com/uploads/2017/05/BabyScriptWithSave.zip" target="_blank" rel="noopener">这里</a>。这是原文里的链接，连保存的功能也实现好了，虽然没什么注释，但是代码很好懂。</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+  <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+    <div>你的支持和鼓励，是我分享的最大动力！</div>
+    <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+      <span>赏</span>
+    </button>
+    <div id="QR" style="display: none;">
+      
+        <div id="wechat" style="display: inline-block">
+          <img id="wechat_qr" src="/uploads/wechatpay.jpeg" alt="Lee WeChat Pay">
+          <p>微信打赏</p>
+        </div>
+      
+      
+        <div id="alipay" style="display: inline-block">
+          <img id="alipay_qr" src="/uploads/alipay.jpeg" alt="Lee Alipay">
+          <p>支付宝打赏</p>
+        </div>
+      
+    </div>
+  </div>
+
+
+      
+    </div>
+
+    <div>
+      
+        
+  <ul class="post-copyright">
+    <li class="post-copyright-author">
+      <strong>本文作者：</strong>
+      Lee
+    </li>
+    <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="http://davidleee.com/2017/09/11/Windows-in-macOS/" title="20分钟手把手教你写 macOS 文本编辑器">http://davidleee.com/2017/09/11/Windows-in-macOS/</a>
+    </li>
+    <li class="post-copyright-license">
+      <strong>版权声明： </strong>
+      本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 3.0</a> 许可协议。转载请注明出处！
+    </li>
+  </ul>
+
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/macOS/" rel="tag"># macOS</a>
+          
+            <a href="/tags/Window/" rel="tag"># Window</a>
+          
+            <a href="/tags/Controller/" rel="tag"># Controller</a>
+          
+            <a href="/tags/TextView/" rel="tag"># TextView</a>
+          
+            <a href="/tags/Modal/" rel="tag"># Modal</a>
+          
+            <a href="/tags/Document/" rel="tag"># Document</a>
+          
+            <a href="/tags/Menu/" rel="tag"># Menu</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/07/14/Dive-in-Swift-Optional/" rel="next" title="深入理解 Swift 中的问号感叹号">
+                <i class="fa fa-chevron-left"></i> 深入理解 Swift 中的问号感叹号
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/03/08/Symbolicating-Your-iOS-Crash-Reports/" rel="prev" title="【译】符号化iOS崩溃报告">
+                【译】符号化iOS崩溃报告 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        
+  <div class="bdsharebuttonbox">
+    <a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+    <a href="#" class="bds_douban" data-cmd="douban" title="分享到豆瓣网"></a>
+    <a href="#" class="bds_sqq" data-cmd="sqq" title="分享到QQ好友"></a>
+    <a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a>
+    <a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a>
+    <a href="#" class="bds_tieba" data-cmd="tieba" title="分享到百度贴吧"></a>
+    <a href="#" class="bds_twi" data-cmd="twi" title="分享到Twitter"></a>
+    <a href="#" class="bds_fbook" data-cmd="fbook" title="分享到Facebook"></a>
+    <a href="#" class="bds_more" data-cmd="more"></a>
+    <a class="bds_count" data-cmd="count"></a>
+  </div>
+  <script>
+    window._bd_share_config = {
+      "common": {
+        "bdText": "",
+        "bdMini": "2",
+        "bdMiniList": false,
+        "bdPic": ""
+      },
+      "share": {
+        "bdSize": "16",
+        "bdStyle": "0"
+      },
+      "image": {
+        "viewList": ["tsina", "douban", "sqq", "qzone", "weixin", "twi", "fbook"],
+        "viewText": "分享到：",
+        "viewSize": "16"
+      }
+    }
+  </script>
+
+<script>
+  with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='//bdimg.share.baidu.com/static/api/js/share.js?cdnversion='+~(-new Date()/36e5)];
+</script>
+
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="lv-container" data-id="city" data-uid="MTAyMC8zOTA5Ni8xNTYyMw=="></div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image" src="/avatar.jpg" alt="Lee">
+          <p class="site-author-name" itemprop="name">Lee</p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+           
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">38</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">109</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/davidleee" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+          <div class="links-of-blogroll motion-element links-of-blogroll-inline">
+            <div class="links-of-blogroll-title">
+              <i class="fa  fa-fw fa-globe"></i>
+              友情链接
+            </div>
+            <ul class="links-of-blogroll-list">
+              
+                <li class="links-of-blogroll-item">
+                  <a href="http://www.yantinglam.com/" title="Yanting Lam" target="_blank">Yanting Lam</a>
+                </li>
+              
+                <li class="links-of-blogroll-item">
+                  <a href="http://www.enkichen.com/" title="Enki's Notes" target="_blank">Enki's Notes</a>
+                </li>
+              
+                <li class="links-of-blogroll-item">
+                  <a href="http://www.wxtlife.com/" title="Android技术特工队" target="_blank">Android技术特工队</a>
+                </li>
+              
+                <li class="links-of-blogroll-item">
+                  <a href="http://www.devhua.com/" title="Devhua's Blog" target="_blank">Devhua's Blog</a>
+                </li>
+              
+                <li class="links-of-blogroll-item">
+                  <a href="http://www.freehacker.cn" title="小熊糖否" target="_blank">小熊糖否</a>
+                </li>
+              
+                <li class="links-of-blogroll-item">
+                  <a href="https://debbiefu.github.io/" title="Debbie Fu" target="_blank">Debbie Fu</a>
+                </li>
+              
+                <li class="links-of-blogroll-item">
+                  <a href="https://hays.github.io/" title="Hays' Blog" target="_blank">Hays' Blog</a>
+                </li>
+              
+            </ul>
+          </div>
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#那么就开始吧"><span class="nav-number">1.</span> <span class="nav-text">那么就开始吧</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#文档-documents"><span class="nav-number">2.</span> <span class="nav-text">文档（Documents）</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#文档-document-架构"><span class="nav-number">2.1.</span> <span class="nav-text">文档（Document）架构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#文档操作"><span class="nav-number">2.2.</span> <span class="nav-text">文档操作</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#窗口位置"><span class="nav-number">3.</span> <span class="nav-text">窗口位置</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#继承一个-nswindowcontroller"><span class="nav-number">3.1.</span> <span class="nav-text">继承一个 NSWindowController</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#用-tabs-绕过这个问题"><span class="nav-number">3.2.</span> <span class="nav-text">用 Tabs 绕过这个问题</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#在-ib-中设置窗口的位置"><span class="nav-number">3.3.</span> <span class="nav-text">在 IB 中设置窗口的位置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#用代码设置窗口的位置"><span class="nav-number">3.4.</span> <span class="nav-text">用代码设置窗口的位置</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#打造一个迷你文字编辑器"><span class="nav-number">4.</span> <span class="nav-text">打造一个迷你文字编辑器</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#the-content-view"><span class="nav-number">4.1.</span> <span class="nav-text">The Content View</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#添加-text-view"><span class="nav-number">4.2.</span> <span class="nav-text">添加 Text View</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#打开字体设置框"><span class="nav-number">4.3.</span> <span class="nav-text">打开字体设置框</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#富文本"><span class="nav-number">4.4.</span> <span class="nav-text">富文本</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#把帅气的刻度尺显示出来"><span class="nav-number">4.5.</span> <span class="nav-text">把帅气的刻度尺显示出来</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#模态窗口"><span class="nav-number">5.</span> <span class="nav-text">模态窗口</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#添加一个新-window"><span class="nav-number">5.1.</span> <span class="nav-text">添加一个新 Window</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#新窗口里的界面布局"><span class="nav-number">5.2.</span> <span class="nav-text">新窗口里的界面布局</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#创建对应的-view-controller-类"><span class="nav-number">5.3.</span> <span class="nav-text">创建对应的 View Controller 类</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#界面与数据绑定"><span class="nav-number">5.4.</span> <span class="nav-text">界面与数据绑定</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#模态窗口的显示与隐藏"><span class="nav-number">6.</span> <span class="nav-text">模态窗口的显示与隐藏</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#显示"><span class="nav-number">6.1.</span> <span class="nav-text">显示</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#隐藏"><span class="nav-number">6.2.</span> <span class="nav-text">隐藏</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#触发窗口的显示"><span class="nav-number">6.3.</span> <span class="nav-text">触发窗口的显示</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#接下来呢？"><span class="nav-number">7.</span> <span class="nav-text">接下来呢？</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Lee</span>
+
+  &nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;Hosted by <a href="https://pages.coding.me" style="font-weight: bold">Coding Pages</a>
+</div>
+
+
+<div class="powered-by">
+  Powered by <a class="theme-link" href="https://hexo.io">Hexo</a> 
+</div>
+
+<div class="theme-info">
+  Theme -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
+  
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length == 0) {
+      search_path = "search.xml";
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.popup').toggle();
+    }
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+      $.ajax({
+        url: path,
+        dataType: "xml",
+        async: true,
+        success: function( xmlResponse ) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = $( "entry", xmlResponse ).map(function() {
+            return {
+              title: $( "title", this ).text(),
+              content: $("content",this).text(),
+              url: $( "url" , this).text()
+            };
+          }).get();
+          var $input = document.getElementById(search_id);
+          var $resultContent = document.getElementById(content_id);
+          $input.addEventListener('input', function(){
+            var matchcounts = 0;
+            var str='<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length > 1) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var content_index = [];
+                var data_title = data.title.trim().toLowerCase();
+                var data_content = data.content.trim().replace(/<[^>]+>/g,"").toLowerCase();
+                var data_url = decodeURIComponent(data.url);
+                var index_title = -1;
+                var index_content = -1;
+                var first_occur = -1;
+                // only match artiles with not empty titles and contents
+                if(data_title != '') {
+                  keywords.forEach(function(keyword, i) {
+                    index_title = data_title.indexOf(keyword);
+                    index_content = data_content.indexOf(keyword);
+                    if( index_title >= 0 || index_content >= 0 ){
+                      isMatch = true;
+                      if (i == 0) {
+                        first_occur = index_content;
+                      }
+                    }
+
+                  });
+                }
+                // show search results
+                if (isMatch) {
+                  matchcounts += 1;
+                  str += "<li><a href='"+ data_url +"' class='search-result-title'>"+ data_title +"</a>";
+                  var content = data.content.trim().replace(/<[^>]+>/g,"");
+                  if (first_occur >= 0) {
+                    // cut out 100 characters
+                    var start = first_occur - 20;
+                    var end = first_occur + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if(start == 0){
+                      end = 50;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    var match_content = content.substring(start, end);
+                    // highlight all keywords
+                    keywords.forEach(function(keyword){
+                      var regS = new RegExp(keyword, "gi");
+                      match_content = match_content.replace(regS, "<b class=\"search-keyword\">"+keyword+"</b>");
+                    });
+
+                    str += "<p class=\"search-result\">" + match_content +"...</p>"
+                  }
+                  str += "</li>";
+                }
+              })};
+            str += "</ul>";
+            if (matchcounts == 0) { str = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>' }
+            if (keywords == "") { str = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>' }
+            $resultContent.innerHTML = str;
+          });
+          proceedsearch();
+        }
+      });}
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched == false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(function(e){
+      $('.popup').hide();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    });
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("rWbFyKbV9jV1Gm1Gplpfydst-gzGzoHsz", "AeJ3NJoYXFmMj6k9LCFSR62a");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+
+  
+
+</body>
+</html>
