@@ -1,0 +1,1358 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css">
+
+
+  <meta name="keywords" content="macOS,XPC,launchd,SMJobBless,">
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="Lee 的笔记本" type="application/atom+xml">
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.jpg?v=5.1.0">
+
+
+
+
+
+
+<meta name="description" content="最近需要在 Electron 项目上引入一个比较吃性能的大头功能，因为已经用 Objective-C 实现过一套稳定且性能也可接受的带 UI 方案了，所以计划看看能不能将这套现成的方案直接用到 Electron 里。但想要这么做就必须解决原生 UI 与 Electron 通讯的问题，再进一步，能不能让 Electron 以多进程的方式调起这个大头功能的 Demo 以节省掉绝大部分的重复工作呢？">
+<meta name="keywords" content="macOS,XPC,launchd,SMJobBless">
+<meta property="og:type" content="article">
+<meta property="og:title" content="在 macOS 中如何使用 XPC 实现跨进程通讯？">
+<meta property="og:url" content="http://davidleee.com/2020/07/20/ipc-for-macOS/index.html">
+<meta property="og:site_name" content="Lee 的笔记本">
+<meta property="og:description" content="最近需要在 Electron 项目上引入一个比较吃性能的大头功能，因为已经用 Objective-C 实现过一套稳定且性能也可接受的带 UI 方案了，所以计划看看能不能将这套现成的方案直接用到 Electron 里。但想要这么做就必须解决原生 UI 与 Electron 通讯的问题，再进一步，能不能让 Electron 以多进程的方式调起这个大头功能的 Demo 以节省掉绝大部分的重复工作呢？">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://davidleee.com/uploads/ipc-for-macOS/create_target.png">
+<meta property="og:image" content="http://davidleee.com/uploads/ipc-for-macOS/9B514455-AC1D-454F-8681-34076024982E.png">
+<meta property="og:image" content="http://davidleee.com/uploads/ipc-for-macOS/29AEBF92-9331-41E1-8EAB-04718FEFDB6C.png">
+<meta property="og:image" content="http://davidleee.com/uploads/ipc-for-macOS/03FE8C66-DDBB-4A23-9D0B-5C0FE1535F30.png">
+<meta property="og:updated_time" content="2020-08-09T14:42:54.698Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="在 macOS 中如何使用 XPC 实现跨进程通讯？">
+<meta name="twitter:description" content="最近需要在 Electron 项目上引入一个比较吃性能的大头功能，因为已经用 Objective-C 实现过一套稳定且性能也可接受的带 UI 方案了，所以计划看看能不能将这套现成的方案直接用到 Electron 里。但想要这么做就必须解决原生 UI 与 Electron 通讯的问题，再进一步，能不能让 Electron 以多进程的方式调起这个大头功能的 Demo 以节省掉绝大部分的重复工作呢？">
+<meta name="twitter:image" content="http://davidleee.com/uploads/ipc-for-macOS/create_target.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://davidleee.com/2020/07/20/ipc-for-macOS/">
+
+
+
+
+
+  <title> 在 macOS 中如何使用 XPC 实现跨进程通讯？ | Lee 的笔记本 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Lee 的笔记本</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description"></h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocapitalize="off" autocomplete="off" autocorrect="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://davidleee.com/2020/07/20/ipc-for-macOS/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Lee">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Lee 的笔记本">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+            
+            
+              
+                在 macOS 中如何使用 XPC 实现跨进程通讯？
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-07-20T12:45:38+08:00">
+                2020-07-20
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2020/07/20/ipc-for-macOS/" class="leancloud_visitors" data-flag-title="在 macOS 中如何使用 XPC 实现跨进程通讯？">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长</span>
+                
+                <span title="阅读时长">
+                  23
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>最近需要在 Electron 项目上引入一个比较吃性能的大头功能，因为已经用 Objective-C 实现过一套稳定且性能也可接受的带 UI 方案了，所以计划看看能不能将这套现成的方案直接用到 Electron 里。但想要这么做就必须解决原生 UI 与 Electron 通讯的问题，再进一步，能不能让 Electron 以多进程的方式调起这个大头功能的 Demo 以节省掉绝大部分的重复工作呢？</p>
+<blockquote>
+<p>本文只研究了原生 XPC 通讯的部分，关于集成到 Electron 里还有哪些坑会在下一篇文章里讲讲</p>
+</blockquote>
+<a id="more"></a>
+<h2 id="什么是-xpc">什么是 XPC</h2>
+<blockquote>
+<p>选型的过程不是这次要讨论的重点，就当作我们经过一番挣扎然后选择了原生的 XPC 实现吧：）</p>
+</blockquote>
+<p>XPC 是苹果官方提供的一种进程间通讯的手段，是一种苹果特有的 IPC 技术。</p>
+<p>在 NSHipster 的<a href="https://nshipster.com/inter-process-communication/" target="_blank" rel="noopener">一篇文章</a>里，作者说 XPC 是官方 SDK 内跨进程通讯的最优解决方案（2014）。从 2011 年被提出的时候，XPC 就持续在“体制内”发光发热，比如 macOS 的沙盒、iOS 的 Remote View Controller 和两个平台上都有的应用扩展（App Extensions）里都用到了 XPC 的技术。</p>
+<p>对于开发者来说，使用 XPC 技术我们就能做到像这样的事情：</p>
+<ol>
+<li>模块 A 负责 UI 展示，它<strong>不需要申请任何系统权限</strong>，用到网络图片时就向模块 B 获取</li>
+<li>模块 B 拥有<strong>网络权限</strong>，能从网络或缓存中获取图片，但操作文件系统的工作由模块 C 负责</li>
+<li>模块 C 拥有<strong>文件读写权限</strong>，负责将数据写成文件或读取文件数据</li>
+<li>这三个模块都在同一个应用中，它们所需要的权限相互独立，功能单一，而且即使崩溃了也不会相互影响，只需要重启相应的模块就又可以恢复正常使用</li>
+</ol>
+<p>看完是不是已经迫不及待了呢？别着急，在使用这个强大工具前，我们还需要了解两个关键技术。</p>
+<h3 id="题外话1-launchd">题外话1 - launchd</h3>
+<p><code>launchd</code> 负责管理 macOS 上的守护进程，在构建 XPC 方案的过程中，我们会用它来配置一个我们自己的守护进程。</p>
+<p>这个守护进程会一直潜伏在系统里（只占用非常少的资源），当我们的应用需要它的时候就可以被随时唤醒。</p>
+<p>更多 <code>launchd</code> 的信息和用法可以在它的<a href="x-man-page://5/launchd.plist" target="_blank" rel="noopener">man 页面</a>找到。</p>
+<h3 id="题外话2-smjobbless">题外话2 - SMJobBless</h3>
+<p>字面意思是“给任务加上祝福”，任何应用都不能跟一个没有被系统祝福的任务愉快地玩耍。</p>
+<p>这是一组协助开发者安全地安装守护进程的 API，长这个样子：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Boolean SMJobBless(<span class="built_in">CFStringRef</span> domain, <span class="built_in">CFStringRef</span> executableLabel, AuthorizationRef auth, <span class="built_in">CFErrorRef</span> *outError);</span><br></pre></td></tr></table></figure>
+<p>苹果似乎也认为这组 API 的用法只可意会不可言传，所以在<a href="https://developer.apple.com/documentation/servicemanagement/1431078-smjobbless?language=objc" target="_blank" rel="noopener">SMJobBless 的方法说明</a>里写了很多，还给出了一个很完整的<a href="http://developer.apple.com/library/mac/#samplecode/SMJobBless/" target="_blank" rel="noopener">示例工程</a>并通过一个 <a href="https://developer.apple.com/library/archive/samplecode/SMJobBless/Listings/SMJobBlessUtil_py.html#//apple_ref/doc/uid/DTS40010071-SMJobBlessUtil_py-DontLinkElementID_8" target="_blank" rel="noopener">Python 脚本</a>把安装守护进程的前置条件给配置好了。</p>
+<blockquote>
+<p>脚本这个动作，虽然让整个流程变得更加完善，但却将原本只要几句命令就能解决的事情复杂化了，少了一些苹果味。</p>
+</blockquote>
+<h2 id="架起通讯的桥梁">架起通讯的桥梁</h2>
+<p>写了这么多，其实都还在 <strong>Prerequisites</strong> 阶段打转转。接下来才要正式开始跨应用通讯的实现！</p>
+<p>不过在此之前，我们还是先把上文题外话里提到的前置条件准备好，让后面的过程更顺畅一些。</p>
+<h3 id="前置准备">前置准备</h3>
+<p>通过 <code>launchd</code> 安装守护进程是个需要很高安全性的动作，所以应用签名是必不可少的。而对于一个跨应用通讯的系统来说，安全性主要涉及到两个部分：</p>
+<ul>
+<li>通讯发起方</li>
+<li>XPC 应用</li>
+</ul>
+<blockquote>
+<p>在这篇文章中，通讯的接收方不负责 XPC 应用的安装，所以它只要管好自己的签名就够了</p>
+</blockquote>
+<p>这里我们就要用上前面提到的 Python 脚本里的一句关键命令：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">codesign -d -r - /path/to/file.app</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>虽然官方 Demo 里的这个脚本还做了许多其他的检验来确保信息的完整和正确，但对于我们这样成熟的（嘿嘿）开发者来说，当然要直接薅最珍贵的羊毛啦。</p>
+</blockquote>
+<p>把这个命令的路径参数改为我们已经签好名的应用，会得到像这样子的输出：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Executable=/path/to/file.app</span><br><span class="line">designated =&gt; anchor apple generic and identifier &quot;com.example.apple-samplecode.EBAS.App&quot; and (certificate leaf[field.1.2.840.113635.100.6.1.9] /* exists */ or certificate 1[field.1.2.840.113635.100.6.2.6] /* exists */ and certificate leaf[field.1.2.840.113635.100.6.1.13] /* exists */ and certificate leaf[subject.OU] = SKMME9E2Y8)</span><br></pre></td></tr></table></figure>
+<p>其中，<code>designated =&gt;</code> 后面的部分（例子里是从 “anchor” 开始，我们自己签名的话开头可能是“identifier”，这个顺序并不要紧）就是我们需要的“签名需求”（Code Signing Requirement）。</p>
+<p>把签名需求放到我们自己的 XPC 应用的 Info.plist 里，如此一来这个 XPC 应用就只能被拥有这个签名的应用启动了：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">key</span>&gt;</span>SMAuthorizedClients<span class="tag">&lt;/<span class="name">key</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">array</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">string</span>&gt;</span>anchor apple generic and identifier "com.example.apple-samplecode.EBAS.App" and (certificate leaf[field.1.2.840.113635.100.6.1.9] /* exists */ or certificate 1[field.1.2.840.113635.100.6.2.6] /* exists */ and certificate leaf[field.1.2.840.113635.100.6.1.13] /* exists */ and certificate leaf[subject.OU] = SKMME9E2Y8)<span class="tag">&lt;/<span class="name">string</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">array</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>这里的 value 是数组格式的，意味着如果想允许多个 App 启动这个 XPC 应用的话，就需要把这些 App 的签名需求都写上。</p>
+<p>同理，还要取到 XPC 应用的签名需求并配到我们客户端的 Info.plist 里：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">key</span>&gt;</span>SMPrivilegedExecutables<span class="tag">&lt;/<span class="name">key</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">dict</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">key</span>&gt;</span>com.example.apple-samplecode.EBAS.HelperTool<span class="tag">&lt;/<span class="name">key</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">string</span>&gt;</span>anchor apple generic and identifier "com.example.apple-samplecode.EBAS.HelperTool" and (certificate leaf[field.1.2.840.113635.100.6.1.9] /* exists */ or certificate 1[field.1.2.840.113635.100.6.2.6] /* exists */ and certificate leaf[field.1.2.840.113635.100.6.1.13] /* exists */ and certificate leaf[subject.OU] = SKMME9E2Y8)<span class="tag">&lt;/<span class="name">string</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dict</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>注意这个 “dict” 里的 “key” 要填的是我们的 XPC 应用的 label，不过因为 label 通常会定成跟 Bundle Identifier 一致，所以写上它的 Bundle Identifier 也就可以了。</p>
+<blockquote>
+<p>上一段啰嗦了一下是因为 label 其实可以跟 Bundle Identifier 不同的，但这会给开发的过程带来许多麻烦，所以建议还是统一。这个 label 具体是什么鬼会在下一个小节里讲到。</p>
+</blockquote>
+<h3 id="创建-安装-xpc-应用">创建 &amp; 安装 XPC 应用</h3>
+<p>首先来添加一个 Target 并选择 XPC Service，让 Xcode 帮我们生成一些默认代码：<br>
+<img src="/uploads/ipc-for-macOS/create_target.png" alt></p>
+<p>然后为我们的 XPC 应用再创建一个 plist，这个文件会在 XPC 应用被安装的时候自动拷贝到 <em>/Library/LaunchDaemons</em> 目录下，这是统一存放守护进程配置文件的地方。</p>
+<p>为了与默认的 Info.plist 区分开来，在文件的名字里加上个 “Launchd”，文件内容是这样的：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version="1.0" encoding="UTF-8"?&gt;</span></span><br><span class="line"><span class="meta">&lt;!DOCTYPE <span class="meta-keyword">plist</span> <span class="meta-keyword">PUBLIC</span> <span class="meta-string">"-//Apple//DTD PLIST 1.0//EN"</span> <span class="meta-string">"http://www.apple.com/DTDs/PropertyList-1.0.dtd"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">plist</span> <span class="attr">version</span>=<span class="string">"1.0"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">dict</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">key</span>&gt;</span>Label<span class="tag">&lt;/<span class="name">key</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">string</span>&gt;</span>com.example.apple-samplecode.EBAS.HelperTool<span class="tag">&lt;/<span class="name">string</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">key</span>&gt;</span>MachServices<span class="tag">&lt;/<span class="name">key</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">dict</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">key</span>&gt;</span>com.example.apple-samplecode.EBAS.HelperTool<span class="tag">&lt;/<span class="name">key</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">true</span>/&gt;</span></span><br><span class="line">	<span class="tag">&lt;/<span class="name">dict</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dict</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">plist</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>看，前面埋的坑—— <strong>Label</strong> 出现了！这是系统用来唯一标识守护进程的值，下面 MachServices 中的 key 是我们 XPC 应用的 Bundle Identifier。在建立连接的时候，系统就会根据这张配置表去寻找正确的 XPC 应用。</p>
+<p>完成后我们的目录结构是这样的：（例子来自官方的 <a href="https://developer.apple.com/library/archive/samplecode/EvenBetterAuthorizationSample/Introduction/Intro.html#//apple_ref/doc/uid/DTS40013768-Intro-DontLinkElementID_2" target="_blank" rel="noopener">EvenBetterAuthorizationSample</a>）<br>
+<img src="/uploads/ipc-for-macOS/9B514455-AC1D-454F-8681-34076024982E.png" alt></p>
+<blockquote>
+<p>如图，官方例子中还给 plist 加上了项目名前缀，但名字不重要，重要的是别忘了把签名需求写对。</p>
+</blockquote>
+<p>最后，因为我们要用到的产物是 .xpc 包里的二进制文件，所以必须把这两个 plist 也打进二进制文件里去，这就要在 Build Settings 的 Other Linker Flags 里配置一下：<br>
+<img src="/uploads/ipc-for-macOS/29AEBF92-9331-41E1-8EAB-04718FEFDB6C.png" alt></p>
+<p>配置内容如下，把最后的路径改成自己的 plist 就可以了（这也是为什么前面说文件名不重要）：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">-sectcreate __TEXT __info_plist HelperTool/HelperTool-Info.plist</span><br><span class="line">-sectcreate __TEXT __launchd_plist HelperTool/HelperTool-Launchd.plist</span><br></pre></td></tr></table></figure>
+<p>完成了这些配置后打出来的包会是一个完整的 .xpc 文件了，但我们需要的只是它里面的二进制文件。在用上它之前，让我们把安装 XPC 应用的代码写好，这里的代码是在官方例子的基础上改的，个人感觉比例子里的更易懂一些：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 1</span></span><br><span class="line">AuthorizationItem authItem = &#123; kSMRightBlessPrivilegedHelper, <span class="number">0</span>, <span class="literal">NULL</span>, <span class="number">0</span> &#125;;</span><br><span class="line">AuthorizationRights authRights = &#123; <span class="number">1</span>, &amp;authItem &#125;;</span><br><span class="line">AuthorizationFlags flags = kAuthorizationFlagDefaults | kAuthorizationFlagInteractionAllowed | kAuthorizationFlagPreAuthorize | kAuthorizationFlagExtendRights;</span><br><span class="line"></span><br><span class="line">AuthorizationRef authRef = <span class="literal">NULL</span>;</span><br><span class="line"><span class="comment">// 2</span></span><br><span class="line">OSStatus status = AuthorizationCreate(&amp;authRights, kAuthorizationEmptyEnvironment, flags, &amp;authRef);</span><br><span class="line"><span class="keyword">if</span> (status != errAuthorizationSuccess) &#123;</span><br><span class="line">    <span class="built_in">NSLog</span>(<span class="string">@"Failed to create AuthorizationRef, return code %i"</span>, status);</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">NO</span>;</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="built_in">CFErrorRef</span> error;</span><br><span class="line">    <span class="comment">// 3</span></span><br><span class="line">    <span class="built_in">BOOL</span> success = SMJobBless(kSMDomainSystemLaunchd, (__bridge <span class="built_in">CFStringRef</span>)<span class="string">@"com.example.apple-samplecode.EBAS.HelperTool"</span>, authRef, &amp;error);</span><br><span class="line">    <span class="keyword">if</span> (success) &#123;</span><br><span class="line">        <span class="built_in">NSLog</span>(<span class="string">@"job bless success"</span>);</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">YES</span>;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="built_in">NSLog</span>(<span class="string">@"job bless error: %@"</span>, (__bridge <span class="built_in">NSError</span> *)error);</span><br><span class="line">        <span class="built_in">CFRelease</span>(error);</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">NO</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ol>
+<li>构造申请权限所需要的参数，官方例子中没有这一步</li>
+<li>申请权限，如果这一步失败了，那我们的应用就不能做任何需要用户授权的操作了；官方例子中因为少了构造参数的步骤，所以这里会变成 <code>AuthorizationCreate(NULL, NULL, 0, &amp;authRef)</code></li>
+<li>使用题外话里讲到的 API 来安装我们的 XPC 应用，其中，<code>kSMDomainSystemLaunchd</code> 表示我们要使用 launchd 服务（这也是目前仅有的可选项），第二个参数是我们之前设置的 XPC 应用的 label</li>
+</ol>
+<p>当执行到上面的逻辑时，我们从两个角度来看看会发生什么：</p>
+<ul>
+<li>用户角度：界面上弹出一个授权框，提示用户输入解锁密码</li>
+<li>系统角度：系统会进入申请授权的应用内部寻找这个待安装的 XPC 应用二进制包，如果找到了会将它 <em>存起来</em> 以便下一次可以直接唤起，并把其中的 launchd 配置拷贝的统一的位置</li>
+</ul>
+<blockquote>
+<p>通过 SMJobBless 安装的 XPC 应用会存在 /Library/PrivilegedHelperTools 下面，一旦授权完成过一次，后续只要配置文件和这里的二进制文件还对得上就不会再弹授权框了</p>
+</blockquote>
+<p>为了让系统方便地找到 XPC 应用，要把它的<strong>二进制文件</strong>放到应用的 /Contents/Library/LaunchServices 路径下，我们可以在客户端的 Build Phases 里面加一个步骤来做这件事：<br>
+<img src="/uploads/ipc-for-macOS/03FE8C66-DDBB-4A23-9D0B-5C0FE1535F30.png" alt></p>
+<blockquote>
+<p>千万记得这里要放的是 .xpc 包里的二进制文件，在 xxx.xpc/Contents/MacOS 目录下</p>
+</blockquote>
+<p>OK，万事具备，接下来我们真的要写代码了。</p>
+<h3 id="与-xpc-应用通讯">与 XPC 应用通讯</h3>
+<p>首先我们来实现 XPC 应用的连接监听逻辑，在创建 Target 之后的 .m 文件里已经有连接处理的模版和丰富的注释了：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">self</span>.listener = [[<span class="built_in">NSXPCListener</span> alloc] initWithMachServiceName:<span class="string">@"这里改成上面设置的 Label"</span>];</span><br><span class="line"></span><br><span class="line">...</span><br><span class="line"></span><br><span class="line">- (<span class="built_in">BOOL</span>)listener:(<span class="built_in">NSXPCListener</span> *)listener shouldAcceptNewConnection:(<span class="built_in">NSXPCConnection</span> *)newConnection &#123;</span><br><span class="line">    <span class="comment">// This method is where the NSXPCListener configures, accepts, and resumes a new incoming NSXPCConnection.</span></span><br><span class="line">    assert(listener == <span class="keyword">self</span>.listener);</span><br><span class="line">    assert(newConnection != <span class="literal">nil</span>);</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// Configure the connection.</span></span><br><span class="line">    <span class="comment">// First, set the interface that the exported object implements.</span></span><br><span class="line">    newConnection.exportedInterface = [<span class="built_in">NSXPCInterface</span> interfaceWithProtocol:<span class="class"><span class="keyword">@protocol</span>(<span class="title">HelperToolProtocol</span>)];</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment">// Next, set the object that the connection exports. All messages sent on the connection to this service will be sent to the exported object to handle. The connection retains the exported object.</span></span><br><span class="line">    newConnection.exportedObject = <span class="keyword">self</span>;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// Resuming the connection allows the system to deliver more incoming messages.</span></span><br><span class="line">    [newConnection resume];</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// Returning YES from this method tells the system that you have accepted this connection. If you want to reject the connection for some reason, call -invalidate on the connection and return NO.</span></span><br><span class="line">    <span class="keyword">return</span> <span class="literal">YES</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>需要特别说明的一点是，XPC 连接建立起来之后，连接发起方就能获取到上面的逻辑里的 <code>exportedObject</code>，而再上一行的 <code>exportedInterface</code> 是声明这个对象在这次 XPC 通讯中会遵循的协议。</p>
+<p>换句话说，连接的发起方会把连接上的 XPC 应用直接当作一个对象来操作。这个对象的消息传递是异步的，所以在调用的时候要小心避免卡主线程。</p>
+<blockquote>
+<p>因为协议需要连接双方自行约定统一，所以上面 <code>HelperToolProtocol</code> 的定义建议放到一个公共的文件里，让我们的应用项目和 XPC 应用项目都能访问到</p>
+</blockquote>
+<p>XPC 应用这边先说这么多，大多数情况下模版代码就够了，只需要自己定义一下 <code>exportedInterface</code> 就能实现例如心跳机制这样的功能。</p>
+<p>接下来实现客户端发起连接的逻辑，我们直接参考官方例子里的代码：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">- (<span class="keyword">void</span>)connectToHelperTool</span><br><span class="line">    <span class="comment">// Ensures that we're connected to our helper tool.</span></span><br><span class="line">&#123;</span><br><span class="line">    assert([<span class="built_in">NSThread</span> isMainThread]);</span><br><span class="line">    <span class="keyword">if</span> (<span class="keyword">self</span>.helperToolConnection == <span class="literal">nil</span>) &#123;</span><br><span class="line">        <span class="comment">// 1</span></span><br><span class="line">        <span class="keyword">self</span>.helperToolConnection = [[<span class="built_in">NSXPCConnection</span> alloc] initWithMachServiceName:kHelperToolMachServiceName options:<span class="built_in">NSXPCConnectionPrivileged</span>];</span><br><span class="line">        <span class="comment">// 2</span></span><br><span class="line">        <span class="keyword">self</span>.helperToolConnection.remoteObjectInterface = [<span class="built_in">NSXPCInterface</span> interfaceWithProtocol:<span class="class"><span class="keyword">@protocol</span>(<span class="title">HelperToolProtocol</span>)];</span></span><br><span class="line">        <span class="comment">// 3</span></span><br><span class="line">        <span class="meta">#<span class="meta-keyword">pragma</span> clang diagnostic push</span></span><br><span class="line">        <span class="meta">#<span class="meta-keyword">pragma</span> clang diagnostic ignored <span class="meta-string">"-Warc-retain-cycles"</span></span></span><br><span class="line">        <span class="comment">// We can ignore the retain cycle warning because a) the retain taken by the</span></span><br><span class="line">        <span class="comment">// invalidation handler block is released by us setting it to nil when the block </span></span><br><span class="line">        <span class="comment">// actually runs, and b) the retain taken by the block passed to -addOperationWithBlock: </span></span><br><span class="line">        <span class="comment">// will be released when that operation completes and the operation itself is deallocated </span></span><br><span class="line">        <span class="comment">// (notably self does not have a reference to the NSBlockOperation).</span></span><br><span class="line">        <span class="keyword">self</span>.helperToolConnection.invalidationHandler = ^&#123;</span><br><span class="line">            <span class="comment">// If the connection gets invalidated then, on the main thread, nil out our</span></span><br><span class="line">            <span class="comment">// reference to it.  This ensures that we attempt to rebuild it the next time around.</span></span><br><span class="line">            <span class="keyword">self</span>.helperToolConnection.invalidationHandler = <span class="literal">nil</span>;</span><br><span class="line">            [[<span class="built_in">NSOperationQueue</span> mainQueue] addOperationWithBlock:^&#123;</span><br><span class="line">                <span class="keyword">self</span>.helperToolConnection = <span class="literal">nil</span>;</span><br><span class="line">                [<span class="keyword">self</span> logText:<span class="string">@"connection invalidated\n"</span>];</span><br><span class="line">            &#125;];</span><br><span class="line">        &#125;;</span><br><span class="line">        <span class="meta">#<span class="meta-keyword">pragma</span> clang diagnostic pop</span></span><br><span class="line">        <span class="comment">// 4</span></span><br><span class="line">        [<span class="keyword">self</span>.helperToolConnection resume];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ol>
+<li>通过 label 找到特定 XPC 应用并建立连接，建议把这个连接实例保存起来，避免重复创建带来别的问题</li>
+<li>这一步参数里的协议就是我们在 XPC 应用中声明的协议，两边的协议要对得上才能拿到 XPC 应用中暴露出来的正确对象</li>
+<li>大段注释是在解释为什么这里不需要担心循环引用的问题；要注意的是如果我们把连接实例存了起来，最好是像这样在 <code>invalidationHandler</code> 里置空，在其他地方通过 <code>[connection invalidate]</code>来实现断连</li>
+<li>手动调用 <code>resume</code> 来建立连接，调用后 XPC 应用那边才会收到 <code>-[listener:shouldAcceptNewConnection:]</code> 回调</li>
+</ol>
+<p>Done！如果前面的一系列配置都正确的话，这个方法就能搭起客户端与 XPC 应用之间连接桥梁了！</p>
+<h3 id="与其他进程通讯">与其他进程通讯</h3>
+<p>除了与 XPC 应用建立连接之外，NSXPCConnection 还提供了另一组 API 用于直接跟其他客户端建立连接：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">- (<span class="keyword">instancetype</span>)initWithListenerEndpoint:(<span class="built_in">NSXPCListenerEndpoint</span> *)endpoint;</span><br></pre></td></tr></table></figure>
+<p>一次完整的连接建立流程是这样的：</p>
+<ol>
+<li>客户端 A 与 XPC 应用建立连接</li>
+<li>客户端 A 生成一个 NSXPCListenerEndpoint 并存放到 XPC 应用里</li>
+<li>客户端 B 与 XPC 应用建立连接并取到这个 NSXPCListenerEndpoint</li>
+<li>客户端 B 通过 NSXPCListenerEndpoint 与客户端 A 建立连接</li>
+</ol>
+<p>在上个小节中我们完成了第一步，而第四步跟第一步其实挺像的，所以第二三步就是我们现在要处理的了。</p>
+<p>之前我们声明了一个空的 <code>HelperToolProtocol</code>，现在就给它加一些内容，向外界提供对象读写的能力：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">@protocol</span> <span class="title">HelperToolProtocol</span></span></span><br><span class="line">- (<span class="keyword">void</span>)setEndpoint:(<span class="built_in">NSXPCListenerEndpoint</span> *)endpoint withReply:(<span class="keyword">void</span> (^)(<span class="built_in">BOOL</span>))reply;</span><br><span class="line">- (<span class="keyword">void</span>)getEndpointWithReply:(<span class="keyword">void</span> (^)(<span class="built_in">NSXPCListenerEndpoint</span> *))reply;</span><br><span class="line"><span class="keyword">@end</span></span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>因为 <code>exportedObject</code> 的消息传递是异步的，所以在需要返回值的时候要改用回调的方式实现。</p>
+</blockquote>
+<p>然后在 XPC 应用里声明一个成员变量并实现上面的两个方法就完成了：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">@property</span> (<span class="keyword">strong</span>, <span class="keyword">nonatomic</span>) <span class="built_in">NSXPCListenerEndpoint</span> *endpoint;</span><br><span class="line"></span><br><span class="line">...</span><br><span class="line"></span><br><span class="line">- (<span class="keyword">void</span>)setEndpoint:(<span class="built_in">NSXPCListenerEndpoint</span> *)endpoint withReply:(<span class="keyword">void</span> (^)(<span class="built_in">BOOL</span>))reply &#123;</span><br><span class="line">    <span class="keyword">self</span>.endpoint = endpoint;</span><br><span class="line">    reply(<span class="literal">YES</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (<span class="keyword">void</span>)getEndpointWithReply:(<span class="keyword">void</span> (^)(<span class="built_in">NSXPCListenerEndpoint</span> *))reply &#123;</span><br><span class="line">    reply(<span class="keyword">self</span>.endpoint);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>接下来回到客户端的代码里（现在还没实现客户端 B，所以这里讲的都是客户端 A）：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 1</span></span><br><span class="line">[<span class="keyword">self</span> connectToHelperTool];</span><br><span class="line"></span><br><span class="line"><span class="comment">// 2</span></span><br><span class="line"><span class="keyword">self</span>.listener = [<span class="built_in">NSXPCListener</span> anonymousListener];</span><br><span class="line"><span class="keyword">self</span>.listener.delegate = <span class="keyword">self</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 3</span></span><br><span class="line"><span class="keyword">id</span>&lt;HelperToolProtocol&gt; service = [<span class="keyword">self</span>.connection remoteObjectProxyWithErrorHandler:^(<span class="built_in">NSError</span> * _Nonnull error) &#123;</span><br><span class="line">    <span class="built_in">NSLog</span>(<span class="string">@"get remote object proxy error: %@"</span>, error);</span><br><span class="line">&#125;];</span><br><span class="line"></span><br><span class="line"><span class="comment">// 4</span></span><br><span class="line">[service setEndpoint:<span class="keyword">self</span>.listener.endpoint withReply:^(<span class="built_in">BOOL</span> result) &#123;</span><br><span class="line">    <span class="built_in">NSLog</span>(<span class="string">@"set endpoint result: %@"</span>, result ? <span class="string">@"success"</span> : <span class="string">@"failed"</span>);</span><br><span class="line">&#125;];</span><br></pre></td></tr></table></figure>
+<ol>
+<li>先 XPC 应用建立连接</li>
+<li>准备一个监听器来处理其他客户端的连接</li>
+<li>获取到 XPC 应用的 <code>exportedObject</code>，因为方法返回的是实现了这个协议的对象，所以协议的匹配很关键</li>
+<li>调用协议中的方法把匿名监听器的端点设置过去，因为我们在 XPC 应用里写死了返回 <code>YES</code>，所以这里肯定会成功，实际使用的过程中可能要加上安全性的处理</li>
+</ol>
+<p>监听器有了，就差监听到连接后的回调了：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 1</span></span><br><span class="line">- (<span class="built_in">BOOL</span>)listener:(<span class="built_in">NSXPCListener</span> *)listener shouldAcceptNewConnection:(<span class="built_in">NSXPCConnection</span> *)newConnection &#123;</span><br><span class="line">    assert(listener == <span class="keyword">self</span>.listener);</span><br><span class="line">    assert(newConnection != <span class="literal">nil</span>);</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 2</span></span><br><span class="line">    __<span class="keyword">weak</span> <span class="keyword">typeof</span>(<span class="keyword">self</span>) weakSelf = <span class="keyword">self</span>;</span><br><span class="line">    <span class="keyword">self</span>.clientConnection.invalidationHandler = ^&#123;</span><br><span class="line">        weakSelf.clientConnection.invalidationHandler = <span class="literal">nil</span>;</span><br><span class="line">        [[<span class="built_in">NSOperationQueue</span> mainQueue] addOperationWithBlock:^&#123;</span><br><span class="line">            weakSelf.clientConnection = <span class="literal">nil</span>;</span><br><span class="line">        &#125;];</span><br><span class="line">    &#125;;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 3</span></span><br><span class="line">    <span class="keyword">self</span>.clientConnection.remoteObjectInterface = [<span class="built_in">NSXPCInterface</span> interfaceWithProtocol:<span class="class"><span class="keyword">@protocol</span>(<span class="title">ClientBProtocol</span>)];</span></span><br><span class="line">    <span class="keyword">self</span>.clientConnection.exportedInterface = [<span class="built_in">NSXPCInterface</span> interfaceWithProtocol:<span class="class"><span class="keyword">@protocol</span>(<span class="title">ClientAProtocol</span>)];</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">self</span>.clientConnection.exportedObject = <span class="keyword">self</span>;</span><br><span class="line">    [<span class="keyword">self</span>.clientConnection resume];</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">YES</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ol>
+<li>这个熟悉的回调方法其实跟 XPC 应用里的那个一样，客户端 A 已经具备了一个 XPC 应用的基本功能了</li>
+<li>官方例子的另一种写法，逻辑上是一样的（可能这种还亲切一些呢😬）</li>
+<li>除了 <code>exportedInterface</code> 之外，还要设置 <code>remoteObjectInterface</code>，因为这是一条双向通讯的连接，所以要让其他客户端知道我们期望它们能遵循什么协议</li>
+</ol>
+<p>好的，流程走完一半了，第三四步需要在客户端 B 里面实现：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 1</span></span><br><span class="line">[<span class="keyword">self</span> connectToHelperTool];</span><br><span class="line">__<span class="keyword">weak</span> <span class="keyword">typeof</span>(<span class="keyword">self</span>) weakSelf = <span class="keyword">self</span>;</span><br><span class="line">[[<span class="keyword">self</span>.connection remoteObjectProxyWithErrorHandler:<span class="literal">nil</span>] getEndpointWithReply:^(<span class="built_in">NSXPCListenerEndpoint</span> *endpoint) &#123;</span><br><span class="line">    [[<span class="built_in">NSOperationQueue</span> mainQueue] addOperationWithBlock:^&#123;</span><br><span class="line">        <span class="keyword">if</span> (endpoint) &#123;</span><br><span class="line">            [weakSelf connectWithEndpoint:endpoint];</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;];</span><br><span class="line">&#125;]</span><br><span class="line"></span><br><span class="line">- (<span class="keyword">void</span>)connectWithEndpoint:(<span class="built_in">NSXPCListenerEndpoint</span> *)endpoint &#123;</span><br><span class="line">    <span class="comment">// 2</span></span><br><span class="line">    <span class="keyword">self</span>.serverConnection = [[<span class="built_in">NSXPCConnection</span> alloc] initWithListenerEndpoint:endpoint];</span><br><span class="line">    <span class="keyword">self</span>.serverConnection.remoteObjectInterface = [<span class="built_in">NSXPCInterface</span> interfaceWithProtocol:<span class="class"><span class="keyword">@protocol</span>(<span class="title">ServerCommunicationProtocol</span>)];</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 3</span></span><br><span class="line">    <span class="keyword">self</span>.serverConnection.exportedInterface = [<span class="built_in">NSXPCInterface</span> interfaceWithProtocol:<span class="class"><span class="keyword">@protocol</span>(<span class="title">ClientCommunicationProtocol</span>)];</span></span><br><span class="line">    <span class="keyword">self</span>.serverConnection.exportedObject = <span class="keyword">self</span>;</span><br><span class="line">    </span><br><span class="line">    __<span class="keyword">weak</span> <span class="keyword">typeof</span>(<span class="keyword">self</span>) weakSelf = <span class="keyword">self</span>;</span><br><span class="line">    <span class="keyword">self</span>.serverConnection.invalidationHandler = ^&#123;</span><br><span class="line">        weakSelf.serverConnection.invalidationHandler = <span class="literal">nil</span>;</span><br><span class="line">        [[<span class="built_in">NSOperationQueue</span> mainQueue] addOperationWithBlock:^&#123;</span><br><span class="line">            weakSelf.serverConnection = <span class="literal">nil</span>;</span><br><span class="line">        &#125;];</span><br><span class="line">    &#125;;</span><br><span class="line"></span><br><span class="line">    [<span class="keyword">self</span>.serverConnection resume];</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 4</span></span><br><span class="line">    <span class="comment">// self.serverConnectionEndpoint = endpoint;</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ol>
+<li>客户端 B 从 XPC 应用中拿到客户端 A 设置的端点，这跟设置端点的代码差不多</li>
+<li>通过端点来构造 <code>NSXPCConnection</code>，这样在调用 <code>resume</code> 之后对方会收到 <code>-[listener:shouldAcceptNewConnection:]</code> 的回调</li>
+<li>与上文的回调处理类似，因为我们要做的是双向通讯，所以客户端 B 在发起连接时也要把 <code>exportedInterface</code> 和 <code>exportedObject</code> 设置好，之后的代码就跟其他地方看到的差不多了</li>
+<li>有必要的话可以把这个端点存起来用于一些判断或重连的逻辑</li>
+</ol>
+<h2 id="常见错误">常见错误</h2>
+<blockquote>
+<p>这一段总结了我在实现过程中踩的坑，也许我们的情况不太一样，但希望能给大家一个排查的思路</p>
+</blockquote>
+<p>涉及到多端通讯的逻辑调试起来比较绕，错误通常会发生在以下两个部分：</p>
+<ol>
+<li>客户端部分：确认代码逻辑没漏的话，可以把各种 <code>handler</code> 的结果都打印一下，一般都会带有比较明确的错误域和错误码</li>
+<li>连接部分：这类错误信息不会出现在客户端日志里，也分两类
+<ol>
+<li>没有任何反应但就是连不上：可以用自带的控制台工具去捞日志</li>
+<li>调用 API 导致崩溃：也是控制台捞，macOS 的系统崩溃上报弹窗里可能会有更多信息</li>
+</ol>
+</li>
+</ol>
+<p>下面是我碰过的一些错误和处理方式：</p>
+<h3 id="cferrordomainlaunchd-code-2">CFErrorDomainLaunchd Code=2</h3>
+<p>安装 XPC 应用时在客户端内找不到 XPC 应用的二进制文件，检查一下二进制包是不是放到了正确的路径下，格式是否正确（记得要取 .xpc 后缀的文件里的二进制文件）。</p>
+<h3 id="cferrordomainlaunchd-code-4-or-8">CFErrorDomainLaunchd Code=4 or 8</h3>
+<p>签名匹配不上。大概率是 Info.plist 里配置的签名需求不正确，回头看看 <em>前置准备</em> 那个小节，检查内容是否跟 <code>codesign -d -r - /path/to/app</code>  和 <code>codesign -d -r - /path/to/xpc</code>  的一致。</p>
+<h3 id="error-domain-nscocoaerrordomain-code-4097">Error Domain=NSCocoaErrorDomain Code=4097</h3>
+<blockquote>
+<p>出自 FoundationErrors.h - NSXPCConnectionInterrupted</p>
+</blockquote>
+<p>连接被打断（interrupted），约等于 connection.interruptionHandler 被触发了。<br>
+如果发生在连接建立的过程中，那意味着它发现连接已经被占用了，多见于调试过程中重启了其中一端，但是另一端没有把连接释放掉。</p>
+<p>在正常运行的过程中发生的话，可能是系统 XPC 服务发现我们的连接长时间没有使用而挂起了它，这种情况一般不需要处理，系统会在我们下次使用这条连接的时候自动帮我们处理好。</p>
+<h3 id="error-domain-nscocoaerrordomain-code-4099">Error Domain=NSCocoaErrorDomain Code=4099</h3>
+<blockquote>
+<p>出自 FoundationErrors.h - NSXPCConnectionInvalid</p>
+</blockquote>
+<p>同样分两种情况，一连接就出事的话，可能是 XPC 应用没有安装成功，排查方式是看 plist 和二进制文件有没有出现在它们该出现的路径里。<br>
+另一种情况，可能是客户端因为沙盒的原因而无法建立这条连接，控制台日志里会看到类似 <em>deny mach-lookup</em> 的信息，可以选择把 App Sandbox 关上（会没法上 Mac App Store 但不影响其他渠道的分发），真要打开沙盒的话有两条可以尝试的路径：</p>
+<ol>
+<li>想办法搞定 entitlements 的配置，可以参考<a href="https://christiantietze.de/posts/2015/01/xpc-helper-sandboxing-mac/" target="_blank" rel="noopener">这篇文章</a></li>
+<li>应用内置另一个不在沙盒内的 XPC 应用，通过它去跟安装到系统里的 XPC 应用建立连接，具体的方式在官方的 <a href="https://developer.apple.com/library/archive/samplecode/EvenBetterAuthorizationSample/Introduction/Intro.html#//apple_ref/doc/uid/DTS40013768-Intro-DontLinkElementID_2" target="_blank" rel="noopener">EvenBetterAuthorizationSample</a>中有实现</li>
+</ol>
+<h2 id="总结">总结</h2>
+<p>XPC 是 macOS 跨应用通讯中不得不面对的一种方案，可能出于各种原因最终的选择并不是它，但它确实是目前最简单可靠的实现了。</p>
+<p>尽管我在网上已经查了非常多的资料，也还是在动手的过程中频频踩坑。写下这篇长文也是希望能把这条路尽可能填平，只是这个文章长度就有些一发不可收拾了😅。</p>
+<h2 id="参考资料">参考资料</h2>
+<ul>
+<li><a href="http://www.tanhao.me/pieces/1623.html/" target="_blank" rel="noopener">通过ServiceManagement注册LaunchdDaemon | 老谭笔记</a></li>
+<li><a href="https://nshipster.com/inter-process-communication/" target="_blank" rel="noopener">Inter-Process Communication - NSHipster</a></li>
+<li><a href="https://developer.apple.com/library/archive/samplecode/EvenBetterAuthorizationSample/Listings/Read_Me_About_EvenBetterAuthorizationSample_txt.html#//apple_ref/doc/uid/DTS40013768-Read_Me_About_EvenBetterAuthorizationSample_txt-DontLinkElementID_17" target="_blank" rel="noopener">Read Me About EvenBetterAuthorizationSample.txt</a></li>
+<li><a href="http://www.objc.io/issue-14/xpc.html" target="_blank" rel="noopener">XPC · objc.io</a></li>
+<li><a href="https://rderik.com/blog/creating-a-launch-agent-that-provides-an-xpc-service-on-macos/" target="_blank" rel="noopener">Creating a Launch Agent that provides an XPC service on macOS using Swift</a></li>
+<li><a href="https://developer.apple.com/library/archive/documentation/MacOSX/Conceptual/BPSystemStartup/Chapters/CreatingLaunchdJobs.html#//apple_ref/doc/uid/10000172i-SW7-BCIEDDBJ" target="_blank" rel="noopener">Creating Launch Daemons and Agents</a></li>
+</ul>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+  <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+    <div>你的支持和鼓励，是我分享的最大动力！</div>
+    <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+      <span>赏</span>
+    </button>
+    <div id="QR" style="display: none;">
+      
+        <div id="wechat" style="display: inline-block">
+          <img id="wechat_qr" src="/uploads/wechatpay.jpeg" alt="Lee WeChat Pay">
+          <p>微信打赏</p>
+        </div>
+      
+      
+        <div id="alipay" style="display: inline-block">
+          <img id="alipay_qr" src="/uploads/alipay.jpeg" alt="Lee Alipay">
+          <p>支付宝打赏</p>
+        </div>
+      
+    </div>
+  </div>
+
+
+      
+    </div>
+
+    <div>
+      
+        
+  <ul class="post-copyright">
+    <li class="post-copyright-author">
+      <strong>本文作者：</strong>
+      Lee
+    </li>
+    <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="http://davidleee.com/2020/07/20/ipc-for-macOS/" title="在 macOS 中如何使用 XPC 实现跨进程通讯？">http://davidleee.com/2020/07/20/ipc-for-macOS/</a>
+    </li>
+    <li class="post-copyright-license">
+      <strong>版权声明： </strong>
+      本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 3.0</a> 许可协议。转载请注明出处！
+    </li>
+  </ul>
+
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/macOS/" rel="tag"># macOS</a>
+          
+            <a href="/tags/XPC/" rel="tag"># XPC</a>
+          
+            <a href="/tags/launchd/" rel="tag"># launchd</a>
+          
+            <a href="/tags/SMJobBless/" rel="tag"># SMJobBless</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/08/15/swiftui-serial-tutorial-4/" rel="next" title="SwiftUI 系列教程（4）—— UIKit 老相好在 SwiftUI 下的实现">
+                <i class="fa fa-chevron-left"></i> SwiftUI 系列教程（4）—— UIKit 老相好在 SwiftUI 下的实现
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2021/03/05/privacy/" rel="prev" title="隐私协议">
+                隐私协议 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        
+  <div class="bdsharebuttonbox">
+    <a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+    <a href="#" class="bds_douban" data-cmd="douban" title="分享到豆瓣网"></a>
+    <a href="#" class="bds_sqq" data-cmd="sqq" title="分享到QQ好友"></a>
+    <a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a>
+    <a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a>
+    <a href="#" class="bds_tieba" data-cmd="tieba" title="分享到百度贴吧"></a>
+    <a href="#" class="bds_twi" data-cmd="twi" title="分享到Twitter"></a>
+    <a href="#" class="bds_fbook" data-cmd="fbook" title="分享到Facebook"></a>
+    <a href="#" class="bds_more" data-cmd="more"></a>
+    <a class="bds_count" data-cmd="count"></a>
+  </div>
+  <script>
+    window._bd_share_config = {
+      "common": {
+        "bdText": "",
+        "bdMini": "2",
+        "bdMiniList": false,
+        "bdPic": ""
+      },
+      "share": {
+        "bdSize": "16",
+        "bdStyle": "0"
+      },
+      "image": {
+        "viewList": ["tsina", "douban", "sqq", "qzone", "weixin", "twi", "fbook"],
+        "viewText": "分享到：",
+        "viewSize": "16"
+      }
+    }
+  </script>
+
+<script>
+  with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='//bdimg.share.baidu.com/static/api/js/share.js?cdnversion='+~(-new Date()/36e5)];
+</script>
+
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image" src="/avatar.jpg" alt="Lee">
+          <p class="site-author-name" itemprop="name">Lee</p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+           
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">41</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">115</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/davidleee" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+          <div class="links-of-blogroll motion-element links-of-blogroll-inline">
+            <div class="links-of-blogroll-title">
+              <i class="fa  fa-fw fa-globe"></i>
+              友情链接
+            </div>
+            <ul class="links-of-blogroll-list">
+              
+                <li class="links-of-blogroll-item">
+                  <a href="http://www.yantinglam.com/" title="Yanting Lam" target="_blank">Yanting Lam</a>
+                </li>
+              
+                <li class="links-of-blogroll-item">
+                  <a href="http://www.enkichen.com/" title="Enki's Notes" target="_blank">Enki's Notes</a>
+                </li>
+              
+                <li class="links-of-blogroll-item">
+                  <a href="http://www.wxtlife.com/" title="Android技术特工队" target="_blank">Android技术特工队</a>
+                </li>
+              
+                <li class="links-of-blogroll-item">
+                  <a href="http://www.devhua.com/" title="Devhua's Blog" target="_blank">Devhua's Blog</a>
+                </li>
+              
+                <li class="links-of-blogroll-item">
+                  <a href="http://www.freehacker.cn" title="小熊糖否" target="_blank">小熊糖否</a>
+                </li>
+              
+                <li class="links-of-blogroll-item">
+                  <a href="https://debbiefu.github.io/" title="Debbie Fu" target="_blank">Debbie Fu</a>
+                </li>
+              
+                <li class="links-of-blogroll-item">
+                  <a href="https://hays.github.io/" title="Hays' Blog" target="_blank">Hays' Blog</a>
+                </li>
+              
+            </ul>
+          </div>
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#什么是-xpc"><span class="nav-number">1.</span> <span class="nav-text">什么是 XPC</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#题外话1-launchd"><span class="nav-number">1.1.</span> <span class="nav-text">题外话1 - launchd</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#题外话2-smjobbless"><span class="nav-number">1.2.</span> <span class="nav-text">题外话2 - SMJobBless</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#架起通讯的桥梁"><span class="nav-number">2.</span> <span class="nav-text">架起通讯的桥梁</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#前置准备"><span class="nav-number">2.1.</span> <span class="nav-text">前置准备</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#创建-安装-xpc-应用"><span class="nav-number">2.2.</span> <span class="nav-text">创建 &amp; 安装 XPC 应用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#与-xpc-应用通讯"><span class="nav-number">2.3.</span> <span class="nav-text">与 XPC 应用通讯</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#与其他进程通讯"><span class="nav-number">2.4.</span> <span class="nav-text">与其他进程通讯</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#常见错误"><span class="nav-number">3.</span> <span class="nav-text">常见错误</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#cferrordomainlaunchd-code-2"><span class="nav-number">3.1.</span> <span class="nav-text">CFErrorDomainLaunchd Code=2</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#cferrordomainlaunchd-code-4-or-8"><span class="nav-number">3.2.</span> <span class="nav-text">CFErrorDomainLaunchd Code=4 or 8</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#error-domain-nscocoaerrordomain-code-4097"><span class="nav-number">3.3.</span> <span class="nav-text">Error Domain=NSCocoaErrorDomain Code=4097</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#error-domain-nscocoaerrordomain-code-4099"><span class="nav-number">3.4.</span> <span class="nav-text">Error Domain=NSCocoaErrorDomain Code=4099</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结"><span class="nav-number">4.</span> <span class="nav-text">总结</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考资料"><span class="nav-number">5.</span> <span class="nav-text">参考资料</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Lee</span>
+
+  &nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;Hosted by <a href="https://pages.coding.me" style="font-weight: bold">Coding Pages</a>
+</div>
+
+
+<div class="powered-by">
+  Powered by <a class="theme-link" href="https://hexo.io">Hexo</a> 
+</div>
+
+<div class="theme-info">
+  Theme -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length == 0) {
+      search_path = "search.xml";
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.popup').toggle();
+    }
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+      $.ajax({
+        url: path,
+        dataType: "xml",
+        async: true,
+        success: function( xmlResponse ) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = $( "entry", xmlResponse ).map(function() {
+            return {
+              title: $( "title", this ).text(),
+              content: $("content",this).text(),
+              url: $( "url" , this).text()
+            };
+          }).get();
+          var $input = document.getElementById(search_id);
+          var $resultContent = document.getElementById(content_id);
+          $input.addEventListener('input', function(){
+            var matchcounts = 0;
+            var str='<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length > 1) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var content_index = [];
+                var data_title = data.title.trim().toLowerCase();
+                var data_content = data.content.trim().replace(/<[^>]+>/g,"").toLowerCase();
+                var data_url = decodeURIComponent(data.url);
+                var index_title = -1;
+                var index_content = -1;
+                var first_occur = -1;
+                // only match artiles with not empty titles and contents
+                if(data_title != '') {
+                  keywords.forEach(function(keyword, i) {
+                    index_title = data_title.indexOf(keyword);
+                    index_content = data_content.indexOf(keyword);
+                    if( index_title >= 0 || index_content >= 0 ){
+                      isMatch = true;
+                      if (i == 0) {
+                        first_occur = index_content;
+                      }
+                    }
+
+                  });
+                }
+                // show search results
+                if (isMatch) {
+                  matchcounts += 1;
+                  str += "<li><a href='"+ data_url +"' class='search-result-title'>"+ data_title +"</a>";
+                  var content = data.content.trim().replace(/<[^>]+>/g,"");
+                  if (first_occur >= 0) {
+                    // cut out 100 characters
+                    var start = first_occur - 20;
+                    var end = first_occur + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if(start == 0){
+                      end = 50;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    var match_content = content.substring(start, end);
+                    // highlight all keywords
+                    keywords.forEach(function(keyword){
+                      var regS = new RegExp(keyword, "gi");
+                      match_content = match_content.replace(regS, "<b class=\"search-keyword\">"+keyword+"</b>");
+                    });
+
+                    str += "<p class=\"search-result\">" + match_content +"...</p>"
+                  }
+                  str += "</li>";
+                }
+              })};
+            str += "</ul>";
+            if (matchcounts == 0) { str = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>' }
+            if (keywords == "") { str = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>' }
+            $resultContent.innerHTML = str;
+          });
+          proceedsearch();
+        }
+      });}
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched == false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(function(e){
+      $('.popup').hide();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    });
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("rWbFyKbV9jV1Gm1Gplpfydst-gzGzoHsz", "AeJ3NJoYXFmMj6k9LCFSR62a");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+
+  
+
+</body>
+</html>

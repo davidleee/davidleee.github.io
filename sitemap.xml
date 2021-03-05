@@ -2,6 +2,34 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://davidleee.com/2021/03/05/techsupport-drinkmore/</loc>
+    
+    <lastmod>2021-03-05T05:58:30.667Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://davidleee.com/about/index.html</loc>
+    
+    <lastmod>2021-03-05T05:46:37.182Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://davidleee.com/2021/03/05/privacy/</loc>
+    
+    <lastmod>2021-03-05T05:45:59.947Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://davidleee.com/2020/07/20/ipc-for-macOS/</loc>
+    
+    <lastmod>2020-08-09T14:42:54.698Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://davidleee.com/tags/index.html</loc>
     
     <lastmod>2020-05-05T03:43:31.447Z</lastmod>
@@ -12,13 +40,6 @@
     <loc>http://davidleee.com/categories/index.html</loc>
     
     <lastmod>2020-05-05T03:43:31.447Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://davidleee.com/about/index.html</loc>
-    
-    <lastmod>2020-05-05T03:43:31.446Z</lastmod>
     
   </url>
   
@@ -40,20 +61,6 @@
     <loc>http://davidleee.com/2018/11/14/yet-another-ios-extension-article-2/</loc>
     
     <lastmod>2020-05-05T03:43:31.446Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://davidleee.com/2019/08/15/swiftui-serial-tutorial-4/</loc>
-    
-    <lastmod>2020-05-05T03:43:31.445Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://davidleee.com/2016/04/29/using-autolayout-in-uitableviewcells/</loc>
-    
-    <lastmod>2020-05-05T03:43:31.445Z</lastmod>
     
   </url>
   
@@ -86,6 +93,13 @@
   </url>
   
   <url>
+    <loc>http://davidleee.com/2019/08/15/swiftui-serial-tutorial-4/</loc>
+    
+    <lastmod>2020-05-05T03:43:31.445Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://davidleee.com/2016/08/27/team-working-with-git/</loc>
     
     <lastmod>2020-05-05T03:43:31.445Z</lastmod>
@@ -93,9 +107,9 @@
   </url>
   
   <url>
-    <loc>http://davidleee.com/2016/12/02/messaging-translation/</loc>
+    <loc>http://davidleee.com/2016/04/29/using-autolayout-in-uitableviewcells/</loc>
     
-    <lastmod>2020-05-05T03:43:31.444Z</lastmod>
+    <lastmod>2020-05-05T03:43:31.445Z</lastmod>
     
   </url>
   
@@ -107,14 +121,21 @@
   </url>
   
   <url>
-    <loc>http://davidleee.com/2016/06/06/push-notification-preparation/</loc>
+    <loc>http://davidleee.com/2018/08/21/storyboard-in-macos/</loc>
     
     <lastmod>2020-05-05T03:43:31.444Z</lastmod>
     
   </url>
   
   <url>
-    <loc>http://davidleee.com/2018/08/21/storyboard-in-macos/</loc>
+    <loc>http://davidleee.com/2017/02/28/network-setup-on-centos/</loc>
+    
+    <lastmod>2020-05-05T03:43:31.444Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://davidleee.com/2016/12/02/messaging-translation/</loc>
     
     <lastmod>2020-05-05T03:43:31.444Z</lastmod>
     
@@ -135,14 +156,14 @@
   </url>
   
   <url>
-    <loc>http://davidleee.com/2017/02/28/network-setup-on-centos/</loc>
+    <loc>http://davidleee.com/2016/06/06/push-notification-preparation/</loc>
     
     <lastmod>2020-05-05T03:43:31.444Z</lastmod>
     
   </url>
   
   <url>
-    <loc>http://davidleee.com/2017/09/11/Windows-in-macOS/</loc>
+    <loc>http://davidleee.com/2018/08/22/how-menus-work/</loc>
     
     <lastmod>2020-05-05T03:43:31.443Z</lastmod>
     
@@ -163,7 +184,7 @@
   </url>
   
   <url>
-    <loc>http://davidleee.com/2016/04/26/about-aes-encryption/</loc>
+    <loc>http://davidleee.com/2017/06/23/android-unit-test/</loc>
     
     <lastmod>2020-05-05T03:43:31.443Z</lastmod>
     
@@ -184,14 +205,14 @@
   </url>
   
   <url>
-    <loc>http://davidleee.com/2017/06/23/android-unit-test/</loc>
+    <loc>http://davidleee.com/2016/04/26/about-aes-encryption/</loc>
     
     <lastmod>2020-05-05T03:43:31.443Z</lastmod>
     
   </url>
   
   <url>
-    <loc>http://davidleee.com/2018/08/22/how-menus-work/</loc>
+    <loc>http://davidleee.com/2017/09/11/Windows-in-macOS/</loc>
     
     <lastmod>2020-05-05T03:43:31.443Z</lastmod>
     
@@ -247,14 +268,14 @@
   </url>
   
   <url>
-    <loc>http://davidleee.com/2018/10/19/How-CSS-works/</loc>
+    <loc>http://davidleee.com/2017/03/28/Basic-Gesture-Recognizers/</loc>
     
     <lastmod>2020-05-05T03:43:31.441Z</lastmod>
     
   </url>
   
   <url>
-    <loc>http://davidleee.com/2017/03/28/Basic-Gesture-Recognizers/</loc>
+    <loc>http://davidleee.com/2018/10/19/How-CSS-works/</loc>
     
     <lastmod>2020-05-05T03:43:31.441Z</lastmod>
     
