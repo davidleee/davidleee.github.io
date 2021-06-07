@@ -1,92 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>Android Unit Test 框架比较</title>
-    <url>/2017/07/04/Android-unit-test-lib-compare/</url>
-    <content><![CDATA[<p>这篇文章列举了现有常见的 Android 单元测试框架，并进行了简单的比较，方便用来进行框架的选型和收藏（毕竟只要收藏了本文，就相当于收藏了各大单元测试框架的主页，是不是很棒棒？）。</p>
-<blockquote>
-<p>框架对比的部分会带有一定的偏向性，不过光是把本文当做一个单元测试的工具箱也是蛮顺手的。</p>
-</blockquote>
-<a id="more"></a>
-<h2 id="java-tests">Java Tests</h2>
-<h3 id="junit">JUnit</h3>
-<blockquote>
-<p><a href="http://junit.org/junit4/" target="_blank" rel="noopener">JUnit</a> 是基于 xUnit 架构实现的单元测试框架。雏形是1998年在 SmallTalk 上实现的 SUnit，后来原作者将它迁移到 Java 上，从此声名大噪。</p>
-</blockquote>
-<p>JUnit 在 Android 官网上出现的频率相当高，是 Android 单元测试的基础框架之一，后面提到的 mock 框架都相当于是在丰富这些基础框架的功能。<br>
-要做单元测试的开发者们通常都会在 JUnit 和 TestNG 之间选择一个，个人感觉还是选 JUnit 好一些。（理由在 TestNG 的介绍中）</p>
-<h3 id="testng">TestNG</h3>
-<blockquote>
-<p><a href="http://testng.org/doc/index.html" target="_blank" rel="noopener">TestNG</a>  是一名软件工程师（Cédric Beust）对 JUnit 的改进，他将对 JUnit 的不满写在了 <a href="http://beust.com/weblog/2004/02/08/junit-pain/" target="_blank" rel="noopener">这里</a> 和 <a href="http://beust.com/weblog/2004/08/25/testsetup-and-evil-static-methods/" target="_blank" rel="noopener">这里</a>，感兴趣的可以去看看。</p>
-</blockquote>
-<p>TestNG 对 JUnit 的改进主要在两个方面：</p>
-<ol>
-<li>在 JUnit 中，同一个测试类中的不同测试方法是相互独立的，也就是说，每个测试方法开始前都会执行一次测试类的构造方法，这就让测试方法之间共享某些状态变得不可能</li>
-<li>后来 JUnit 对问题1给出了解决方案—— <code>TestSetup</code>，但是它必须通过静态方法去使用（JUnit 的 <code>TestSetup</code> 因为年代久远，已经没有文档了，估计 JUnit 也觉得这个解决方案不妥，赶紧修复了吧）</li>
-</ol>
-<p>事实上，TestNG 要改进的问题在新版本的 JUnit 上已经不是问题了（毕竟那次抱怨都发自2004年）。从官网最后一次更新是2015年12月来看，TestNG 社区的活跃程度远不如它的改进对象 JUnit，所以还是乖乖滚回 JUnit 的怀抱好了。</p>
-<h3 id="mockito">Mockito</h3>
-<blockquote>
-<p><a href="http://site.mockito.org/" target="_blank" rel="noopener">Mockito</a> 最初是在 <a href="http://easymock.org/" target="_blank" rel="noopener">EasyMock</a> 的基础上实现的，持续更新到现在，而始祖 EasyMock 已经在2015年停更了。</p>
-</blockquote>
-<p>Mockito 的优势正如它官网说的：</p>
-<ul>
-<li>测试代码和验证提示的良好可读性</li>
-<li>良好的社区支持</li>
-<li>Java 世界中排名能到达前十的明星框架</li>
-<li><a href="https://github.com/mockito/mockito/wiki/Features-And-Motivations" target="_blank" rel="noopener">Features And Motivations</a></li>
-</ul>
-<p>但劣势也同样明显，其实不应该叫做“劣势”，而应该说是因为实现方式所带来的“限制”：<a href="https://github.com/mockito/mockito/wiki/FAQ#what-are-the-limitations-of-mockito" target="_blank" rel="noopener">What are the limitations of Mockito</a><br>
-不过这些限制也因为 PowerMock 的出现而被化解，所以搭配上 PowerMock 之后，Java 单元测试这边几乎所向披靡。</p>
-<h3 id="jmock">jMock</h3>
-<blockquote>
-<p><a href="http://www.jmock.org/" target="_blank" rel="noopener">jMock</a> 是一款爷爷级的 mock 框架。</p>
-</blockquote>
-<p>在2008年底就已经更新到 2.6.0-RC1 版了，结果在2012年底发布 2.6.0-released 版本之后就再也没有了消息，花费4年打磨了一个版本，估计作者是气死了吧。</p>
-<h3 id="powermock">PowerMock</h3>
-<blockquote>
-<p><a href="https://github.com/powermock/powermock" target="_blank" rel="noopener">PowerMock</a> 的出现是为了弥补常规 mock 框架的限制问题。Mockito 与 PowerMock 合作紧密，但毕竟不是一伙人，所以后者的大版本更新往往会落后前者一点。</p>
-</blockquote>
-<p>它绕开了 CGLib，直接修改类的字节码，以实现 mock 某个类的目的。这种风骚的操作让 PowerMock 能够做到上面提到的框架做不到的事情：修改静态或私有方法等等。<br>
-然而，它把自己定位为高层次框架的插件，所以用它的时候就不可避免要带上其他的框架（在 gradle 里引入 PowerMock 的时候会自动引入相关框架的依赖）。如果已经使用了 Mockito 之流，那在后期引入 PowerMock 的时候必须让二者的版本相对应，或者抛弃原来的 Mockito，直接使用 PowerMock 依赖的版本。</p>
-<h3 id="jmockit">JMockit</h3>
-<blockquote>
-<p><a href="http://jmockit.org/index.html" target="_blank" rel="noopener">JMockit</a> 从2014年提交第一个 commit，到现在已经迭代了将近3年的时间。虽然从 Github 上面看它的社区并不太活跃，但是却保持着良好的更新频率，现在还在持续更新着。</p>
-</blockquote>
-<p>研究 Android 单元测试好几天了才看到这个框架，真是惭愧。<br>
-它相当于一个非插件化的 PowerMock，集成和使用的方式都非常简单。语法上虽然不及 <code>when/thenReturn</code> 这样口语化，但也是一目了然。<br>
-所以，一个 JMockit 能搞定的事情，为什么要用 Mockito&amp;PowerMock 组合呢？</p>
-<p>关于这类修改字节码的框架是如何实现的，可以看这篇文章：<br>
-<a href="https://segmentfault.com/a/1190000003718149" target="_blank" rel="noopener">浅谈jmockit中mock机制的实现</a></p>
-<h2 id="android-test">Android Test</h2>
-<h3 id="robolectric">Robolectric</h3>
-<blockquote>
-<p><a href="http://robolectric.org/" target="_blank" rel="noopener">Robolectric</a> 重写了许多 Android SDK 里的类，使得在 JVM 上进行 Android 测试成为了可能。</p>
-</blockquote>
-<p>按照<a href="http://robolectric.org/extending/" target="_blank" rel="noopener">文档</a>中的描述，Shadow class 是用来修改和扩充 Android OS 下的类的行为的，除了可以 shadow 构造方法外，它和 Mockito 的 mock 没有太大区别，所以它并不能作为 Mockito 的扩充来使用。</p>
-<p>官网的介绍中也提及了 Mockito，按照它的说法，我们完全可以用 Mockito 来实现 Robolectric 的功能，只不过要我们自己将 Android SDK 和一些 native 方法一个个 mock 掉而已。这部分工作正是 Robolectric 的价值所在。</p>
-<h3 id="espresso-ui-automator">Espresso &amp; UI Automator</h3>
-<blockquote>
-<p><a href="https://developer.android.com/topic/libraries/testing-support-library/index.html#Espresso" target="_blank" rel="noopener">Espresso</a> &amp; <a href="https://developer.android.com/topic/libraries/testing-support-library/index.html#UIAutomator" target="_blank" rel="noopener">UI Automator</a> 这两兄弟都是 Google 官方推荐的 UI 测试框架，其中前者更适合于白盒测试，后者更适合黑盒测试。</p>
-</blockquote>
-<p>根据官方的说法，它们还是有一些区别的：<br>
-Espresso：适合应用中的功能性 UI 测试<br>
-UI Automator：适合跨系统和已安装应用的跨应用功能性 UI 测试</p>
-<p>但因为目前还没有涉及到这一块的测试，没有深入研究，所以推荐大家还是去官网看看比较好。</p>
-<h2 id="others">Others</h2>
-<h3 id="hamcrest">Hamcrest</h3>
-<blockquote>
-<p><a href="https://github.com/hamcrest" target="_blank" rel="noopener">Hamcrest</a> 是一个提供更灵活的 Assertion 的 API 的第三方库</p>
-</blockquote>
-]]></content>
-      <tags>
-        <tag>Android</tag>
-        <tag>单元测试</tag>
-        <tag>JUnit</tag>
-        <tag>Mock</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Gesture Recognizers for iOS - The Basic</title>
     <url>/2017/03/28/Basic-Gesture-Recognizers/</url>
     <content><![CDATA[<blockquote>
@@ -172,6 +86,92 @@ swipe 和 pan 一起添加到 view 上的时候，pan 总是在 swipe 之前被�
       <tags>
         <tag>iOS</tag>
         <tag>Gesture</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Android Unit Test 框架比较</title>
+    <url>/2017/07/04/Android-unit-test-lib-compare/</url>
+    <content><![CDATA[<p>这篇文章列举了现有常见的 Android 单元测试框架，并进行了简单的比较，方便用来进行框架的选型和收藏（毕竟只要收藏了本文，就相当于收藏了各大单元测试框架的主页，是不是很棒棒？）。</p>
+<blockquote>
+<p>框架对比的部分会带有一定的偏向性，不过光是把本文当做一个单元测试的工具箱也是蛮顺手的。</p>
+</blockquote>
+<a id="more"></a>
+<h2 id="java-tests">Java Tests</h2>
+<h3 id="junit">JUnit</h3>
+<blockquote>
+<p><a href="http://junit.org/junit4/" target="_blank" rel="noopener">JUnit</a> 是基于 xUnit 架构实现的单元测试框架。雏形是1998年在 SmallTalk 上实现的 SUnit，后来原作者将它迁移到 Java 上，从此声名大噪。</p>
+</blockquote>
+<p>JUnit 在 Android 官网上出现的频率相当高，是 Android 单元测试的基础框架之一，后面提到的 mock 框架都相当于是在丰富这些基础框架的功能。<br>
+要做单元测试的开发者们通常都会在 JUnit 和 TestNG 之间选择一个，个人感觉还是选 JUnit 好一些。（理由在 TestNG 的介绍中）</p>
+<h3 id="testng">TestNG</h3>
+<blockquote>
+<p><a href="http://testng.org/doc/index.html" target="_blank" rel="noopener">TestNG</a>  是一名软件工程师（Cédric Beust）对 JUnit 的改进，他将对 JUnit 的不满写在了 <a href="http://beust.com/weblog/2004/02/08/junit-pain/" target="_blank" rel="noopener">这里</a> 和 <a href="http://beust.com/weblog/2004/08/25/testsetup-and-evil-static-methods/" target="_blank" rel="noopener">这里</a>，感兴趣的可以去看看。</p>
+</blockquote>
+<p>TestNG 对 JUnit 的改进主要在两个方面：</p>
+<ol>
+<li>在 JUnit 中，同一个测试类中的不同测试方法是相互独立的，也就是说，每个测试方法开始前都会执行一次测试类的构造方法，这就让测试方法之间共享某些状态变得不可能</li>
+<li>后来 JUnit 对问题1给出了解决方案—— <code>TestSetup</code>，但是它必须通过静态方法去使用（JUnit 的 <code>TestSetup</code> 因为年代久远，已经没有文档了，估计 JUnit 也觉得这个解决方案不妥，赶紧修复了吧）</li>
+</ol>
+<p>事实上，TestNG 要改进的问题在新版本的 JUnit 上已经不是问题了（毕竟那次抱怨都发自2004年）。从官网最后一次更新是2015年12月来看，TestNG 社区的活跃程度远不如它的改进对象 JUnit，所以还是乖乖滚回 JUnit 的怀抱好了。</p>
+<h3 id="mockito">Mockito</h3>
+<blockquote>
+<p><a href="http://site.mockito.org/" target="_blank" rel="noopener">Mockito</a> 最初是在 <a href="http://easymock.org/" target="_blank" rel="noopener">EasyMock</a> 的基础上实现的，持续更新到现在，而始祖 EasyMock 已经在2015年停更了。</p>
+</blockquote>
+<p>Mockito 的优势正如它官网说的：</p>
+<ul>
+<li>测试代码和验证提示的良好可读性</li>
+<li>良好的社区支持</li>
+<li>Java 世界中排名能到达前十的明星框架</li>
+<li><a href="https://github.com/mockito/mockito/wiki/Features-And-Motivations" target="_blank" rel="noopener">Features And Motivations</a></li>
+</ul>
+<p>但劣势也同样明显，其实不应该叫做“劣势”，而应该说是因为实现方式所带来的“限制”：<a href="https://github.com/mockito/mockito/wiki/FAQ#what-are-the-limitations-of-mockito" target="_blank" rel="noopener">What are the limitations of Mockito</a><br>
+不过这些限制也因为 PowerMock 的出现而被化解，所以搭配上 PowerMock 之后，Java 单元测试这边几乎所向披靡。</p>
+<h3 id="jmock">jMock</h3>
+<blockquote>
+<p><a href="http://www.jmock.org/" target="_blank" rel="noopener">jMock</a> 是一款爷爷级的 mock 框架。</p>
+</blockquote>
+<p>在2008年底就已经更新到 2.6.0-RC1 版了，结果在2012年底发布 2.6.0-released 版本之后就再也没有了消息，花费4年打磨了一个版本，估计作者是气死了吧。</p>
+<h3 id="powermock">PowerMock</h3>
+<blockquote>
+<p><a href="https://github.com/powermock/powermock" target="_blank" rel="noopener">PowerMock</a> 的出现是为了弥补常规 mock 框架的限制问题。Mockito 与 PowerMock 合作紧密，但毕竟不是一伙人，所以后者的大版本更新往往会落后前者一点。</p>
+</blockquote>
+<p>它绕开了 CGLib，直接修改类的字节码，以实现 mock 某个类的目的。这种风骚的操作让 PowerMock 能够做到上面提到的框架做不到的事情：修改静态或私有方法等等。<br>
+然而，它把自己定位为高层次框架的插件，所以用它的时候就不可避免要带上其他的框架（在 gradle 里引入 PowerMock 的时候会自动引入相关框架的依赖）。如果已经使用了 Mockito 之流，那在后期引入 PowerMock 的时候必须让二者的版本相对应，或者抛弃原来的 Mockito，直接使用 PowerMock 依赖的版本。</p>
+<h3 id="jmockit">JMockit</h3>
+<blockquote>
+<p><a href="http://jmockit.org/index.html" target="_blank" rel="noopener">JMockit</a> 从2014年提交第一个 commit，到现在已经迭代了将近3年的时间。虽然从 Github 上面看它的社区并不太活跃，但是却保持着良好的更新频率，现在还在持续更新着。</p>
+</blockquote>
+<p>研究 Android 单元测试好几天了才看到这个框架，真是惭愧。<br>
+它相当于一个非插件化的 PowerMock，集成和使用的方式都非常简单。语法上虽然不及 <code>when/thenReturn</code> 这样口语化，但也是一目了然。<br>
+所以，一个 JMockit 能搞定的事情，为什么要用 Mockito&amp;PowerMock 组合呢？</p>
+<p>关于这类修改字节码的框架是如何实现的，可以看这篇文章：<br>
+<a href="https://segmentfault.com/a/1190000003718149" target="_blank" rel="noopener">浅谈jmockit中mock机制的实现</a></p>
+<h2 id="android-test">Android Test</h2>
+<h3 id="robolectric">Robolectric</h3>
+<blockquote>
+<p><a href="http://robolectric.org/" target="_blank" rel="noopener">Robolectric</a> 重写了许多 Android SDK 里的类，使得在 JVM 上进行 Android 测试成为了可能。</p>
+</blockquote>
+<p>按照<a href="http://robolectric.org/extending/" target="_blank" rel="noopener">文档</a>中的描述，Shadow class 是用来修改和扩充 Android OS 下的类的行为的，除了可以 shadow 构造方法外，它和 Mockito 的 mock 没有太大区别，所以它并不能作为 Mockito 的扩充来使用。</p>
+<p>官网的介绍中也提及了 Mockito，按照它的说法，我们完全可以用 Mockito 来实现 Robolectric 的功能，只不过要我们自己将 Android SDK 和一些 native 方法一个个 mock 掉而已。这部分工作正是 Robolectric 的价值所在。</p>
+<h3 id="espresso-ui-automator">Espresso &amp; UI Automator</h3>
+<blockquote>
+<p><a href="https://developer.android.com/topic/libraries/testing-support-library/index.html#Espresso" target="_blank" rel="noopener">Espresso</a> &amp; <a href="https://developer.android.com/topic/libraries/testing-support-library/index.html#UIAutomator" target="_blank" rel="noopener">UI Automator</a> 这两兄弟都是 Google 官方推荐的 UI 测试框架，其中前者更适合于白盒测试，后者更适合黑盒测试。</p>
+</blockquote>
+<p>根据官方的说法，它们还是有一些区别的：<br>
+Espresso：适合应用中的功能性 UI 测试<br>
+UI Automator：适合跨系统和已安装应用的跨应用功能性 UI 测试</p>
+<p>但因为目前还没有涉及到这一块的测试，没有深入研究，所以推荐大家还是去官网看看比较好。</p>
+<h2 id="others">Others</h2>
+<h3 id="hamcrest">Hamcrest</h3>
+<blockquote>
+<p><a href="https://github.com/hamcrest" target="_blank" rel="noopener">Hamcrest</a> 是一个提供更灵活的 Assertion 的 API 的第三方库</p>
+</blockquote>
+]]></content>
+      <tags>
+        <tag>Android</tag>
+        <tag>单元测试</tag>
+        <tag>JUnit</tag>
+        <tag>Mock</tag>
       </tags>
   </entry>
   <entry>
@@ -322,72 +322,6 @@ swipe 和 pan 一起添加到 view 上的时候，pan 总是在 swipe 之前被�
       <tags>
         <tag>iOS</tag>
         <tag>Gesture</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>CSS 是怎么运作的</title>
-    <url>/2018/10/19/How-CSS-works/</url>
-    <content><![CDATA[<p>CSS 全称 Cascading Style Sheets，网页内容（HTML）会被浏览器转换为 DOM（Document Object Model）以供显示，而 CSS 就是作用在 DOM 上以改变它们的样式、布局或行为等。对于前端工程师来说，这是很常见的基本操作了，但是对其他不常敲网页代码的程序员来说，却可能会有些陌生。</p>
-<p>借着最近前端同事事务繁忙的机会，我这客户端工程师赶鸭子上架怼了一个静态网页出来，顺便产下了两篇副产品，都与 CSS 基础相关，这是第一篇，希望能对其他可能有相同需要的同志送上一些帮助。</p>
-<a id="more"></a>
-<blockquote>
-<p>文章的内容基本是翻译 MDN 文档来的，怕有什么遗漏的同学可以直接翻到文末看官文，也欢迎指出本文的错误 :)</p>
-</blockquote>
-<h2 id="css-是怎么作用到-html-上的？">CSS 是怎么作用到 HTML 上的？</h2>
-<p>网页浏览器会把 CSS 规则应用到文档上，以改变文档内容的表现形式，一个单一的 CSS 规则是由下面这两个东西组成的：</p>
-<ol>
-<li>一组属性（Properties）：这些参数会更新 HTML 的内容，让它在显示的时候与众不同</li>
-<li>一个选择器（Selector）：用来挑选要作用到哪个元素上</li>
-</ol>
-<p>一个 CSS 规则约定了某个元素长什么样，一个包含了一组 CSS 规则（Rulesets/Rules）的 <code>stylesheet</code> 就定义了一个网页的长相。</p>
-<h3 id="举个例子">举个例子</h3>
-<p>来看一个简单的 HTML 文档，这个例子里包含了 <code>&lt;h1&gt;</code> 和 <code>&lt;p&gt;</code> 标签，而 <code>stylesheet</code> 则是通过 <code>&lt;link&gt;</code> 元素实现的：</p>
-<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE <span class="meta-keyword">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">"utf-8"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">title</span>&gt;</span>My CSS experiment<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">link</span> <span class="attr">rel</span>=<span class="string">"stylesheet"</span> <span class="attr">href</span>=<span class="string">"style.css"</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">h1</span>&gt;</span>Hello World!<span class="tag">&lt;/<span class="name">h1</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">p</span>&gt;</span>This is my first CSS example<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<p>然后看两个 CSS 的规则：</p>
-<figure class="highlight css"><table><tr><td class="code"><pre><span class="line"><span class="selector-tag">h1</span> &#123;</span><br><span class="line">  <span class="attribute">color</span>: blue;</span><br><span class="line">  <span class="attribute">background-color</span>: yellow;</span><br><span class="line">  <span class="attribute">border</span>: <span class="number">1px</span> solid black;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-tag">p</span> &#123;</span><br><span class="line">  <span class="attribute">color</span>: red;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>这两个 CSS 规则是写在 <em>style.css</em> 文件里的，跟上面的 <em>.html</em> 文件放在一起就可以通过相对路径引用到</p>
-</blockquote>
-<p>大括号签名的标签（<code>h1</code> 和 <code>p</code>）就是选择器，它告诉浏览器这些规则要作用在什么标签上；而大括号里的键值对就约定了这些标签的内容的显示规则。</p>
-<h2 id="原理呢？">原理呢？</h2>
-<p>浏览器在处理网页的时候，会分两步走：</p>
-<ol>
-<li>把 HTML 和 CSS 转换为 DOM，DOM 会把内容和样式融合到一起</li>
-<li>把 DOM 的内容显示出来<br>
-<img src="/uploads/How-CSS-works/D90AF498-F58B-4AEF-91B9-9E38F4863B92.png" alt="DOM"></li>
-</ol>
-<h2 id="介绍一下-dom">介绍一下 DOM</h2>
-<p>一个 DOM 的内容是以树状结构保存的。每个通过 markup 语言表述的元素、属性、文字等会变成 DOM 节点保存在树上。</p>
-<h3 id="dom-的真面目">DOM 的真面目</h3>
-<p>假设我们有一段 HTML 代码：</p>
-<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">p</span>&gt;</span></span><br><span class="line">  Let's use:</span><br><span class="line">  <span class="tag">&lt;<span class="name">span</span>&gt;</span>Cascading<span class="tag">&lt;/<span class="name">span</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">span</span>&gt;</span>Style<span class="tag">&lt;/<span class="name">span</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">span</span>&gt;</span>Sheets<span class="tag">&lt;/<span class="name">span</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<p>将它转换为 DOM 之后，这个 DOM 会是这样的：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">P</span><br><span class="line">├─ &quot;Let&apos;s use:&quot;</span><br><span class="line">├─ SPAN</span><br><span class="line">|  └─ &quot;Cascading&quot;</span><br><span class="line">├─ SPAN</span><br><span class="line">|  └─ &quot;Style&quot;</span><br><span class="line">└─ SPAN</span><br><span class="line">   └─ &quot;Sheets&quot;</span><br></pre></td></tr></table></figure>
-<p>现在来加一个 CSS 约束试试：</p>
-<figure class="highlight css"><table><tr><td class="code"><pre><span class="line"><span class="selector-tag">span</span> &#123;</span><br><span class="line">  <span class="attribute">border</span>: <span class="number">1px</span> solid black;</span><br><span class="line">  <span class="attribute">background-color</span>: lime;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>emmm…还是跟刚刚一样的 DOM，不过这些 CSS 约束会被加到 <code>span</code> 选择器上面去，于是渲染出来的样子就不一样了。</p>
-<h2 id="三种使用-css-的方法">三种使用 CSS 的方法</h2>
-<h3 id="外部-stylesheet">外部 stylesheet</h3>
-<p>就是上面例子里用到的方法，CSS 约束是写在一个单独的 <em>.css</em> 文件里的</p>
-<h3 id="内部-stylesheet">内部 stylesheet</h3>
-<p>即直接通过 <code>&lt;style&gt;</code> 标签来定义元素的长相，这个 <code>&lt;style&gt;</code> 需要写在 <code>&lt;head&gt;</code> 标签下才会生效：</p>
-<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE <span class="meta-keyword">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">"utf-8"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">title</span>&gt;</span>My CSS experiment<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">style</span>&gt;</span></span><br><span class="line">      h1 &#123;</span><br><span class="line">        color: blue;</span><br><span class="line">        background-color: yellow;</span><br><span class="line">        border: 1px solid black;</span><br><span class="line">      &#125;</span><br><span class="line"></span><br><span class="line">      p &#123;</span><br><span class="line">        color: red;</span><br><span class="line">      &#125;</span><br><span class="line">    <span class="tag">&lt;/<span class="name">style</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">h1</span>&gt;</span>Hello World!<span class="tag">&lt;/<span class="name">h1</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">p</span>&gt;</span>This is my first CSS example<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<p>这个例子跟之前的例子是同样效果的。</p>
-<h3 id="内联样式">内联样式</h3>
-<p>对于只想改变单独一个标签元素的情况下，可以通过标签的 <code>style</code> 属性实现：</p>
-<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE <span class="meta-keyword">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">"utf-8"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">title</span>&gt;</span>My CSS experiment<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">h1</span> <span class="attr">style</span>=<span class="string">"color: blue;background-color: yellow;border: 1px solid black;"</span>&gt;</span>Hello World!<span class="tag">&lt;/<span class="name">h1</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">p</span> <span class="attr">style</span>=<span class="string">"color:red;"</span>&gt;</span>This is my first CSS example<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<p>然而这种做法并没有很受待见，因为这样定义的样式没办法复用，你可能需要在好几个文档里面写上同样的几个样式，维护成本大大升高了。</p>
-<p>另一方面，把 HTML 语法跟 CSS 语法混合在一起，看起来就不那么清晰易懂了，建议是把不同类型的代码分开，保持纯粹。</p>
-<h2 id="小结">小结</h2>
-<p>到这里，我们已经不止能写 HTML 网页了，还能通过 CSS 给这简陋的网页披上华丽丽的外衣。在下一篇文章里，我们会继续深入学习 CSS 的句法，距离踏入前端世界的大门又要近一些了！</p>
-<h2 id="参考文章">参考文章</h2>
-<p><a href="https://developer.mozilla.org/en-US/docs/Learn/CSS/Introduction_to_CSS/How_CSS_works" target="_blank" rel="noopener">How CSS works - Learn web development | MDN</a></p>
-]]></content>
-      <tags>
-        <tag>css</tag>
-        <tag>html</tag>
-        <tag>web</tag>
-        <tag>dom</tag>
       </tags>
   </entry>
   <entry>
@@ -634,6 +568,51 @@ swipe 和 pan 一起添加到 view 上的时候，pan 总是在 swipe 之前被�
       </tags>
   </entry>
   <entry>
+    <title>给哈希加点盐</title>
+    <url>/2016/04/26/hash-with-salt/</url>
+    <content><![CDATA[<p>又一篇学习笔记，这篇比较水，相当于是把原文给简化了一下，如果想要深入了解的话推荐还是看看原文<a href="http://drops.wooyun.org/papers/1066" target="_blank" rel="noopener">加盐hash保存密码的正确方式</a>.</p>
+<p>基于 <a href="https://en.wikipedia.org/wiki/Kerckhoffs%27s_principle" target="_blank" rel="noopener">Kerckhoffs’s principle</a>，我们需要一种没有人能“看懂”但是又可以被验证的密码系统，听起来非常矛盾，但是哈希算法恰好满足了这个要求，于是通过加盐 hash 保存密码的方式应该是市面上比较稳妥的做法了。<br>
+在说明加盐是什么之前，先来看看它所使用到的 Hash 的作用和一些常见的密码破解手段，相信看完之后，”为什么要加盐”这个问题也就自然而然的解决了。</p>
+<a id="more"></a>
+<h2 id="hash">Hash</h2>
+<p>Hash 算法是一种单向的函数，它可以把任意数量的数据转换成固定长度的 <em>指纹</em>，这个过程是不可逆的，而且只要输入的数据中有一丝改变，结果的 hash 值也会有很大的不同。<br>
+这里的 Hash 算法跟数据结构上的 hash 函数不完全相同，根据不同的使用场景，需要使用具有不同特性的 hash 函数。实现 hash 表的函数具有快速的特点，而加密 hash 函数是用来进行密码加密的，所以必须要确保安全性，比如 SHA256、SHA512、RipeMD、WHIRLPOOL。</p>
+<h2 id="一些常见的破解手段">一些常见的破解手段</h2>
+<h3 id="字典-暴力破解">字典&amp;暴力破解</h3>
+<p>基本上一切密码都可以用这种途径来破解，只是时间长短的问题了。</p>
+<ul>
+<li>字典破解：根据所有能找到的常用密码，生成一个密码字典，然后遍历字典中的值，一个个去尝试</li>
+<li>暴力破解：对于给定长度的密码，尝试每一种可能的字符组合。</li>
+</ul>
+<p>既然没有办法阻止这种破解方式，那么只能让这种方式变得低效，从而达到花费时间不可接受的地步，让破解者主动放弃。</p>
+<h3 id="查表破解">查表破解</h3>
+<p>其实就是密码破解的进阶版。将密码字典中的每一个密码的 hash 值预先计算出来，放到另一张表里，这样做可以加快配对的速度。缺点是建立这个 hash 表需要耗费比较长的时间。</p>
+<h3 id="反向查表破解">反向查表破解</h3>
+<p>这一招是针对同时破解大量用户的时候用的。<br>
+一般的密码破解的本质是：对同一个用户名，用不同的密码去试，看看哪个是正确的。<br>
+而反向查表的本质是：用一个密码去试所有用户，看看谁在用这个密码，一直换密码直到表里面所有的密码都试过了。</p>
+<p>这里用的表还是查表破解里经过了 hash 加密的密码表。</p>
+<h3 id="彩虹表">彩虹表</h3>
+<p>一种用时间换取了空间的表，牺牲了一些破解时间，以求表内包含的密码更全面。目前已经可以破解8位长度的任意 MD5 hash 。</p>
+<h2 id="加盐">加盐</h2>
+<p>各种查表的方法之所以有效，是因为 hash 函数的特性导致的，只要用户的密码相同，得到的 hash 值也一定相同。但是如果给每个人的密码加上一个随机的字符串再进行加密，那么即使两个用户使用了同一个密码，他们的密码存在数据库中的 hash 值也是不同的。<br>
+这个随机的字符串就是盐（salt）。</p>
+<blockquote>
+<p>盐本身不需要保密，因为它的作用只是为了让各种表没那么容易生成。如果每次都要针对特定用户生成一个特定的表，那这个加盐的效果就达到了。</p>
+</blockquote>
+<h2 id="参考资料">参考资料</h2>
+<ul>
+<li><a href="http://drops.wooyun.org/papers/1066" target="_blank" rel="noopener">加盐hash保存密码的正确方式</a></li>
+</ul>
+]]></content>
+      <tags>
+        <tag>加解密</tag>
+        <tag>安全</tag>
+        <tag>Hash</tag>
+        <tag>Salt</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>iOS获取图片附加信息</title>
     <url>/2016/04/21/get-exif-from-image-ios/</url>
     <content><![CDATA[<p>为了提供更好的体验，iOS上的App通常都会在条件允许的情况下尽可能多地获取用户信息（说好的隐私呢？！）。比如说，在用户选取了相册中的某张图片后，自动补充图片的拍摄日期、时间、地点等等，给用户一个非常智能的感觉。当然，前提是用户给予了我们这样做的权限。</p>
@@ -680,51 +659,6 @@ swipe 和 pan 一起添加到 view 上的时候，pan 总是在 swipe 之前被�
       <tags>
         <tag>iOS</tag>
         <tag>Exif</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>给哈希加点盐</title>
-    <url>/2016/04/26/hash-with-salt/</url>
-    <content><![CDATA[<p>又一篇学习笔记，这篇比较水，相当于是把原文给简化了一下，如果想要深入了解的话推荐还是看看原文<a href="http://drops.wooyun.org/papers/1066" target="_blank" rel="noopener">加盐hash保存密码的正确方式</a>.</p>
-<p>基于 <a href="https://en.wikipedia.org/wiki/Kerckhoffs%27s_principle" target="_blank" rel="noopener">Kerckhoffs’s principle</a>，我们需要一种没有人能“看懂”但是又可以被验证的密码系统，听起来非常矛盾，但是哈希算法恰好满足了这个要求，于是通过加盐 hash 保存密码的方式应该是市面上比较稳妥的做法了。<br>
-在说明加盐是什么之前，先来看看它所使用到的 Hash 的作用和一些常见的密码破解手段，相信看完之后，”为什么要加盐”这个问题也就自然而然的解决了。</p>
-<a id="more"></a>
-<h2 id="hash">Hash</h2>
-<p>Hash 算法是一种单向的函数，它可以把任意数量的数据转换成固定长度的 <em>指纹</em>，这个过程是不可逆的，而且只要输入的数据中有一丝改变，结果的 hash 值也会有很大的不同。<br>
-这里的 Hash 算法跟数据结构上的 hash 函数不完全相同，根据不同的使用场景，需要使用具有不同特性的 hash 函数。实现 hash 表的函数具有快速的特点，而加密 hash 函数是用来进行密码加密的，所以必须要确保安全性，比如 SHA256、SHA512、RipeMD、WHIRLPOOL。</p>
-<h2 id="一些常见的破解手段">一些常见的破解手段</h2>
-<h3 id="字典-暴力破解">字典&amp;暴力破解</h3>
-<p>基本上一切密码都可以用这种途径来破解，只是时间长短的问题了。</p>
-<ul>
-<li>字典破解：根据所有能找到的常用密码，生成一个密码字典，然后遍历字典中的值，一个个去尝试</li>
-<li>暴力破解：对于给定长度的密码，尝试每一种可能的字符组合。</li>
-</ul>
-<p>既然没有办法阻止这种破解方式，那么只能让这种方式变得低效，从而达到花费时间不可接受的地步，让破解者主动放弃。</p>
-<h3 id="查表破解">查表破解</h3>
-<p>其实就是密码破解的进阶版。将密码字典中的每一个密码的 hash 值预先计算出来，放到另一张表里，这样做可以加快配对的速度。缺点是建立这个 hash 表需要耗费比较长的时间。</p>
-<h3 id="反向查表破解">反向查表破解</h3>
-<p>这一招是针对同时破解大量用户的时候用的。<br>
-一般的密码破解的本质是：对同一个用户名，用不同的密码去试，看看哪个是正确的。<br>
-而反向查表的本质是：用一个密码去试所有用户，看看谁在用这个密码，一直换密码直到表里面所有的密码都试过了。</p>
-<p>这里用的表还是查表破解里经过了 hash 加密的密码表。</p>
-<h3 id="彩虹表">彩虹表</h3>
-<p>一种用时间换取了空间的表，牺牲了一些破解时间，以求表内包含的密码更全面。目前已经可以破解8位长度的任意 MD5 hash 。</p>
-<h2 id="加盐">加盐</h2>
-<p>各种查表的方法之所以有效，是因为 hash 函数的特性导致的，只要用户的密码相同，得到的 hash 值也一定相同。但是如果给每个人的密码加上一个随机的字符串再进行加密，那么即使两个用户使用了同一个密码，他们的密码存在数据库中的 hash 值也是不同的。<br>
-这个随机的字符串就是盐（salt）。</p>
-<blockquote>
-<p>盐本身不需要保密，因为它的作用只是为了让各种表没那么容易生成。如果每次都要针对特定用户生成一个特定的表，那这个加盐的效果就达到了。</p>
-</blockquote>
-<h2 id="参考资料">参考资料</h2>
-<ul>
-<li><a href="http://drops.wooyun.org/papers/1066" target="_blank" rel="noopener">加盐hash保存密码的正确方式</a></li>
-</ul>
-]]></content>
-      <tags>
-        <tag>加解密</tag>
-        <tag>安全</tag>
-        <tag>Hash</tag>
-        <tag>Salt</tag>
       </tags>
   </entry>
   <entry>
@@ -876,68 +810,69 @@ swipe 和 pan 一起添加到 view 上的时候，pan 总是在 swipe 之前被�
       </tags>
   </entry>
   <entry>
-    <title>【翻译】消息传递</title>
-    <url>/2016/12/02/messaging-translation/</url>
-    <content><![CDATA[<blockquote>
-<p>本文翻译自苹果官方文档<a href="https://developer.apple.com/library/content/documentation/Cocoa/Conceptual/ObjCRuntimeGuide/Articles/ocrtHowMessagingWorks.html#//apple_ref/doc/uid/TP40008048-CH104-SW1" target="_blank" rel="noopener">《Messaging》</a>。如有不正确的地方，欢迎在评论内指出。</p>
-</blockquote>
+    <title>CSS 是怎么运作的</title>
+    <url>/2018/10/19/How-CSS-works/</url>
+    <content><![CDATA[<p>CSS 全称 Cascading Style Sheets，网页内容（HTML）会被浏览器转换为 DOM（Document Object Model）以供显示，而 CSS 就是作用在 DOM 上以改变它们的样式、布局或行为等。对于前端工程师来说，这是很常见的基本操作了，但是对其他不常敲网页代码的程序员来说，却可能会有些陌生。</p>
+<p>借着最近前端同事事务繁忙的机会，我这客户端工程师赶鸭子上架怼了一个静态网页出来，顺便产下了两篇副产品，都与 CSS 基础相关，这是第一篇，希望能对其他可能有相同需要的同志送上一些帮助。</p>
 <a id="more"></a>
-<h3 id="传说中的-objc-msgsend-函数">传说中的 objc_msgSend 函数</h3>
-<p>在 OC 内，消息（messages）会一直拖到运行时（runtime）才会绑定到方法实现（implementations）上。编译器会将下面这样的语句：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">[receiver message]</span><br></pre></td></tr></table></figure>
-<p>转化为对 objc_msgSend 这个消息传递函数的调用。</p>
-<p>这个函数会将消息的接收者（上面的 receiver）和方法名（上面的 message，这个“方法名”也就是 method selector）作为它的两个主要参数：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">objc_msgSend(receiver, selector)</span><br></pre></td></tr></table></figure>
-<p>任何传给方法的参数，都会原封不动地转交给 objc_msgSend：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">objc_msgSend(receiver, selector, arg1, arg2, ...)</span><br></pre></td></tr></table></figure>
-<p>这个强大的消息传递函数真是为动态绑定（dynamic binding）操碎了心：</p>
-<ul>
-<li>它首先要找到 selector 对应的方法实现。因为同一个方法可能会在不同的类里面有不同的实现，如何判断要使用哪一种实现取决于消息接收者是哪个类。</li>
-<li>然后它要调用那个方法实现，并把方法实现所需要的接收者对象（一个指向对象数据的指针）和所有参数都传递过去。</li>
-<li>最后，它会把方法实现的返回值作为自己的返回值给出去。</li>
-</ul>
 <blockquote>
-<p>嘛，objc_msgSend 已经辣么忙了，你就不要在你自己写的代码里面调用它了吧？嗯？—— Apple.</p>
+<p>文章的内容基本是翻译 MDN 文档来的，怕有什么遗漏的同学可以直接翻到文末看官文，也欢迎指出本文的错误 :)</p>
 </blockquote>
-<p>能实现消息传递这一特性的关键，在于编译器在编译每一个类和对象时所使用的结构（structure）。类的结构包括了两个必备的元素：</p>
-<ul>
-<li>一个指向父类的指针。</li>
-<li>一个类的分派表（dispatch table）。从这张表上，你可以查到方法的 selector 在这个类里对应的地址（class-specific addresses）。比如说，根据 <code>setOrigin::</code> 的 selector，你可以找到这个方法实现的地址（address of the procedure that implements <code>setOrigin::</code>）。</li>
-</ul>
-<p>在一个对象被创建出来的时候，它会被分配一块内存，而且它的成员变量也会进行相应的初始化。在它这些变量当中，排头的就是一个指向它类结构（class structure）的指针。这个指针叫做 <code>isa</code>，通过<code>isa</code>，对象可以访问它自己的类，而通过它自己的类，它还可以访问到它继承下来的所有父类。</p>
+<h2 id="css-是怎么作用到-html-上的？">CSS 是怎么作用到 HTML 上的？</h2>
+<p>网页浏览器会把 CSS 规则应用到文档上，以改变文档内容的表现形式，一个单一的 CSS 规则是由下面这两个东西组成的：</p>
+<ol>
+<li>一组属性（Properties）：这些参数会更新 HTML 的内容，让它在显示的时候与众不同</li>
+<li>一个选择器（Selector）：用来挑选要作用到哪个元素上</li>
+</ol>
+<p>一个 CSS 规则约定了某个元素长什么样，一个包含了一组 CSS 规则（Rulesets/Rules）的 <code>stylesheet</code> 就定义了一个网页的长相。</p>
+<h3 id="举个例子">举个例子</h3>
+<p>来看一个简单的 HTML 文档，这个例子里包含了 <code>&lt;h1&gt;</code> 和 <code>&lt;p&gt;</code> 标签，而 <code>stylesheet</code> 则是通过 <code>&lt;link&gt;</code> 元素实现的：</p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE <span class="meta-keyword">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">"utf-8"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">title</span>&gt;</span>My CSS experiment<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">link</span> <span class="attr">rel</span>=<span class="string">"stylesheet"</span> <span class="attr">href</span>=<span class="string">"style.css"</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">h1</span>&gt;</span>Hello World!<span class="tag">&lt;/<span class="name">h1</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">p</span>&gt;</span>This is my first CSS example<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>然后看两个 CSS 的规则：</p>
+<figure class="highlight css"><table><tr><td class="code"><pre><span class="line"><span class="selector-tag">h1</span> &#123;</span><br><span class="line">  <span class="attribute">color</span>: blue;</span><br><span class="line">  <span class="attribute">background-color</span>: yellow;</span><br><span class="line">  <span class="attribute">border</span>: <span class="number">1px</span> solid black;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-tag">p</span> &#123;</span><br><span class="line">  <span class="attribute">color</span>: red;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <blockquote>
-<p>虽然严格来说，<code>isa</code> 不是 Objective-C 语言的一部分，但它是对象与 Objective-C 运行时系统打交道所必备的东西。一个对象必须与一个 <code>struct objc_object</code>（在 objc/objc.h 里声明）等价。尽管你几乎不会有需要创建一个根对象（root object），但是你要知道，所有继承自 <code>NSObject</code> 或 <code>NSProxy</code> 的对象都会自动带上一个 <code>isa</code> 变量。</p>
+<p>这两个 CSS 规则是写在 <em>style.css</em> 文件里的，跟上面的 <em>.html</em> 文件放在一起就可以通过相对路径引用到</p>
 </blockquote>
-<p>关于消息传递的框架，可以参考下面这个图：</p>
-<p><img src="/uploads/messaging-translation/messaging1.gif" alt="message">￼</p>
-<p>当有消息被发送到对象的时候，消息传递函数会顺着 <code>isa</code> 指针找到类结构，在这个地方它可以从分派表里找到对应的方法实现。<br>
-如果很不幸的没找着，<code>objc_msgSend</code> 会继续顺着指向父类的指针找上去，企图从父类的分派表里找到对应的方法实现。不断地失败让 <code>objc_msgSend</code> 越战越勇，直到它来到了 <code>NSObject</code> 这里。<br>
-如果它找到了，就像上面提到的那样，它会调用对应的方法，并把所有参数一股脑丢给方法实现。</p>
-<p>这就是运行时选择方法实现的一种途径，或者，用面向对象编程的行话来说，这是将方法动态绑定到了消息上。</p>
-<p>为了加速消息传递的过程，运行时系统缓存了它用到的 selectors 和方法的地址。每一个类都有一个独立的缓存，这个缓存会将继承下来的方法也一并保存了，就像保存自己声明的方法一样。在搜索分派表之前，消息传递会惯例先查一下消息接收对象的类的缓存（因为理论上，一个被起码用过一次的方法，会更有可能被再用一次）。如果方法的 selector 在缓存里，那么消息传递就只会比方法调用慢那么一丢丢。一旦程序运行了足够久，缓存已经被充分调动起来了，那几乎所有发送的消息都可以在缓存里找到对应的方法。缓存的大小会随着程序的运行而慢慢地增长，以便让新的消息可以有地方妥当地安置下来。</p>
-<h3 id="使用隐藏参数">使用隐藏参数</h3>
-<p>当 <code>objc_msgSend</code> 找到了想要的方法实现之后，它会调用那个方法实现并把所有传进来的参数都丢过去，除此之外它还会传过去两个不为人知的隐藏参数：</p>
-<ul>
-<li>接收者对象</li>
-<li>方法的 selector</li>
-</ul>
-<p>这两个参数告诉了我们调用每一个方法实现的消息表达式的主要信息。为什么说是“隐藏”的呢？因为它们不会出现在声明方法的源码中，它们只在编译的时候才会被加入到方法实现里面。</p>
-<p>尽管这两个参数没有被显式声明，但是在代码里还是可以引用它们（就像代码里可以引用对象里的其他实例变量那样）。在方法内，可以用 <code>self</code> 来引用接收消息的对象，用 <code>_cmd</code> 来引用它本身的 selector。举个栗子，下面的代码里，<code>_cmd</code> 表示 <code>strange</code> 方法的 selector，而 <code>self</code> 则表示接收 <code>strange</code> 这个方法的对象。</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">- strange</span><br><span class="line">&#123;</span><br><span class="line">    id  target = getTheReceiver();</span><br><span class="line">    SEL method = getTheMethod();</span><br><span class="line"></span><br><span class="line">    if ( target == self || method == _cmd )</span><br><span class="line">        return nil;</span><br><span class="line">    return [target performSelector:method];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>这两个参数里面，<code>self</code> 是比较有用的哪那一个。它其实是成员变量可以在方法里被调用到的关键。</p>
-<h3 id="获取方法地址">获取方法地址</h3>
-<p>唯一可以绕开动态绑定的方法，是获取到方法的地址，然后把它当做一个函数那样直接调用。这种做法用到的机会不多，但是如果一个方法会被一连串地反复调用，这样做可以避免每次都进行消息传递从而节省一些时间。</p>
-<p>你可以用 <code>NSObject</code> 里声明的方法 <code>methodForSelector:</code> 来获取到实现一个方法的程序的指针，然后用这个指针来直接调用这段程序。<code>methodForSelector:</code> 返回的指针在使用前要小心地转换成正确的方法类型，在这个转换里，返回值和参数类型都是必不可少的。</p>
-<p>再举个栗子，它将会告诉你 <code>setFilled:</code> 方法的执行程序是怎么被调用的：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">void (*setter)(id, SEL, BOOL);</span><br><span class="line">int i;</span><br><span class="line"></span><br><span class="line">setter = (void (*)(id, SEL, BOOL))[target</span><br><span class="line">    methodForSelector:@selector(setFilled:)];</span><br><span class="line">for ( i = 0 ; i &lt; 1000 ; i++ )</span><br><span class="line">    setter(targetList[i], @selector(setFilled:), YES);</span><br></pre></td></tr></table></figure>
-<p>前两个传递给执行程序的参数就是接收对象（<code>self</code>）和方法 selector（<code>_cmd</code>）。这些变量对于方法的语法来说是隐藏的，但在方法作为函数调用的时候，它们必须显式地传递过去。</p>
-<p>用 <code>methodForSelector:</code> 来规避动态绑定可以节省消息传递过程所浪费的大多数时间。然而，这种节俭只有特定方法被频繁调用很多次的时候才有意义，比如像上面例子中的 <code>for</code> 循环那样。</p>
-<p>需要注意的是，<code>methodForSelector:</code> 是 Cocoa 运行时系统所提供的，它并不是来自 Objective-C 这门语言本身。</p>
+<p>大括号签名的标签（<code>h1</code> 和 <code>p</code>）就是选择器，它告诉浏览器这些规则要作用在什么标签上；而大括号里的键值对就约定了这些标签的内容的显示规则。</p>
+<h2 id="原理呢？">原理呢？</h2>
+<p>浏览器在处理网页的时候，会分两步走：</p>
+<ol>
+<li>把 HTML 和 CSS 转换为 DOM，DOM 会把内容和样式融合到一起</li>
+<li>把 DOM 的内容显示出来<br>
+<img src="/uploads/How-CSS-works/D90AF498-F58B-4AEF-91B9-9E38F4863B92.png" alt="DOM"></li>
+</ol>
+<h2 id="介绍一下-dom">介绍一下 DOM</h2>
+<p>一个 DOM 的内容是以树状结构保存的。每个通过 markup 语言表述的元素、属性、文字等会变成 DOM 节点保存在树上。</p>
+<h3 id="dom-的真面目">DOM 的真面目</h3>
+<p>假设我们有一段 HTML 代码：</p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">p</span>&gt;</span></span><br><span class="line">  Let's use:</span><br><span class="line">  <span class="tag">&lt;<span class="name">span</span>&gt;</span>Cascading<span class="tag">&lt;/<span class="name">span</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">span</span>&gt;</span>Style<span class="tag">&lt;/<span class="name">span</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">span</span>&gt;</span>Sheets<span class="tag">&lt;/<span class="name">span</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>将它转换为 DOM 之后，这个 DOM 会是这样的：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">P</span><br><span class="line">├─ &quot;Let&apos;s use:&quot;</span><br><span class="line">├─ SPAN</span><br><span class="line">|  └─ &quot;Cascading&quot;</span><br><span class="line">├─ SPAN</span><br><span class="line">|  └─ &quot;Style&quot;</span><br><span class="line">└─ SPAN</span><br><span class="line">   └─ &quot;Sheets&quot;</span><br></pre></td></tr></table></figure>
+<p>现在来加一个 CSS 约束试试：</p>
+<figure class="highlight css"><table><tr><td class="code"><pre><span class="line"><span class="selector-tag">span</span> &#123;</span><br><span class="line">  <span class="attribute">border</span>: <span class="number">1px</span> solid black;</span><br><span class="line">  <span class="attribute">background-color</span>: lime;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>emmm…还是跟刚刚一样的 DOM，不过这些 CSS 约束会被加到 <code>span</code> 选择器上面去，于是渲染出来的样子就不一样了。</p>
+<h2 id="三种使用-css-的方法">三种使用 CSS 的方法</h2>
+<h3 id="外部-stylesheet">外部 stylesheet</h3>
+<p>就是上面例子里用到的方法，CSS 约束是写在一个单独的 <em>.css</em> 文件里的</p>
+<h3 id="内部-stylesheet">内部 stylesheet</h3>
+<p>即直接通过 <code>&lt;style&gt;</code> 标签来定义元素的长相，这个 <code>&lt;style&gt;</code> 需要写在 <code>&lt;head&gt;</code> 标签下才会生效：</p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE <span class="meta-keyword">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">"utf-8"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">title</span>&gt;</span>My CSS experiment<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">style</span>&gt;</span></span><br><span class="line">      h1 &#123;</span><br><span class="line">        color: blue;</span><br><span class="line">        background-color: yellow;</span><br><span class="line">        border: 1px solid black;</span><br><span class="line">      &#125;</span><br><span class="line"></span><br><span class="line">      p &#123;</span><br><span class="line">        color: red;</span><br><span class="line">      &#125;</span><br><span class="line">    <span class="tag">&lt;/<span class="name">style</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">h1</span>&gt;</span>Hello World!<span class="tag">&lt;/<span class="name">h1</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">p</span>&gt;</span>This is my first CSS example<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>这个例子跟之前的例子是同样效果的。</p>
+<h3 id="内联样式">内联样式</h3>
+<p>对于只想改变单独一个标签元素的情况下，可以通过标签的 <code>style</code> 属性实现：</p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE <span class="meta-keyword">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">"utf-8"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">title</span>&gt;</span>My CSS experiment<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">h1</span> <span class="attr">style</span>=<span class="string">"color: blue;background-color: yellow;border: 1px solid black;"</span>&gt;</span>Hello World!<span class="tag">&lt;/<span class="name">h1</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">p</span> <span class="attr">style</span>=<span class="string">"color:red;"</span>&gt;</span>This is my first CSS example<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>然而这种做法并没有很受待见，因为这样定义的样式没办法复用，你可能需要在好几个文档里面写上同样的几个样式，维护成本大大升高了。</p>
+<p>另一方面，把 HTML 语法跟 CSS 语法混合在一起，看起来就不那么清晰易懂了，建议是把不同类型的代码分开，保持纯粹。</p>
+<h2 id="小结">小结</h2>
+<p>到这里，我们已经不止能写 HTML 网页了，还能通过 CSS 给这简陋的网页披上华丽丽的外衣。在下一篇文章里，我们会继续深入学习 CSS 的句法，距离踏入前端世界的大门又要近一些了！</p>
+<h2 id="参考文章">参考文章</h2>
+<p><a href="https://developer.mozilla.org/en-US/docs/Learn/CSS/Introduction_to_CSS/How_CSS_works" target="_blank" rel="noopener">How CSS works - Learn web development | MDN</a></p>
 ]]></content>
       <tags>
-        <tag>iOS</tag>
-        <tag>Translation</tag>
-        <tag>runtime</tag>
+        <tag>css</tag>
+        <tag>html</tag>
+        <tag>web</tag>
+        <tag>dom</tag>
       </tags>
   </entry>
   <entry>
@@ -1011,6 +946,71 @@ swipe 和 pan 一起添加到 view 上的时候，pan 总是在 swipe 之前被�
         <tag>network</tag>
         <tag>nameserver</tag>
         <tag>DNS</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>【翻译】消息传递</title>
+    <url>/2016/12/02/messaging-translation/</url>
+    <content><![CDATA[<blockquote>
+<p>本文翻译自苹果官方文档<a href="https://developer.apple.com/library/content/documentation/Cocoa/Conceptual/ObjCRuntimeGuide/Articles/ocrtHowMessagingWorks.html#//apple_ref/doc/uid/TP40008048-CH104-SW1" target="_blank" rel="noopener">《Messaging》</a>。如有不正确的地方，欢迎在评论内指出。</p>
+</blockquote>
+<a id="more"></a>
+<h3 id="传说中的-objc-msgsend-函数">传说中的 objc_msgSend 函数</h3>
+<p>在 OC 内，消息（messages）会一直拖到运行时（runtime）才会绑定到方法实现（implementations）上。编译器会将下面这样的语句：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">[receiver message]</span><br></pre></td></tr></table></figure>
+<p>转化为对 objc_msgSend 这个消息传递函数的调用。</p>
+<p>这个函数会将消息的接收者（上面的 receiver）和方法名（上面的 message，这个“方法名”也就是 method selector）作为它的两个主要参数：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">objc_msgSend(receiver, selector)</span><br></pre></td></tr></table></figure>
+<p>任何传给方法的参数，都会原封不动地转交给 objc_msgSend：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">objc_msgSend(receiver, selector, arg1, arg2, ...)</span><br></pre></td></tr></table></figure>
+<p>这个强大的消息传递函数真是为动态绑定（dynamic binding）操碎了心：</p>
+<ul>
+<li>它首先要找到 selector 对应的方法实现。因为同一个方法可能会在不同的类里面有不同的实现，如何判断要使用哪一种实现取决于消息接收者是哪个类。</li>
+<li>然后它要调用那个方法实现，并把方法实现所需要的接收者对象（一个指向对象数据的指针）和所有参数都传递过去。</li>
+<li>最后，它会把方法实现的返回值作为自己的返回值给出去。</li>
+</ul>
+<blockquote>
+<p>嘛，objc_msgSend 已经辣么忙了，你就不要在你自己写的代码里面调用它了吧？嗯？—— Apple.</p>
+</blockquote>
+<p>能实现消息传递这一特性的关键，在于编译器在编译每一个类和对象时所使用的结构（structure）。类的结构包括了两个必备的元素：</p>
+<ul>
+<li>一个指向父类的指针。</li>
+<li>一个类的分派表（dispatch table）。从这张表上，你可以查到方法的 selector 在这个类里对应的地址（class-specific addresses）。比如说，根据 <code>setOrigin::</code> 的 selector，你可以找到这个方法实现的地址（address of the procedure that implements <code>setOrigin::</code>）。</li>
+</ul>
+<p>在一个对象被创建出来的时候，它会被分配一块内存，而且它的成员变量也会进行相应的初始化。在它这些变量当中，排头的就是一个指向它类结构（class structure）的指针。这个指针叫做 <code>isa</code>，通过<code>isa</code>，对象可以访问它自己的类，而通过它自己的类，它还可以访问到它继承下来的所有父类。</p>
+<blockquote>
+<p>虽然严格来说，<code>isa</code> 不是 Objective-C 语言的一部分，但它是对象与 Objective-C 运行时系统打交道所必备的东西。一个对象必须与一个 <code>struct objc_object</code>（在 objc/objc.h 里声明）等价。尽管你几乎不会有需要创建一个根对象（root object），但是你要知道，所有继承自 <code>NSObject</code> 或 <code>NSProxy</code> 的对象都会自动带上一个 <code>isa</code> 变量。</p>
+</blockquote>
+<p>关于消息传递的框架，可以参考下面这个图：</p>
+<p><img src="/uploads/messaging-translation/messaging1.gif" alt="message">￼</p>
+<p>当有消息被发送到对象的时候，消息传递函数会顺着 <code>isa</code> 指针找到类结构，在这个地方它可以从分派表里找到对应的方法实现。<br>
+如果很不幸的没找着，<code>objc_msgSend</code> 会继续顺着指向父类的指针找上去，企图从父类的分派表里找到对应的方法实现。不断地失败让 <code>objc_msgSend</code> 越战越勇，直到它来到了 <code>NSObject</code> 这里。<br>
+如果它找到了，就像上面提到的那样，它会调用对应的方法，并把所有参数一股脑丢给方法实现。</p>
+<p>这就是运行时选择方法实现的一种途径，或者，用面向对象编程的行话来说，这是将方法动态绑定到了消息上。</p>
+<p>为了加速消息传递的过程，运行时系统缓存了它用到的 selectors 和方法的地址。每一个类都有一个独立的缓存，这个缓存会将继承下来的方法也一并保存了，就像保存自己声明的方法一样。在搜索分派表之前，消息传递会惯例先查一下消息接收对象的类的缓存（因为理论上，一个被起码用过一次的方法，会更有可能被再用一次）。如果方法的 selector 在缓存里，那么消息传递就只会比方法调用慢那么一丢丢。一旦程序运行了足够久，缓存已经被充分调动起来了，那几乎所有发送的消息都可以在缓存里找到对应的方法。缓存的大小会随着程序的运行而慢慢地增长，以便让新的消息可以有地方妥当地安置下来。</p>
+<h3 id="使用隐藏参数">使用隐藏参数</h3>
+<p>当 <code>objc_msgSend</code> 找到了想要的方法实现之后，它会调用那个方法实现并把所有传进来的参数都丢过去，除此之外它还会传过去两个不为人知的隐藏参数：</p>
+<ul>
+<li>接收者对象</li>
+<li>方法的 selector</li>
+</ul>
+<p>这两个参数告诉了我们调用每一个方法实现的消息表达式的主要信息。为什么说是“隐藏”的呢？因为它们不会出现在声明方法的源码中，它们只在编译的时候才会被加入到方法实现里面。</p>
+<p>尽管这两个参数没有被显式声明，但是在代码里还是可以引用它们（就像代码里可以引用对象里的其他实例变量那样）。在方法内，可以用 <code>self</code> 来引用接收消息的对象，用 <code>_cmd</code> 来引用它本身的 selector。举个栗子，下面的代码里，<code>_cmd</code> 表示 <code>strange</code> 方法的 selector，而 <code>self</code> 则表示接收 <code>strange</code> 这个方法的对象。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">- strange</span><br><span class="line">&#123;</span><br><span class="line">    id  target = getTheReceiver();</span><br><span class="line">    SEL method = getTheMethod();</span><br><span class="line"></span><br><span class="line">    if ( target == self || method == _cmd )</span><br><span class="line">        return nil;</span><br><span class="line">    return [target performSelector:method];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这两个参数里面，<code>self</code> 是比较有用的哪那一个。它其实是成员变量可以在方法里被调用到的关键。</p>
+<h3 id="获取方法地址">获取方法地址</h3>
+<p>唯一可以绕开动态绑定的方法，是获取到方法的地址，然后把它当做一个函数那样直接调用。这种做法用到的机会不多，但是如果一个方法会被一连串地反复调用，这样做可以避免每次都进行消息传递从而节省一些时间。</p>
+<p>你可以用 <code>NSObject</code> 里声明的方法 <code>methodForSelector:</code> 来获取到实现一个方法的程序的指针，然后用这个指针来直接调用这段程序。<code>methodForSelector:</code> 返回的指针在使用前要小心地转换成正确的方法类型，在这个转换里，返回值和参数类型都是必不可少的。</p>
+<p>再举个栗子，它将会告诉你 <code>setFilled:</code> 方法的执行程序是怎么被调用的：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">void (*setter)(id, SEL, BOOL);</span><br><span class="line">int i;</span><br><span class="line"></span><br><span class="line">setter = (void (*)(id, SEL, BOOL))[target</span><br><span class="line">    methodForSelector:@selector(setFilled:)];</span><br><span class="line">for ( i = 0 ; i &lt; 1000 ; i++ )</span><br><span class="line">    setter(targetList[i], @selector(setFilled:), YES);</span><br></pre></td></tr></table></figure>
+<p>前两个传递给执行程序的参数就是接收对象（<code>self</code>）和方法 selector（<code>_cmd</code>）。这些变量对于方法的语法来说是隐藏的，但在方法作为函数调用的时候，它们必须显式地传递过去。</p>
+<p>用 <code>methodForSelector:</code> 来规避动态绑定可以节省消息传递过程所浪费的大多数时间。然而，这种节俭只有特定方法被频繁调用很多次的时候才有意义，比如像上面例子中的 <code>for</code> 循环那样。</p>
+<p>需要注意的是，<code>methodForSelector:</code> 是 Cocoa 运行时系统所提供的，它并不是来自 Objective-C 这门语言本身。</p>
+]]></content>
+      <tags>
+        <tag>iOS</tag>
+        <tag>Translation</tag>
+        <tag>runtime</tag>
       </tags>
   </entry>
   <entry>
@@ -1089,24 +1089,60 @@ swipe 和 pan 一起添加到 view 上的时候，pan 总是在 swipe 之前被�
       </tags>
   </entry>
   <entry>
-    <title>隐私协议</title>
-    <url>/2021/03/05/privacy/</url>
-    <content><![CDATA[<p>本软件尊重并保护所有使用服务用户的个人隐私权。为了给您提供更准确、更有个性化的服务，本软件会按照本隐私权政策的规定使用和披露您的个人信息。但本软件将以高度的勤勉、审慎义务对待这些信息。除本隐私权政策另有规定外，在未征得您事先许可的情况下，本软件不会将这些信息对外披露或向第三方提供。本软件会不时更新本隐私权政策。您在同意本软件服务使用协议之时，即视为您已经同意本隐私权政策全部内容。本隐私权政策属于本软件服务使用协议不可分割的一部分。</p>
-<p>1.适用范围</p>
-<p>a)在您使用本软件网络服务，本软件自动接收并记录的您的手机上的信息，包括但不限于您的健康数据、使用的语言、访问日期和时间、软硬件特征信息及您需求的网页记录等数据；</p>
-<p>2.信息的使用</p>
-<p>a)在获得您的数据之后，本软件会将其上传至服务器，以生成您的排行榜数据，以便您能够更好地使用服务。</p>
-<p>3.信息披露</p>
-<p>a)本软件不会将您的信息披露给不受信任的第三方。</p>
-<p>b)根据法律的有关规定，或者行政或司法机构的要求，向第三方或者行政、司法机构披露；</p>
-<p>c)如您出现违反中国有关法律、法规或者相关规则的情况，需要向第三方披露；</p>
-<p>4.信息存储和交换</p>
-<p>本软件收集的有关您的信息和资料将保存在本软件及（或）其关联公司的服务器上，这些信息和资料可能传送至您所在国家、地区或本软件收集信息和资料所在地的境外并在境外被访问、存储和展示。</p>
-<p>5.信息安全</p>
-<p>a)在使用本软件网络服务进行网上交易时，您不可避免的要向交易对方或潜在的交易对方披露自己的个人信息，如联络方式或者邮政地址。请您妥善保护自己的个人信息，仅在必要的情形下向他人提供。如您发现自己的个人信息泄密，请您立即联络本软件客服，以便本软件采取相应措施。</p>
+    <title>不一样的 macOS Storyboard</title>
+    <url>/2018/08/21/storyboard-in-macos/</url>
+    <content><![CDATA[<p>从 iOS 转来 macOS 阵营已经有几个月了，断断续续踩了一些这样那样的坑，特此写一个系列记录下来。这个系列碰到的问题都是已经找到了解决方法的，希望对其他人也能有些帮助。</p>
+<blockquote>
+<p>这是 macOS 开发系列的第一篇文章。</p>
+<p>从项目开始的地方讲起 —— Storyboard。</p>
+</blockquote>
+<a id="more"></a>
+<h2 id="main-storyboard">Main.Storyboard</h2>
+<p>新建 macOS 项目的时候，如果勾上了 “Use Storyboards” 的话，工程里会自带了一个 “Main.storyboard”。</p>
+<p>打开看看，发现跟 iOS 项目中的样子大同小异，不同的地方在于，原来的 “Navigation Controller” 在这里变成了 “Window Controller”，而且上面还多了一个没见过的 “Main Menu”。（关于菜单的内容会在第三篇文章里讲到）</p>
+<p><img src="/uploads/storyboard-in-macos/4BB6559C-64F4-421D-A8D5-6427C96EF774.png" alt></p>
+<p>如果把应用跑起来，会发现 “Window Controller” 对应的是应用的启动窗口，而 “Main Menu” 对应的是显示在顶部的系统菜单栏。</p>
+<p><img src="/uploads/storyboard-in-macos/6D230E15-056A-495D-8063-96FA6F4E9792.png" alt></p>
+<p>到目前为止，一切都还是合乎逻辑的，直到某天我手贱把 Main.storyboard 删掉了…</p>
+<h2 id="自定义-storyboard">自定义 Storyboard</h2>
+<p>按照我们在 iOS 里学来的经验，这没什么大不了的嘛！</p>
+<p>让我们重新创建一个 Storyboard<br>
+<img src="/uploads/storyboard-in-macos/AAA78593-47E1-4E34-A6FE-34D08C3D5328.png" alt></p>
+<p>拖一个 “Window Controller” 出来，程序入口也要设置上（就是图片中间那个小箭头，位置在 Window Controller -&gt; Attributes Inspector -&gt; “Is Initial Controller”）<br>
+<img src="/uploads/storyboard-in-macos/7BCBD120-A01E-48A9-9146-9A07CD956C81.png" alt></p>
+<p>然后到项目配置里设置一下<br>
+<img src="/uploads/storyboard-in-macos/35E29846-E2B3-4A94-A221-C9CB866FFC42.png" alt></p>
+<p>Done！好像忘了点什么…不过先跑起来看看！<br>
+<img src="/uploads/storyboard-in-macos/7AC50D3E-EF1B-43AE-80CE-0D12D5520CFE.png" alt></p>
+<p>Emmm….菜单栏你怎么了！我的菜单栏呢！</p>
+<h2 id="拯救被误删的-main-storyboard">拯救被误删的 Main.storyboard</h2>
+<p>回到新建的 ”Main.storyboard“ 里瞅瞅，发现跟自带的 Storyboard 相比，少了 “Main Menu“ 这个玩意儿，相应的，在左边的场景列表里，应该要有一个叫 “Application Scene” 的场景。</p>
+<p><img src="/uploads/storyboard-in-macos/BCD3A74F-812C-47F1-992C-E8BA3E1B5EE1.png" alt></p>
+<p>翻遍了控件库，都没有找到任何与 “Application” 和 “Main Menu” 相关的东西，最后在一个 StackOverflow 的问题里找到了答案</p>
+<blockquote>
+<p><a href="https://stackoverflow.com/questions/24418936/create-application-scene-in-blank-os-x-storyboard" target="_blank" rel="noopener">macos - Create Application Scene in blank OS X Storyboard - Stack Overflow</a></p>
+</blockquote>
+<p>简单总结一下就是：即使时隔多年，macOS 上还是不怎么支持让一个不是基于 Storyboard 开发的应用升级到使用 Storyboard 的版本，所以控件库里压根就没有提供 Application Scene。</p>
+<p>难道就没有办法了？</p>
+<p>虽然没有试过在非 Storyboard 项目上集成 Storyboard，但是对于误删的情况还是有救的：（答案也来自于上面的链接里）</p>
+<ol>
+<li>创建一个新的、带 Storyboard 的项目</li>
+<li>查看新项目里的 Main.storyboard 的源码</li>
+<li>将下图 <code>&lt;!--Application--&gt;</code> 注释下面的 <code>&lt;Scene&gt;...&lt;/Scene&gt;</code> 的全部内容都拷贝到我们刚刚新创建的 Storyboard 里面<br>
+<img src="/uploads/storyboard-in-macos/35685F05-E093-4A08-93B4-80332BE704B0.png" alt></li>
+</ol>
+<p>保存后重新打开 Storyboard，你会发现世界又恢复到原本的样子了！我们的菜单栏终于又回来了！</p>
+<p>当然，因为是复制粘贴过来的，菜单栏里的一些信息还是新项目里的样子，在 Storyboard 稍加修改就可以了。</p>
+<h2 id="总结">总结</h2>
+<p>虽说长得差不多，但 macOS 开发里用到的 Storyboard 和 iOS 上的还是有不少的出入。</p>
+<p>比如有时候 IB 里修改了文案，但是跑起来却不一样了，那可能是 Storyboard 生成了国际化配置文件，在里面搜索一下也许会找到元凶：<br>
+<img src="/uploads/storyboard-in-macos/E490581B-53D5-4537-97B2-FC377985545E.png" alt></p>
+<p>而更多的时候，在 IB 里调整了颜色之类的配置是不能直接看到效果的，还是要跑起来验证一下，以实际运行效果为准。</p>
+<p>总而言之，在 macOS 开发过程中使用 Storyboard 需要更多的耐心和实际运行验证，这样的情况也许要到 macOS 支持 UIKit 的时候才能改善了。</p>
 ]]></content>
       <tags>
-        <tag>协议</tag>
+        <tag>Swift</tag>
+        <tag>macOS</tag>
       </tags>
   </entry>
   <entry>
@@ -1185,65 +1221,35 @@ swipe 和 pan 一起添加到 view 上的时候，pan 总是在 swipe 之前被�
 </section>
 ]]></content>
       <tags>
-        <tag>Android</tag>
         <tag>iOS</tag>
+        <tag>Android</tag>
       </tags>
   </entry>
   <entry>
-    <title>不一样的 macOS Storyboard</title>
-    <url>/2018/08/21/storyboard-in-macos/</url>
-    <content><![CDATA[<p>从 iOS 转来 macOS 阵营已经有几个月了，断断续续踩了一些这样那样的坑，特此写一个系列记录下来。这个系列碰到的问题都是已经找到了解决方法的，希望对其他人也能有些帮助。</p>
-<blockquote>
-<p>这是 macOS 开发系列的第一篇文章。</p>
-<p>从项目开始的地方讲起 —— Storyboard。</p>
-</blockquote>
+    <title>多喝水技术支持</title>
+    <url>/2021/03/05/techsupport-drinkmore/</url>
+    <content><![CDATA[<p><img src="/uploads/techsupport-drinkmore/drinkmore-presentation.png" alt></p>
 <a id="more"></a>
-<h2 id="main-storyboard">Main.Storyboard</h2>
-<p>新建 macOS 项目的时候，如果勾上了 “Use Storyboards” 的话，工程里会自带了一个 “Main.storyboard”。</p>
-<p>打开看看，发现跟 iOS 项目中的样子大同小异，不同的地方在于，原来的 “Navigation Controller” 在这里变成了 “Window Controller”，而且上面还多了一个没见过的 “Main Menu”。（关于菜单的内容会在第三篇文章里讲到）</p>
-<p><img src="/uploads/storyboard-in-macos/4BB6559C-64F4-421D-A8D5-6427C96EF774.png" alt></p>
-<p>如果把应用跑起来，会发现 “Window Controller” 对应的是应用的启动窗口，而 “Main Menu” 对应的是显示在顶部的系统菜单栏。</p>
-<p><img src="/uploads/storyboard-in-macos/6D230E15-056A-495D-8063-96FA6F4E9792.png" alt></p>
-<p>到目前为止，一切都还是合乎逻辑的，直到某天我手贱把 Main.storyboard 删掉了…</p>
-<h2 id="自定义-storyboard">自定义 Storyboard</h2>
-<p>按照我们在 iOS 里学来的经验，这没什么大不了的嘛！</p>
-<p>让我们重新创建一个 Storyboard<br>
-<img src="/uploads/storyboard-in-macos/AAA78593-47E1-4E34-A6FE-34D08C3D5328.png" alt></p>
-<p>拖一个 “Window Controller” 出来，程序入口也要设置上（就是图片中间那个小箭头，位置在 Window Controller -&gt; Attributes Inspector -&gt; “Is Initial Controller”）<br>
-<img src="/uploads/storyboard-in-macos/7BCBD120-A01E-48A9-9146-9A07CD956C81.png" alt></p>
-<p>然后到项目配置里设置一下<br>
-<img src="/uploads/storyboard-in-macos/35E29846-E2B3-4A94-A221-C9CB866FFC42.png" alt></p>
-<p>Done！好像忘了点什么…不过先跑起来看看！<br>
-<img src="/uploads/storyboard-in-macos/7AC50D3E-EF1B-43AE-80CE-0D12D5520CFE.png" alt></p>
-<p>Emmm….菜单栏你怎么了！我的菜单栏呢！</p>
-<h2 id="拯救被误删的-main-storyboard">拯救被误删的 Main.storyboard</h2>
-<p>回到新建的 ”Main.storyboard“ 里瞅瞅，发现跟自带的 Storyboard 相比，少了 “Main Menu“ 这个玩意儿，相应的，在左边的场景列表里，应该要有一个叫 “Application Scene” 的场景。</p>
-<p><img src="/uploads/storyboard-in-macos/BCD3A74F-812C-47F1-992C-E8BA3E1B5EE1.png" alt></p>
-<p>翻遍了控件库，都没有找到任何与 “Application” 和 “Main Menu” 相关的东西，最后在一个 StackOverflow 的问题里找到了答案</p>
-<blockquote>
-<p><a href="https://stackoverflow.com/questions/24418936/create-application-scene-in-blank-os-x-storyboard" target="_blank" rel="noopener">macos - Create Application Scene in blank OS X Storyboard - Stack Overflow</a></p>
-</blockquote>
-<p>简单总结一下就是：即使时隔多年，macOS 上还是不怎么支持让一个不是基于 Storyboard 开发的应用升级到使用 Storyboard 的版本，所以控件库里压根就没有提供 Application Scene。</p>
-<p>难道就没有办法了？</p>
-<p>虽然没有试过在非 Storyboard 项目上集成 Storyboard，但是对于误删的情况还是有救的：（答案也来自于上面的链接里）</p>
-<ol>
-<li>创建一个新的、带 Storyboard 的项目</li>
-<li>查看新项目里的 Main.storyboard 的源码</li>
-<li>将下图 <code>&lt;!--Application--&gt;</code> 注释下面的 <code>&lt;Scene&gt;...&lt;/Scene&gt;</code> 的全部内容都拷贝到我们刚刚新创建的 Storyboard 里面<br>
-<img src="/uploads/storyboard-in-macos/35685F05-E093-4A08-93B4-80332BE704B0.png" alt></li>
-</ol>
-<p>保存后重新打开 Storyboard，你会发现世界又恢复到原本的样子了！我们的菜单栏终于又回来了！</p>
-<p>当然，因为是复制粘贴过来的，菜单栏里的一些信息还是新项目里的样子，在 Storyboard 稍加修改就可以了。</p>
-<h2 id="总结">总结</h2>
-<p>虽说长得差不多，但 macOS 开发里用到的 Storyboard 和 iOS 上的还是有不少的出入。</p>
-<p>比如有时候 IB 里修改了文案，但是跑起来却不一样了，那可能是 Storyboard 生成了国际化配置文件，在里面搜索一下也许会找到元凶：<br>
-<img src="/uploads/storyboard-in-macos/E490581B-53D5-4537-97B2-FC377985545E.png" alt></p>
-<p>而更多的时候，在 IB 里调整了颜色之类的配置是不能直接看到效果的，还是要跑起来验证一下，以实际运行效果为准。</p>
-<p>总而言之，在 macOS 开发过程中使用 Storyboard 需要更多的耐心和实际运行验证，这样的情况也许要到 macOS 支持 UIKit 的时候才能改善了。</p>
+<p>你是否曾经有过这样的困扰：<br>
+白天水喝少了或者吃咸了导致晚上睡前总口渴，<br>
+但是睡前水喝多了又会导致睡着之后老起夜？</p>
+<p>多喝水 就是来帮你解决身体水平衡问题的，让你的身体从此水分满满没烦恼！</p>
+<p>== 功能 ==</p>
+<ul>
+<li>科学计算你所需的喝水量</li>
+<li>在合适的时机提醒你喝水</li>
+<li>方便快捷地记录每次水分摄入</li>
+<li>让你一目了然自己过去的表现</li>
+</ul>
+<p>获取技术支持：</p>
+<ul>
+<li>邮件：onetap@foxmail.com</li>
+<li>或直接在下方评论区流言</li>
+</ul>
 ]]></content>
       <tags>
-        <tag>Swift</tag>
-        <tag>macOS</tag>
+        <tag>技术支持</tag>
+        <tag>多喝水</tag>
       </tags>
   </entry>
   <entry>
@@ -1322,21 +1328,38 @@ swipe 和 pan 一起添加到 view 上的时候，pan 总是在 swipe 之前被�
       </tags>
   </entry>
   <entry>
-    <title>多喝水技术支持</title>
-    <url>/2021/03/05/techsupport-drinkmore/</url>
-    <content><![CDATA[<p><img src="/uploads/techsupport-drinkmore/drinkmore-presentation.png" alt></p>
+    <title>隐私协议</title>
+    <url>/2021/03/05/privacy/</url>
+    <content><![CDATA[<p>本软件尊重并保护所有使用服务用户的个人隐私权。为了给您提供更准确、更有个性化的服务，本软件会按照本隐私权政策的规定使用和披露您的个人信息。但本软件将以高度的勤勉、审慎义务对待这些信息。除本隐私权政策另有规定外，在未征得您事先许可的情况下，本软件不会将这些信息对外披露或向第三方提供。本软件会不时更新本隐私权政策。您在同意本软件服务使用协议之时，即视为您已经同意本隐私权政策全部内容。本隐私权政策属于本软件服务使用协议不可分割的一部分。</p>
+<p>1.适用范围</p>
+<p>a)在您使用本软件网络服务，本软件自动接收并记录的您的手机上的信息，包括但不限于您的健康数据、使用的语言、访问日期和时间、软硬件特征信息及您需求的网页记录等数据；</p>
+<p>2.信息的使用</p>
+<p>a)在获得您的数据之后，本软件会将其上传至服务器，以生成您的排行榜数据，以便您能够更好地使用服务。</p>
+<p>3.信息披露</p>
+<p>a)本软件不会将您的信息披露给不受信任的第三方。</p>
+<p>b)根据法律的有关规定，或者行政或司法机构的要求，向第三方或者行政、司法机构披露；</p>
+<p>c)如您出现违反中国有关法律、法规或者相关规则的情况，需要向第三方披露；</p>
+<p>4.信息存储和交换</p>
+<p>本软件收集的有关您的信息和资料将保存在本软件及（或）其关联公司的服务器上，这些信息和资料可能传送至您所在国家、地区或本软件收集信息和资料所在地的境外并在境外被访问、存储和展示。</p>
+<p>5.信息安全</p>
+<p>a)在使用本软件网络服务进行网上交易时，您不可避免的要向交易对方或潜在的交易对方披露自己的个人信息，如联络方式或者邮政地址。请您妥善保护自己的个人信息，仅在必要的情形下向他人提供。如您发现自己的个人信息泄密，请您立即联络本软件客服，以便本软件采取相应措施。</p>
+]]></content>
+      <tags>
+        <tag>协议</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>见闻历技术支持</title>
+    <url>/2021/06/07/techsupport-calendar/</url>
+    <content><![CDATA[<p><img src="/uploads/techsupport-calendar/presentation.png" alt></p>
 <a id="more"></a>
-<p>你是否曾经有过这样的困扰：<br>
-白天水喝少了或者吃咸了导致晚上睡前总口渴，<br>
-但是睡前水喝多了又会导致睡着之后老起夜？</p>
-<p>多喝水 就是来帮你解决身体水平衡问题的，让你的身体从此水分满满没烦恼！</p>
-<p>== 功能 ==</p>
+<p>给平平无奇的日历加点内容，让简简单单的生活充满趣味！</p>
 <ul>
-<li>科学计算你所需的喝水量</li>
-<li>在合适的时机提醒你喝水</li>
-<li>方便快捷地记录每次水分摄入</li>
-<li>让你一目了然自己过去的表现</li>
+<li>每天知道点新知识：经济学、心理学…</li>
+<li>往年今日发生过什么特别的事情吗：历史上的今天</li>
+<li>今天适合做点啥呢：公历农历、属相、每日宜忌…</li>
 </ul>
+<p>将手边的电子设备利用起来，妈妈再也不用担心我没有台历，不记得日子了！</p>
 <p>获取技术支持：</p>
 <ul>
 <li>邮件：onetap@foxmail.com</li>
@@ -1345,7 +1368,44 @@ swipe 和 pan 一起添加到 view 上的时候，pan 总是在 swipe 之前被�
 ]]></content>
       <tags>
         <tag>技术支持</tag>
-        <tag>多喝水</tag>
+        <tag>见闻历</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Universal Link（iOS）踩坑</title>
+    <url>/2017/01/04/universal-link-problems/</url>
+    <content><![CDATA[<blockquote>
+<p>这篇文章讲的都是集成 Universal Link 的时候可能会踩的坑，并不会讲具体如何使用</p>
+</blockquote>
+<a id="more"></a>
+<h2 id="官方关联文件测试">官方关联文件测试</h2>
+<p>一般来说，把关联文件（apple-app-site-association）布置好之后，都要使用苹果提供的<a href="https://search.developer.apple.com/appsearch-validation-tool/" target="_blank" rel="noopener">官方测试工具</a>测试一下，然而结果很可能是这样的：<br>
+<img src="/uploads/universal-link-problems/action_required.png" alt="action_required">￼</p>
+<p>这个提示大多数与关联文件无关。<br>
+据了解，测试工具会先去爬输入的网站的信息，找到关联文件，检查关联文件格式，然后执行最关键、最有可能导致这个问题的一步：去 App Store 检查 appID 所对应的应用是否存在。</p>
+<p>所以说，如果官方测试通过，那是极好的；但是如果不通过，那就直接测试一下功能。我们现在就是处在官方检测不通过、功能却可以正常使用的状态。</p>
+<h2 id="跨域问题">跨域问题</h2>
+<p><img src="/uploads/universal-link-problems/aha.png" alt="aha">￼<br>
+没想到吧！做移动端的人也有碰到跨域问题的一天！</p>
+<p>在苹果多次迭代 Universal Link 之后，直接将连接丢到浏览器地址栏里面打开已经是不可行的了。更有甚者，通过点击按钮跳转的网页链接 <strong>有时候</strong> 也不能拉起应用。</p>
+<p>这个 <strong>有时候</strong> 应该就是碰到跨域问题。这种情况下，将链接粘贴到备忘录或者短信里面，发现可以点击拉起应用，那就是跨域问题无疑。</p>
+<blockquote>
+<p>跨域问题：假设当前网页的地址为 <a href="http://a.com" target="_blank" rel="noopener">a.com</a>，如果要跳转的链接也是 <a href="http://a.com" target="_blank" rel="noopener">a.com</a> 这个域下的，系统将不会进行拉起应用的操作，必须要跳转不同的子域，例如 <a href="http://b.com" target="_blank" rel="noopener">b.com</a> 时，系统才会根据关联文件去判断是否要拉起应用。</p>
+</blockquote>
+<p>虽然不知道苹果这样设计的道理，但是解决方法也是很简单直接，就是让跳转链接跨域。</p>
+<h2 id="选择性跳转">选择性跳转</h2>
+<p>通过 Universal Link 拉起应用之后，你会发现状态栏的右边有个跳转到 Safari 的小按钮，如果你好奇心满满地点了下去，那么恭喜你，这个链接以后就“再也”不会拉起 App，而是直接用 Safari 打开了。</p>
+<p>问题就在于，系统会尝试理解用户的意图，当你点了那个跳转按钮，系统会认为你想要打开网页而不是 App，于是以后就会按照“它认为的”你的意思去执行跳转。<br>
+在浏览器打开了一个本可以拉起应用的 Universal Link 时，通过下拉网页，可以拉出一个打开对应应用 banner，算是对拉起应用的一点补偿吧？</p>
+<blockquote>
+<p>如果用户点击了网页顶部 banner 中的“打开”拉起了应用，下一次用户再次点击链接的时候，系统就会首先去拉起应用。</p>
+<p>简单来说，系统会记住 Universal Link 最后到达的位置，并将这个位置作为下次的默认打开选项。</p>
+</blockquote>
+<p>在这个<a href="http://stackoverflow.com/a/32751734/4177374" target="_blank" rel="noopener">回答</a>里，可以看到更详细一些的分析。</p>
+]]></content>
+      <tags>
+        <tag>iOS</tag>
+        <tag>Universal Link</tag>
       </tags>
   </entry>
   <entry>
@@ -1408,43 +1468,6 @@ swipe 和 pan 一起添加到 view 上的时候，pan 总是在 swipe 之前被�
         <tag>NSTextView</tag>
         <tag>Text System</tag>
         <tag>Field Editor</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Universal Link（iOS）踩坑</title>
-    <url>/2017/01/04/universal-link-problems/</url>
-    <content><![CDATA[<blockquote>
-<p>这篇文章讲的都是集成 Universal Link 的时候可能会踩的坑，并不会讲具体如何使用</p>
-</blockquote>
-<a id="more"></a>
-<h2 id="官方关联文件测试">官方关联文件测试</h2>
-<p>一般来说，把关联文件（apple-app-site-association）布置好之后，都要使用苹果提供的<a href="https://search.developer.apple.com/appsearch-validation-tool/" target="_blank" rel="noopener">官方测试工具</a>测试一下，然而结果很可能是这样的：<br>
-<img src="/uploads/universal-link-problems/action_required.png" alt="action_required">￼</p>
-<p>这个提示大多数与关联文件无关。<br>
-据了解，测试工具会先去爬输入的网站的信息，找到关联文件，检查关联文件格式，然后执行最关键、最有可能导致这个问题的一步：去 App Store 检查 appID 所对应的应用是否存在。</p>
-<p>所以说，如果官方测试通过，那是极好的；但是如果不通过，那就直接测试一下功能。我们现在就是处在官方检测不通过、功能却可以正常使用的状态。</p>
-<h2 id="跨域问题">跨域问题</h2>
-<p><img src="/uploads/universal-link-problems/aha.png" alt="aha">￼<br>
-没想到吧！做移动端的人也有碰到跨域问题的一天！</p>
-<p>在苹果多次迭代 Universal Link 之后，直接将连接丢到浏览器地址栏里面打开已经是不可行的了。更有甚者，通过点击按钮跳转的网页链接 <strong>有时候</strong> 也不能拉起应用。</p>
-<p>这个 <strong>有时候</strong> 应该就是碰到跨域问题。这种情况下，将链接粘贴到备忘录或者短信里面，发现可以点击拉起应用，那就是跨域问题无疑。</p>
-<blockquote>
-<p>跨域问题：假设当前网页的地址为 <a href="http://a.com" target="_blank" rel="noopener">a.com</a>，如果要跳转的链接也是 <a href="http://a.com" target="_blank" rel="noopener">a.com</a> 这个域下的，系统将不会进行拉起应用的操作，必须要跳转不同的子域，例如 <a href="http://b.com" target="_blank" rel="noopener">b.com</a> 时，系统才会根据关联文件去判断是否要拉起应用。</p>
-</blockquote>
-<p>虽然不知道苹果这样设计的道理，但是解决方法也是很简单直接，就是让跳转链接跨域。</p>
-<h2 id="选择性跳转">选择性跳转</h2>
-<p>通过 Universal Link 拉起应用之后，你会发现状态栏的右边有个跳转到 Safari 的小按钮，如果你好奇心满满地点了下去，那么恭喜你，这个链接以后就“再也”不会拉起 App，而是直接用 Safari 打开了。</p>
-<p>问题就在于，系统会尝试理解用户的意图，当你点了那个跳转按钮，系统会认为你想要打开网页而不是 App，于是以后就会按照“它认为的”你的意思去执行跳转。<br>
-在浏览器打开了一个本可以拉起应用的 Universal Link 时，通过下拉网页，可以拉出一个打开对应应用 banner，算是对拉起应用的一点补偿吧？</p>
-<blockquote>
-<p>如果用户点击了网页顶部 banner 中的“打开”拉起了应用，下一次用户再次点击链接的时候，系统就会首先去拉起应用。</p>
-<p>简单来说，系统会记住 Universal Link 最后到达的位置，并将这个位置作为下次的默认打开选项。</p>
-</blockquote>
-<p>在这个<a href="http://stackoverflow.com/a/32751734/4177374" target="_blank" rel="noopener">回答</a>里，可以看到更详细一些的分析。</p>
-]]></content>
-      <tags>
-        <tag>iOS</tag>
-        <tag>Universal Link</tag>
       </tags>
   </entry>
   <entry>
@@ -1621,6 +1644,93 @@ swipe 和 pan 一起添加到 view 上的时候，pan 总是在 swipe 之前被�
         <tag>Redux</tag>
         <tag>Flux</tag>
         <tag>JavaScript</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>【译】符号化iOS崩溃报告</title>
+    <url>/2018/03/08/Symbolicating-Your-iOS-Crash-Reports/</url>
+    <content><![CDATA[<blockquote>
+<p>原文链接：<a href="https://possiblemobile.com/2015/03/symbolicating-your-ios-crash-reports/" target="_blank" rel="noopener">Symbolicating Your iOS Crash Reports</a></p>
+</blockquote>
+<p>你拿到一份 App 的崩溃报告，结果发现里面全是难以理解的内存地址。作为一名合格的开发，应该做些什么呢？简单来说，你需要把调试符号应用到崩溃日志上，让它变得更可读，这个过程叫做符号化（Symbolication）。</p>
+<a id="more"></a>
+<p>崩溃报告通常是一个 <code>.crash</code> 格式的文件。要拿到这个玩意儿有这几种方式：</p>
+<ol>
+<li>从 iTunes Connect 上获取</li>
+<li>通过 Xcode 从连接的设备上直接获取（Windows -&gt; Devices）</li>
+<li>直接从连接设备上获取（ iOS 11 上的位置是：设置 -&gt; 隐私 -&gt; 分析）</li>
+<li>通过第三方的框架去获取</li>
+</ol>
+<p>如果你已经在用第三方的崩溃收集服务的话，崩溃日志应该已经是符号化之后的可读格式了。</p>
+<p>然后我们还需要拿到下面两个文件之一，来帮我们定位问题：</p>
+<ol>
+<li>崩溃应用的 <code>.app</code> 文件。这个包里面存有应用的二进制文件，可能还直接保存了调试符号（如果你手上的是 <code>.ipa</code> 文件，你可以直接把它当成一个压缩包去解压，里面会找到 <code>.app</code> 文件的）</li>
+<li>编译崩溃应用时生成的 <code>.dSYM</code> 文件。如果你编译应用的时候，没有指定把调试符号添加到 <code>.app</code> 文件里，那它们就会把这些符号单独放到这个 <code>.dSYM</code> 文件里</li>
+</ol>
+<p>到底要拿哪一个呢？到 Xcode 项目里的 Build Setting 里面找一个叫 “Strip Debug Symbols During Copy”（<code>COPY_PHASE_STRIP</code>） 的字段，如果它是 <code>YES</code> 的话，调试符号就会从 <code>.app</code> 文件里剔除，并放到 <code>.dSYM</code> 文件里面。</p>
+<blockquote>
+<p>默认情况下，出于代码混淆的考虑，打包 release 版本的时候调试信息会被放到 <code>.dSYM</code> 文件里。</p>
+</blockquote>
+<h2 id="等等-调试符号是什么鬼？">等等，调试符号是什么鬼？</h2>
+<p>从程序员的角度看，调试符号就相当于我们给方法起的那个可读性高的名字。为了提高代码的混淆度，编译器会在编译过程中把我们的调试符号替换成它自己的。而且编译器每一次编译都可能会改变它自己的符号，即使我们的代码完全没有变化。</p>
+<h2 id="开始调试崩溃">开始调试崩溃</h2>
+<p>如果你是从 Xcode 的 Organizer 里拿到的崩溃日志，那它里面与 iOS 框架（UIKit 等）相关的部分可能已经被符号化了，而且如果 Xcode 还记得这一次编译的话，整个崩溃日志的符号化过程也可以省掉了。</p>
+<p>那在没那么好运的情况下呢？</p>
+<h3 id="symbolicatecrash-工具">Symbolicatecrash 工具</h3>
+<p>最简单的方式就是使用苹果官方提供的 Symbolicatecrash 工具了，本质上它就是一个脚本，可以帮我们拿到调试符号并应用到指定的崩溃日志上。</p>
+<p>在 Xcode 7.3 之后，这个工具在这个位置：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">/Applications/Xcode.app/Contents/SharedFrameworks/DVTFoundation.framework/Versions/A/Resources/symbolicatecrash</span><br></pre></td></tr></table></figure>
+<p>在 Xcode 6 到 7.2 的版本下，它在这里：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">/Applications/Xcode.app/Contents/SharedFrameworks/DTDeviceKitBase.framework/Versions/Current/Resources/symbolicatecrash</span><br></pre></td></tr></table></figure>
+<p>如果是更早的版本，可以到这里碰碰运气：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/Library/PrivateFrameworks/DTDeviceKitBase.framework/Versions/Current/Resources/symbolicatecrash</span><br></pre></td></tr></table></figure>
+<p>用这个工具之前，要先配置一个环境变量：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">export DEVELOPER_DIR=”/Applications/Xcode.app/Contents/Developer”</span><br></pre></td></tr></table></figure>
+<p>然后把 <code>.crash</code>、<code>.app</code> 和 <code>.dSYM</code> 文件都放到同一个目录下，并执行：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">symbolicatecrash &lt;#YourAppName&gt;.crash &gt; Symbolicated.crash</span><br><span class="line"></span><br><span class="line">// 如果需要明确指定应用二进制文件的话...</span><br><span class="line">// symbolicatecrash &lt;#YourAppName&gt;.crash ./&lt;#YourAppName&gt;.app/&lt;#YourAppName&gt; &gt; Symbolicated.crash</span><br></pre></td></tr></table></figure>
+<h3 id="验证文件是否正确">验证文件是否正确</h3>
+<p>如果符号化的过程碰到了问题，可以加上 <code>-v</code> 参数让 Symbolicatecrash 告诉我们更多信息。大多数情况下是因为 <code>.dSYM</code> 文件或者 <code>.app</code> 文件拿错了，可以用下面的指令来验证一下 UUID 是否正确：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">// App 文件</span><br><span class="line">dwarfdump -u &lt;#YourAppName&gt;.app/&lt;#YourAppName&gt;</span><br><span class="line"></span><br><span class="line">// dSYM 文件</span><br><span class="line">dwarfdump -u &lt;#YourAppName&gt;.app.dSYM/Contents/Resources/DWARF/&lt;#YourAppName&gt;</span><br></pre></td></tr></table></figure>
+<p>对比看看两次输出的 UUID 是不是一致的，然后看看崩溃日志里的 UUID 是不是输出的这一个。</p>
+<h3 id="定位-symbolicatecrash-的问题">定位 Symbolicatecrash 的问题</h3>
+<p>经过上面的步骤之后，如果还是没法输出有效的信息，那就要仔细看看符号化之后的日志了。官方符号化的工具会尝试寻找与崩溃 App 的 UUID 相匹配的文件和动态库，如果符号化失败的话，从输出的日志里确认它寻找的 App 名称和 UUID 是不是你要的。一般来说，会有这样的输出：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">......fetching symbol file for Crasher[K–[undef] Searching []…– NO MATCH Searching in Spotlight for dsym with UUID of b00cdf0c29653095b1e86078b12d79e5 ... Number of symbols in /Users/You/Workspace/Crasher.app/Crasher: 1 + 106 = 107 Found executable /Users/You/Workspace/Crasher.app/Crasher — MATCH</span><br></pre></td></tr></table></figure>
+<p>如果 Spotlight 找不到 <code>.dSYM</code> 文件，输出是这样子的：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">Did not find executable for dsym Warning: Can’t find any unstripped binary that matches version of /private/var/mobile/Containers/Bundle/Application/956755E3-6C66-4E87-A8BC-352FD4BE3711/Crasher.app/Crasher</span><br></pre></td></tr></table></figure>
+<p>如果 <code>.dSYM</code> 文件有问题：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">Number of symbols in ./Crasher: + = 0 ./Crasher appears to be stripped, skipping.</span><br></pre></td></tr></table></figure>
+<p>非法输入的情况：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">fatal error: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/lipo: can’t figure out the architecture type of: ./Crasher.app.dSYM.zip ./Crasher.app.dSYM.zip doesn’t contain armv7 slice</span><br></pre></td></tr></table></figure>
+<p>Xcode 6 上的 <code>symbolicatecrash</code> 会尝试修复 Xcode 5 上没办法解决的 Spotlight 问题，如果你的 <code>symbolicatecrash</code> 版本比较旧，可以尝试手动修复一下 Spotlight 的索引问题：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">mdimport -g /Applications/Xcode.app/Contents/Library/Spotlight/uuid.mdimporter</span><br></pre></td></tr></table></figure>
+<h3 id="命令行工具链">命令行工具链</h3>
+<p>让我们再深入一步，使用命令行工具去一行行符号化堆栈信息。</p>
+<p>先看一行崩溃日志里的堆栈信息：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">... 13 Crasher 0x000aeef6 0xa8000 + 28406 ...</span><br></pre></td></tr></table></figure>
+<p>第一段十六进制数（<code>0x000aeef6</code>）是栈地址。第二段十六进制数（<code>0xa8000</code>）是程序加载地址。接下来的运算操作（<code>+ 28406</code>）是一个十进制的加法操作，这三个信息表示了一个等式：0x000aeef6 = 0xa8000 + 0x6EF6（== 28406）。</p>
+<p>顺着崩溃日志往下看，会发现 “Binary Images” 这个字段的内容里包含了我们的程序加载地址，它代表了崩溃应用里加载了的一系列动态库占用的内存地址：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">Binary Images: 0xa8000 – 0xaffff Crasher armv7 /var/mobile/Containers/Bundle/Application/956755E3-6C66-4E87-A8BC-352FD4BE3711/Crasher.app/Crasher</span><br></pre></td></tr></table></figure>
+<p>接下来，我们还需要看看崩溃应用的可执行文件的编译架构，可以用 <code>file</code> 或 <code>lipo -info</code> 命令查看：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">file Crasher.app/Crasher</span><br></pre></td></tr></table></figure>
+<p>输出会是这个样子的：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">Crasher.app/Crasher: Mach-O universal binary with 2 architectures Crasher.app/Crasher (for architecture armv7): Mach-O executable arm Crasher.app/Crasher (for architecture arm64): Mach-O 64-bit executable</span><br></pre></td></tr></table></figure>
+<p>现在我们知道所有需要的信息了。使用 <code>atos</code> 指令，可以把地址信息转化为调试符号：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">atos -arch armv7 -o Crasher.app/Crasher -l 0xa8000 0x000aeef6</span><br></pre></td></tr></table></figure>
+<p>这里我们需要知道的参数是：应用的编译架构、应用位置、加载地址和栈地址。</p>
+<p>输出会是这样的：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">main (in Crasher) (main.m:14)</span><br></pre></td></tr></table></figure>
+<p>完成！如果你还有兴趣继续深入，可以了解一下 Mach-O 对象文件的格式，并尝试使用以下 Mach-O 相关的命令行工具，比如 <code>otool</code> 和 <code>lipo</code>。</p>
+<h2 id="延伸阅读">延伸阅读</h2>
+<ul>
+<li><a href="https://developer.apple.com/library/ios/technotes/tn2151/_index.html#//apple_ref/doc/uid/DTS40008184" target="_blank" rel="noopener">Technical Note TN2151: Understanding and Analyzing iOS Application Crash Reports</a></li>
+<li><a href="https://developer.apple.com/library/ios/qa/qa1765/_index.html#//apple_ref/doc/uid/DTS40012196" target="_blank" rel="noopener">Technical Q&amp;A QA1765: How to Match a Crash Report to a Build</a></li>
+<li><a href="https://developer.apple.com/library/mac/documentation/DeveloperTools/Conceptual/MachOTopics/0-Introduction/introduction.html" target="_blank" rel="noopener">Mach-O Programming Topics</a></li>
+<li><a href="http://www.objc.io/issue-6/mach-o-executables.html" target="_blank" rel="noopener">Objc.io on Mach-O Executables</a></li>
+</ul>
+]]></content>
+      <tags>
+        <tag>iOS</tag>
+        <tag>Crash</tag>
       </tags>
   </entry>
   <entry>
@@ -1805,93 +1915,6 @@ swipe 和 pan 一起添加到 view 上的时候，pan 总是在 swipe 之前被�
       <tags>
         <tag>iOS</tag>
         <tag>Translation</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>【译】符号化iOS崩溃报告</title>
-    <url>/2018/03/08/Symbolicating-Your-iOS-Crash-Reports/</url>
-    <content><![CDATA[<blockquote>
-<p>原文链接：<a href="https://possiblemobile.com/2015/03/symbolicating-your-ios-crash-reports/" target="_blank" rel="noopener">Symbolicating Your iOS Crash Reports</a></p>
-</blockquote>
-<p>你拿到一份 App 的崩溃报告，结果发现里面全是难以理解的内存地址。作为一名合格的开发，应该做些什么呢？简单来说，你需要把调试符号应用到崩溃日志上，让它变得更可读，这个过程叫做符号化（Symbolication）。</p>
-<a id="more"></a>
-<p>崩溃报告通常是一个 <code>.crash</code> 格式的文件。要拿到这个玩意儿有这几种方式：</p>
-<ol>
-<li>从 iTunes Connect 上获取</li>
-<li>通过 Xcode 从连接的设备上直接获取（Windows -&gt; Devices）</li>
-<li>直接从连接设备上获取（ iOS 11 上的位置是：设置 -&gt; 隐私 -&gt; 分析）</li>
-<li>通过第三方的框架去获取</li>
-</ol>
-<p>如果你已经在用第三方的崩溃收集服务的话，崩溃日志应该已经是符号化之后的可读格式了。</p>
-<p>然后我们还需要拿到下面两个文件之一，来帮我们定位问题：</p>
-<ol>
-<li>崩溃应用的 <code>.app</code> 文件。这个包里面存有应用的二进制文件，可能还直接保存了调试符号（如果你手上的是 <code>.ipa</code> 文件，你可以直接把它当成一个压缩包去解压，里面会找到 <code>.app</code> 文件的）</li>
-<li>编译崩溃应用时生成的 <code>.dSYM</code> 文件。如果你编译应用的时候，没有指定把调试符号添加到 <code>.app</code> 文件里，那它们就会把这些符号单独放到这个 <code>.dSYM</code> 文件里</li>
-</ol>
-<p>到底要拿哪一个呢？到 Xcode 项目里的 Build Setting 里面找一个叫 “Strip Debug Symbols During Copy”（<code>COPY_PHASE_STRIP</code>） 的字段，如果它是 <code>YES</code> 的话，调试符号就会从 <code>.app</code> 文件里剔除，并放到 <code>.dSYM</code> 文件里面。</p>
-<blockquote>
-<p>默认情况下，出于代码混淆的考虑，打包 release 版本的时候调试信息会被放到 <code>.dSYM</code> 文件里。</p>
-</blockquote>
-<h2 id="等等-调试符号是什么鬼？">等等，调试符号是什么鬼？</h2>
-<p>从程序员的角度看，调试符号就相当于我们给方法起的那个可读性高的名字。为了提高代码的混淆度，编译器会在编译过程中把我们的调试符号替换成它自己的。而且编译器每一次编译都可能会改变它自己的符号，即使我们的代码完全没有变化。</p>
-<h2 id="开始调试崩溃">开始调试崩溃</h2>
-<p>如果你是从 Xcode 的 Organizer 里拿到的崩溃日志，那它里面与 iOS 框架（UIKit 等）相关的部分可能已经被符号化了，而且如果 Xcode 还记得这一次编译的话，整个崩溃日志的符号化过程也可以省掉了。</p>
-<p>那在没那么好运的情况下呢？</p>
-<h3 id="symbolicatecrash-工具">Symbolicatecrash 工具</h3>
-<p>最简单的方式就是使用苹果官方提供的 Symbolicatecrash 工具了，本质上它就是一个脚本，可以帮我们拿到调试符号并应用到指定的崩溃日志上。</p>
-<p>在 Xcode 7.3 之后，这个工具在这个位置：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">/Applications/Xcode.app/Contents/SharedFrameworks/DVTFoundation.framework/Versions/A/Resources/symbolicatecrash</span><br></pre></td></tr></table></figure>
-<p>在 Xcode 6 到 7.2 的版本下，它在这里：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">/Applications/Xcode.app/Contents/SharedFrameworks/DTDeviceKitBase.framework/Versions/Current/Resources/symbolicatecrash</span><br></pre></td></tr></table></figure>
-<p>如果是更早的版本，可以到这里碰碰运气：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/Library/PrivateFrameworks/DTDeviceKitBase.framework/Versions/Current/Resources/symbolicatecrash</span><br></pre></td></tr></table></figure>
-<p>用这个工具之前，要先配置一个环境变量：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">export DEVELOPER_DIR=”/Applications/Xcode.app/Contents/Developer”</span><br></pre></td></tr></table></figure>
-<p>然后把 <code>.crash</code>、<code>.app</code> 和 <code>.dSYM</code> 文件都放到同一个目录下，并执行：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">symbolicatecrash &lt;#YourAppName&gt;.crash &gt; Symbolicated.crash</span><br><span class="line"></span><br><span class="line">// 如果需要明确指定应用二进制文件的话...</span><br><span class="line">// symbolicatecrash &lt;#YourAppName&gt;.crash ./&lt;#YourAppName&gt;.app/&lt;#YourAppName&gt; &gt; Symbolicated.crash</span><br></pre></td></tr></table></figure>
-<h3 id="验证文件是否正确">验证文件是否正确</h3>
-<p>如果符号化的过程碰到了问题，可以加上 <code>-v</code> 参数让 Symbolicatecrash 告诉我们更多信息。大多数情况下是因为 <code>.dSYM</code> 文件或者 <code>.app</code> 文件拿错了，可以用下面的指令来验证一下 UUID 是否正确：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">// App 文件</span><br><span class="line">dwarfdump -u &lt;#YourAppName&gt;.app/&lt;#YourAppName&gt;</span><br><span class="line"></span><br><span class="line">// dSYM 文件</span><br><span class="line">dwarfdump -u &lt;#YourAppName&gt;.app.dSYM/Contents/Resources/DWARF/&lt;#YourAppName&gt;</span><br></pre></td></tr></table></figure>
-<p>对比看看两次输出的 UUID 是不是一致的，然后看看崩溃日志里的 UUID 是不是输出的这一个。</p>
-<h3 id="定位-symbolicatecrash-的问题">定位 Symbolicatecrash 的问题</h3>
-<p>经过上面的步骤之后，如果还是没法输出有效的信息，那就要仔细看看符号化之后的日志了。官方符号化的工具会尝试寻找与崩溃 App 的 UUID 相匹配的文件和动态库，如果符号化失败的话，从输出的日志里确认它寻找的 App 名称和 UUID 是不是你要的。一般来说，会有这样的输出：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">......fetching symbol file for Crasher[K–[undef] Searching []…– NO MATCH Searching in Spotlight for dsym with UUID of b00cdf0c29653095b1e86078b12d79e5 ... Number of symbols in /Users/You/Workspace/Crasher.app/Crasher: 1 + 106 = 107 Found executable /Users/You/Workspace/Crasher.app/Crasher — MATCH</span><br></pre></td></tr></table></figure>
-<p>如果 Spotlight 找不到 <code>.dSYM</code> 文件，输出是这样子的：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">Did not find executable for dsym Warning: Can’t find any unstripped binary that matches version of /private/var/mobile/Containers/Bundle/Application/956755E3-6C66-4E87-A8BC-352FD4BE3711/Crasher.app/Crasher</span><br></pre></td></tr></table></figure>
-<p>如果 <code>.dSYM</code> 文件有问题：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">Number of symbols in ./Crasher: + = 0 ./Crasher appears to be stripped, skipping.</span><br></pre></td></tr></table></figure>
-<p>非法输入的情况：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">fatal error: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/lipo: can’t figure out the architecture type of: ./Crasher.app.dSYM.zip ./Crasher.app.dSYM.zip doesn’t contain armv7 slice</span><br></pre></td></tr></table></figure>
-<p>Xcode 6 上的 <code>symbolicatecrash</code> 会尝试修复 Xcode 5 上没办法解决的 Spotlight 问题，如果你的 <code>symbolicatecrash</code> 版本比较旧，可以尝试手动修复一下 Spotlight 的索引问题：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">mdimport -g /Applications/Xcode.app/Contents/Library/Spotlight/uuid.mdimporter</span><br></pre></td></tr></table></figure>
-<h3 id="命令行工具链">命令行工具链</h3>
-<p>让我们再深入一步，使用命令行工具去一行行符号化堆栈信息。</p>
-<p>先看一行崩溃日志里的堆栈信息：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">... 13 Crasher 0x000aeef6 0xa8000 + 28406 ...</span><br></pre></td></tr></table></figure>
-<p>第一段十六进制数（<code>0x000aeef6</code>）是栈地址。第二段十六进制数（<code>0xa8000</code>）是程序加载地址。接下来的运算操作（<code>+ 28406</code>）是一个十进制的加法操作，这三个信息表示了一个等式：0x000aeef6 = 0xa8000 + 0x6EF6（== 28406）。</p>
-<p>顺着崩溃日志往下看，会发现 “Binary Images” 这个字段的内容里包含了我们的程序加载地址，它代表了崩溃应用里加载了的一系列动态库占用的内存地址：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">Binary Images: 0xa8000 – 0xaffff Crasher armv7 /var/mobile/Containers/Bundle/Application/956755E3-6C66-4E87-A8BC-352FD4BE3711/Crasher.app/Crasher</span><br></pre></td></tr></table></figure>
-<p>接下来，我们还需要看看崩溃应用的可执行文件的编译架构，可以用 <code>file</code> 或 <code>lipo -info</code> 命令查看：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">file Crasher.app/Crasher</span><br></pre></td></tr></table></figure>
-<p>输出会是这个样子的：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">Crasher.app/Crasher: Mach-O universal binary with 2 architectures Crasher.app/Crasher (for architecture armv7): Mach-O executable arm Crasher.app/Crasher (for architecture arm64): Mach-O 64-bit executable</span><br></pre></td></tr></table></figure>
-<p>现在我们知道所有需要的信息了。使用 <code>atos</code> 指令，可以把地址信息转化为调试符号：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">atos -arch armv7 -o Crasher.app/Crasher -l 0xa8000 0x000aeef6</span><br></pre></td></tr></table></figure>
-<p>这里我们需要知道的参数是：应用的编译架构、应用位置、加载地址和栈地址。</p>
-<p>输出会是这样的：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">main (in Crasher) (main.m:14)</span><br></pre></td></tr></table></figure>
-<p>完成！如果你还有兴趣继续深入，可以了解一下 Mach-O 对象文件的格式，并尝试使用以下 Mach-O 相关的命令行工具，比如 <code>otool</code> 和 <code>lipo</code>。</p>
-<h2 id="延伸阅读">延伸阅读</h2>
-<ul>
-<li><a href="https://developer.apple.com/library/ios/technotes/tn2151/_index.html#//apple_ref/doc/uid/DTS40008184" target="_blank" rel="noopener">Technical Note TN2151: Understanding and Analyzing iOS Application Crash Reports</a></li>
-<li><a href="https://developer.apple.com/library/ios/qa/qa1765/_index.html#//apple_ref/doc/uid/DTS40012196" target="_blank" rel="noopener">Technical Q&amp;A QA1765: How to Match a Crash Report to a Build</a></li>
-<li><a href="https://developer.apple.com/library/mac/documentation/DeveloperTools/Conceptual/MachOTopics/0-Introduction/introduction.html" target="_blank" rel="noopener">Mach-O Programming Topics</a></li>
-<li><a href="http://www.objc.io/issue-6/mach-o-executables.html" target="_blank" rel="noopener">Objc.io on Mach-O Executables</a></li>
-</ul>
-]]></content>
-      <tags>
-        <tag>iOS</tag>
-        <tag>Crash</tag>
       </tags>
   </entry>
   <entry>
@@ -2592,89 +2615,6 @@ P.S. 这里说到的 <em>Java 端</em> 应该是指服务器端，<em>Android SD
       </tags>
   </entry>
   <entry>
-    <title>老生常谈的自适应高度UITableViewCell</title>
-    <url>/2016/04/29/using-autolayout-in-uitableviewcells/</url>
-    <content><![CDATA[<p>UITableViewCell 自适应内容高度已经是一个老生常谈的问题了，网络上也随处可以找到相关的资料。从 iOS 8 开始，强大的 AutoLayout 甚至已经可以直接接管 Cell 高度的计算，于是这一话题也就慢慢淡出了人们的视野，包括我…<br>
-最近整理笔记的时候发现了这篇文章，想了想还是把它弄到新博客上来了。这篇文章是做毕业设计的时候（2014）总结下来的，当时因为要兼容到 iOS 7 ，所以用的都是比较原始的方法，不过在那个时候用起来还是比较顺手的（只是对比起 iOS 8 的用法，那真叫一个酸爽）。随着 iOS 后面的版本号越来越大，兼容 iOS 7 的应用应该也不多了，现在把它搬到这上面来，主要是为了记录以往走过的路，这些知识或许再也用不上，但积累它们的过程还是非常值得保留的。<s>另一个原因是为了扩充新博客的文章数目。</s>（喂！）</p>
-<a id="more"></a>
-<h2 id="告诉我需求">告诉我需求！</h2>
-<p>文中的界面制作使用的是 Storyboard，也会略微对比使用 xib 和纯代码的情况。</p>
-<p>首先假设这么一种情况，我们的 UITableViewCell 里面只使用到一种布局：<br>
-<img src="/uploads/using-autolayout-in-uitableviewcells/cell-ui.png" alt="cell-UI"><br>
-其中， State 只显示一行； Name 最多只能显示3行，字体大小不改变； Additional 可以显示任意多行，字体大小不改变。<br>
-如果 cell 的布局变化比较大，比如说文字下面可能还有图片，4张图片和9张图片的布局要不同，那么还是建议把相去甚远的几种布局分别设计成几个不同的 cell，用 Cell Identifier 来区分彼此，然后再分别对每一个 cell 进行自适应内容高度的处理。</p>
-<h2 id="最喜欢ib了-约束设置">最喜欢IB了 - 约束设置</h2>
-<p>既然使用的是 Storyboard，那么一切的约束当然都是在 Storyboard 里面手动进行。<br>
-想要让 cell 根据内容自动调整高度，一个极其重要也似乎是唯一的原则是：约束自上而下贯通整个 contentView。</p>
-<p>还是拿上面的截图做例子：</p>
-<ol>
-<li>State 必须要有一个 Top Space to: Superview，这个 Superview 应该是 cell 的 contentView 而不是 cell 本身。</li>
-<li>Name 要有一个 Top Space to: State，而这个 constant 是多少就可以随意了，它的作用主要是把二者的垂直空间连起来，怎么连、连多长都是看心情的事。</li>
-<li>Additional 除了要有一个 Top Space To: Name 之外，还需要有一个 Bottom Space To: Superview（这个也是 contentView）。</li>
-</ol>
-<p>其实，如果将旁边的数字 1 连到了 contentView 的 top 上，再把 State 跟数字 1 的 center Y 等同一下，也可以达到同样的效果。只是如果使用上面的构建方法，数字 1 就可以自己一边玩儿去了，因为三个 UILabel 已经完成了“确定 cell 所需高度”的关键任务。</p>
-<h2 id="write-the-code-change-the-world">Write the code, change the world!</h2>
-<p>下面将分别针对 UITableView 中需要进行修改的不同几处分开来进行说明。</p>
-<h3 id="主角-customcell-m">主角 - CustomCell.m</h3>
-<p>相对来说最忙的应该是 CustomCell 这个自定义类了，所以放到最前面来说。<br>
-在这个地方，需要关注的其实也只有两件事：</p>
-<ol>
-<li>为 cell 填充内容。</li>
-<li>layoutSubviews。</li>
-</ol>
-<h4 id="填充内容">填充内容</h4>
-<p>其实就是属性的设置而已，但是需要注意的是，对于 UILabel 来说，我们想要看到的是，当显示的内容很多的时候，它可以有一个确定的宽度，然后多出来的内容自动往下接着排列下去。比较好的办法是，继承 UILabel，然后在子类中自己实现。这种做法也不麻烦，放到后面再说，现在我们这里就只是简单的设置几个 text 。</p>
-<blockquote>
-<p>代码呢？</p>
-</blockquote>
-<p>这么简单的赋值代码，我不贴！我不贴！</p>
-<h4 id="layoutsubviews">layoutSubviews</h4>
-<p>如果没有用继承 UILabel 的那套方案，那么这一步就是必须的，否则就是多余的。这里还是用到了继承的方案。<br>
-我们需要重写 cell 的 layoutSubviews 方法，并让它为我们的 UILabel 设定一些规矩：<br>
-<img src="/uploads/using-autolayout-in-uitableviewcells/layoutSubviews-code.png" alt="layoutSubviews-code"><br>
-代码非常简单，因为当运行到这里的时候，AutoLayout 已经帮我们处理好了一大堆布局的问题，我们只需要告诉 UILabel ，我想要你显示多宽就可以了。</p>
-<h3 id="主角诞生的地方-cellforrowatindexpath">主角诞生的地方 - cellForRowAtIndexPath</h3>
-<p>除了常规的获取和配置 cell 之外，我们最好在最后面补上两句简短的代码：<br>
-<img src="/uploads/using-autolayout-in-uitableviewcells/cellForRowAtIndexPath-code.png" alt="cellForRowAtIndexPath-code"><br>
-这两句的作用是告诉我们能者多劳的 cell，如果你发现自己的约束改变了，那么就马上更新一下自己。不写这两句问题也不大，只是为了防止某些特殊情况下 cell 的显示异常。</p>
-<h3 id="到底要我长多高你才满意？-heightforrowatindexpath">到底要我长多高你才满意？！ - heightForRowAtIndexPath</h3>
-<p>最关键的地方来了，告诉 tableView 每个 cell 到底该是多高。这里有三个关键步骤：</p>
-<ol>
-<li>创建一个offscreen cell。</li>
-<li>模拟真实的cell填充数据。</li>
-<li>计算出这个offscreen cell的高度。</li>
-</ol>
-<p>实际上，我们要做的就是制作一个和当前位置需要显示的 cell 一模一样但却不会显示出来的 cell （好拗口），然后告诉 delegate 这个 cell 的高度即可。</p>
-<h4 id="offscreen-cell">Offscreen Cell</h4>
-<p>实验发现，“创建一个 offscreen cell ”是非常讲究的：</p>
-<ul>
-<li>如果使用 <code>[tableView dequeueReusableCellWithIdentifier:CellIdentifier atIndexPath:indexPath]</code> 来获得一个 cell ，会造成内存的泄漏，因为上面这个方法在调用之前会先调用 heightForRowAtIndexPath 这个方法本身，有点像循环引用的概念。</li>
-<li>直接用 <code>[[CustomCell alloc] init]</code> 来创建一个 cell 呢？如果使用的是 xib 或者纯代码的方式来创建布局的，那么当然没问题，不过千万不要忘了，在 VC 的某个地方调用一个 tableView 的 <code>registerClass:forCellReuseIdentifier:</code> 方法，把这个 CustomCell 给注册一下，否则会拿不到 cell 对应的属性。</li>
-<li>对于 Storyboard 来说，因为 CustomCell 是直接放在 tableView 里面的，IB 已经帮你完成了这一切，所以不需要 registerClass 。如果你执意要注册一下的话，不仅没有任何好处，反而会破坏了 IB 的和谐，导致 <code>tableView:cellForRowAtIndexPath:</code> 里面的 dequeue 方法无法返回一个正确的 cell。</li>
-</ul>
-<p>综上所述，用 Storyboard 就没有办法完成“创建一个 offscreen cell ”这一步了么？非也。<br>
-TableView 还有一个方法叫 <code>[dequeueReusableCellWithIdentifier:]</code> ，注意到它没有了 indexPath 这个参数，所以它不会去调用 <code>tableView:heightForRowAtIndexPath:</code> ，这给我们提供了一线希望。于是，完整的代码是这样的：<br>
-<img src="/uploads/using-autolayout-in-uitableviewcells/offscreen-cell-code.png" alt="offscreen-cell-code"></p>
-<p>这里用到了 static 和 dispatch_once 来使得这个 offscreen cell 只需要被创建一次，然后就可以循环利用了，环保？</p>
-<h4 id="填充数据">填充数据</h4>
-<p>这里又是常规的填充数据，再啰嗦一次：如果使用了子类化 UILabel，那么这一步做的事会比看起来强大得多。不过，目前为止，这里看起来也只是填充一下数据而已。</p>
-<h4 id="计算高度">计算高度</h4>
-<p>这里我们要用到 cell.contentView 里一个很强大的方法：<code>[systemLayoutSizeFittingSize:]</code>，后面跟的参数有两个可选项： <code>UILayoutFittingCompressedSize</code> 和 <code>UILayoutFittingExpandSize</code> ，前者会得到满足所有约束的最小 size ，后者得到的是最大 size 。</p>
-<p>这个方法看似方便，但也是因为我们前面做了许许多多的铺路：我们设置了贯通上下的约束，让 cell 能知道自己的内容总共有多高；我们设置了 UILabel 的 preferredMaxLayoutWidth ，让它们知道内容太多的时候要往下排列，等等等等。</p>
-<p>在调用这个方法之前，为了保险起见，还是要让 cell 自己适当排列一下自己的 subviews ，完整代码如下：<br>
-<img src="/uploads/using-autolayout-in-uitableviewcells/return-height-code.png" alt="return-height-code"><br>
-最后的<code>+1</code>只是为了让 cell 之间有 1pt 的空间容纳 separator。</p>
-<h2 id="写在最后">写在最后</h2>
-<p>到这里，一个可以自适应内容高度的 cell 就已经做好了。虽然整篇文章看起来挺长，但是实际写起来代码量也并不大。</p>
-<p>其实如果还是觉得麻烦的话，让应用直接支持 iOS 8 以上不就好了:)</p>
-]]></content>
-      <tags>
-        <tag>iOS</tag>
-        <tag>AutoLayout</tag>
-        <tag>UITableViewCell</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>又一篇 iOS Extension 入门（3/3）— Today 小组件</title>
     <url>/2018/11/15/yet-another-ios-extension-article-3/</url>
     <content><![CDATA[<p>昨天通过两篇文章介绍了 iOS Extension 的基础，并尝试制作了一个分享扩展，让我们的应用可以接收到从其他应用分享过来的数据，还实现了跨沙盒的应用扩展与载体间的通信。</p>
@@ -2760,6 +2700,89 @@ TableView 还有一个方法叫 <code>[dequeueReusableCellWithIdentifier:]</code
         <tag>ios</tag>
         <tag>Today Extension</tag>
         <tag>Widget</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>老生常谈的自适应高度UITableViewCell</title>
+    <url>/2016/04/29/using-autolayout-in-uitableviewcells/</url>
+    <content><![CDATA[<p>UITableViewCell 自适应内容高度已经是一个老生常谈的问题了，网络上也随处可以找到相关的资料。从 iOS 8 开始，强大的 AutoLayout 甚至已经可以直接接管 Cell 高度的计算，于是这一话题也就慢慢淡出了人们的视野，包括我…<br>
+最近整理笔记的时候发现了这篇文章，想了想还是把它弄到新博客上来了。这篇文章是做毕业设计的时候（2014）总结下来的，当时因为要兼容到 iOS 7 ，所以用的都是比较原始的方法，不过在那个时候用起来还是比较顺手的（只是对比起 iOS 8 的用法，那真叫一个酸爽）。随着 iOS 后面的版本号越来越大，兼容 iOS 7 的应用应该也不多了，现在把它搬到这上面来，主要是为了记录以往走过的路，这些知识或许再也用不上，但积累它们的过程还是非常值得保留的。<s>另一个原因是为了扩充新博客的文章数目。</s>（喂！）</p>
+<a id="more"></a>
+<h2 id="告诉我需求">告诉我需求！</h2>
+<p>文中的界面制作使用的是 Storyboard，也会略微对比使用 xib 和纯代码的情况。</p>
+<p>首先假设这么一种情况，我们的 UITableViewCell 里面只使用到一种布局：<br>
+<img src="/uploads/using-autolayout-in-uitableviewcells/cell-ui.png" alt="cell-UI"><br>
+其中， State 只显示一行； Name 最多只能显示3行，字体大小不改变； Additional 可以显示任意多行，字体大小不改变。<br>
+如果 cell 的布局变化比较大，比如说文字下面可能还有图片，4张图片和9张图片的布局要不同，那么还是建议把相去甚远的几种布局分别设计成几个不同的 cell，用 Cell Identifier 来区分彼此，然后再分别对每一个 cell 进行自适应内容高度的处理。</p>
+<h2 id="最喜欢ib了-约束设置">最喜欢IB了 - 约束设置</h2>
+<p>既然使用的是 Storyboard，那么一切的约束当然都是在 Storyboard 里面手动进行。<br>
+想要让 cell 根据内容自动调整高度，一个极其重要也似乎是唯一的原则是：约束自上而下贯通整个 contentView。</p>
+<p>还是拿上面的截图做例子：</p>
+<ol>
+<li>State 必须要有一个 Top Space to: Superview，这个 Superview 应该是 cell 的 contentView 而不是 cell 本身。</li>
+<li>Name 要有一个 Top Space to: State，而这个 constant 是多少就可以随意了，它的作用主要是把二者的垂直空间连起来，怎么连、连多长都是看心情的事。</li>
+<li>Additional 除了要有一个 Top Space To: Name 之外，还需要有一个 Bottom Space To: Superview（这个也是 contentView）。</li>
+</ol>
+<p>其实，如果将旁边的数字 1 连到了 contentView 的 top 上，再把 State 跟数字 1 的 center Y 等同一下，也可以达到同样的效果。只是如果使用上面的构建方法，数字 1 就可以自己一边玩儿去了，因为三个 UILabel 已经完成了“确定 cell 所需高度”的关键任务。</p>
+<h2 id="write-the-code-change-the-world">Write the code, change the world!</h2>
+<p>下面将分别针对 UITableView 中需要进行修改的不同几处分开来进行说明。</p>
+<h3 id="主角-customcell-m">主角 - CustomCell.m</h3>
+<p>相对来说最忙的应该是 CustomCell 这个自定义类了，所以放到最前面来说。<br>
+在这个地方，需要关注的其实也只有两件事：</p>
+<ol>
+<li>为 cell 填充内容。</li>
+<li>layoutSubviews。</li>
+</ol>
+<h4 id="填充内容">填充内容</h4>
+<p>其实就是属性的设置而已，但是需要注意的是，对于 UILabel 来说，我们想要看到的是，当显示的内容很多的时候，它可以有一个确定的宽度，然后多出来的内容自动往下接着排列下去。比较好的办法是，继承 UILabel，然后在子类中自己实现。这种做法也不麻烦，放到后面再说，现在我们这里就只是简单的设置几个 text 。</p>
+<blockquote>
+<p>代码呢？</p>
+</blockquote>
+<p>这么简单的赋值代码，我不贴！我不贴！</p>
+<h4 id="layoutsubviews">layoutSubviews</h4>
+<p>如果没有用继承 UILabel 的那套方案，那么这一步就是必须的，否则就是多余的。这里还是用到了继承的方案。<br>
+我们需要重写 cell 的 layoutSubviews 方法，并让它为我们的 UILabel 设定一些规矩：<br>
+<img src="/uploads/using-autolayout-in-uitableviewcells/layoutSubviews-code.png" alt="layoutSubviews-code"><br>
+代码非常简单，因为当运行到这里的时候，AutoLayout 已经帮我们处理好了一大堆布局的问题，我们只需要告诉 UILabel ，我想要你显示多宽就可以了。</p>
+<h3 id="主角诞生的地方-cellforrowatindexpath">主角诞生的地方 - cellForRowAtIndexPath</h3>
+<p>除了常规的获取和配置 cell 之外，我们最好在最后面补上两句简短的代码：<br>
+<img src="/uploads/using-autolayout-in-uitableviewcells/cellForRowAtIndexPath-code.png" alt="cellForRowAtIndexPath-code"><br>
+这两句的作用是告诉我们能者多劳的 cell，如果你发现自己的约束改变了，那么就马上更新一下自己。不写这两句问题也不大，只是为了防止某些特殊情况下 cell 的显示异常。</p>
+<h3 id="到底要我长多高你才满意？-heightforrowatindexpath">到底要我长多高你才满意？！ - heightForRowAtIndexPath</h3>
+<p>最关键的地方来了，告诉 tableView 每个 cell 到底该是多高。这里有三个关键步骤：</p>
+<ol>
+<li>创建一个offscreen cell。</li>
+<li>模拟真实的cell填充数据。</li>
+<li>计算出这个offscreen cell的高度。</li>
+</ol>
+<p>实际上，我们要做的就是制作一个和当前位置需要显示的 cell 一模一样但却不会显示出来的 cell （好拗口），然后告诉 delegate 这个 cell 的高度即可。</p>
+<h4 id="offscreen-cell">Offscreen Cell</h4>
+<p>实验发现，“创建一个 offscreen cell ”是非常讲究的：</p>
+<ul>
+<li>如果使用 <code>[tableView dequeueReusableCellWithIdentifier:CellIdentifier atIndexPath:indexPath]</code> 来获得一个 cell ，会造成内存的泄漏，因为上面这个方法在调用之前会先调用 heightForRowAtIndexPath 这个方法本身，有点像循环引用的概念。</li>
+<li>直接用 <code>[[CustomCell alloc] init]</code> 来创建一个 cell 呢？如果使用的是 xib 或者纯代码的方式来创建布局的，那么当然没问题，不过千万不要忘了，在 VC 的某个地方调用一个 tableView 的 <code>registerClass:forCellReuseIdentifier:</code> 方法，把这个 CustomCell 给注册一下，否则会拿不到 cell 对应的属性。</li>
+<li>对于 Storyboard 来说，因为 CustomCell 是直接放在 tableView 里面的，IB 已经帮你完成了这一切，所以不需要 registerClass 。如果你执意要注册一下的话，不仅没有任何好处，反而会破坏了 IB 的和谐，导致 <code>tableView:cellForRowAtIndexPath:</code> 里面的 dequeue 方法无法返回一个正确的 cell。</li>
+</ul>
+<p>综上所述，用 Storyboard 就没有办法完成“创建一个 offscreen cell ”这一步了么？非也。<br>
+TableView 还有一个方法叫 <code>[dequeueReusableCellWithIdentifier:]</code> ，注意到它没有了 indexPath 这个参数，所以它不会去调用 <code>tableView:heightForRowAtIndexPath:</code> ，这给我们提供了一线希望。于是，完整的代码是这样的：<br>
+<img src="/uploads/using-autolayout-in-uitableviewcells/offscreen-cell-code.png" alt="offscreen-cell-code"></p>
+<p>这里用到了 static 和 dispatch_once 来使得这个 offscreen cell 只需要被创建一次，然后就可以循环利用了，环保？</p>
+<h4 id="填充数据">填充数据</h4>
+<p>这里又是常规的填充数据，再啰嗦一次：如果使用了子类化 UILabel，那么这一步做的事会比看起来强大得多。不过，目前为止，这里看起来也只是填充一下数据而已。</p>
+<h4 id="计算高度">计算高度</h4>
+<p>这里我们要用到 cell.contentView 里一个很强大的方法：<code>[systemLayoutSizeFittingSize:]</code>，后面跟的参数有两个可选项： <code>UILayoutFittingCompressedSize</code> 和 <code>UILayoutFittingExpandSize</code> ，前者会得到满足所有约束的最小 size ，后者得到的是最大 size 。</p>
+<p>这个方法看似方便，但也是因为我们前面做了许许多多的铺路：我们设置了贯通上下的约束，让 cell 能知道自己的内容总共有多高；我们设置了 UILabel 的 preferredMaxLayoutWidth ，让它们知道内容太多的时候要往下排列，等等等等。</p>
+<p>在调用这个方法之前，为了保险起见，还是要让 cell 自己适当排列一下自己的 subviews ，完整代码如下：<br>
+<img src="/uploads/using-autolayout-in-uitableviewcells/return-height-code.png" alt="return-height-code"><br>
+最后的<code>+1</code>只是为了让 cell 之间有 1pt 的空间容纳 separator。</p>
+<h2 id="写在最后">写在最后</h2>
+<p>到这里，一个可以自适应内容高度的 cell 就已经做好了。虽然整篇文章看起来挺长，但是实际写起来代码量也并不大。</p>
+<p>其实如果还是觉得麻烦的话，让应用直接支持 iOS 8 以上不就好了:)</p>
+]]></content>
+      <tags>
+        <tag>iOS</tag>
+        <tag>AutoLayout</tag>
+        <tag>UITableViewCell</tag>
       </tags>
   </entry>
   <entry>

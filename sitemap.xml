@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://davidleee.com/2021/06/07/techsupport-calendar/</loc>
+    
+    <lastmod>2021-06-07T09:37:31.569Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://davidleee.com/2021/03/05/techsupport-drinkmore/</loc>
     
     <lastmod>2021-03-05T06:03:51.581Z</lastmod>
@@ -65,13 +72,6 @@
   </url>
   
   <url>
-    <loc>http://davidleee.com/2019/07/25/swiftui-serial-tutorial-3/</loc>
-    
-    <lastmod>2020-05-05T03:43:31.445Z</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>http://davidleee.com/2017/01/04/universal-link-problems/</loc>
     
     <lastmod>2020-05-05T03:43:31.445Z</lastmod>
@@ -93,6 +93,13 @@
   </url>
   
   <url>
+    <loc>http://davidleee.com/2016/04/29/using-autolayout-in-uitableviewcells/</loc>
+    
+    <lastmod>2020-05-05T03:43:31.445Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://davidleee.com/2019/08/15/swiftui-serial-tutorial-4/</loc>
     
     <lastmod>2020-05-05T03:43:31.445Z</lastmod>
@@ -107,9 +114,16 @@
   </url>
   
   <url>
-    <loc>http://davidleee.com/2016/04/29/using-autolayout-in-uitableviewcells/</loc>
+    <loc>http://davidleee.com/2019/07/25/swiftui-serial-tutorial-3/</loc>
     
     <lastmod>2020-05-05T03:43:31.445Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://davidleee.com/2016/06/06/push-notification-preparation/</loc>
+    
+    <lastmod>2020-05-05T03:43:31.444Z</lastmod>
     
   </url>
   
@@ -121,7 +135,7 @@
   </url>
   
   <url>
-    <loc>http://davidleee.com/2018/08/21/storyboard-in-macos/</loc>
+    <loc>http://davidleee.com/2016/12/02/messaging-translation/</loc>
     
     <lastmod>2020-05-05T03:43:31.444Z</lastmod>
     
@@ -129,13 +143,6 @@
   
   <url>
     <loc>http://davidleee.com/2017/02/28/network-setup-on-centos/</loc>
-    
-    <lastmod>2020-05-05T03:43:31.444Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://davidleee.com/2016/12/02/messaging-translation/</loc>
     
     <lastmod>2020-05-05T03:43:31.444Z</lastmod>
     
@@ -156,21 +163,21 @@
   </url>
   
   <url>
-    <loc>http://davidleee.com/2016/06/06/push-notification-preparation/</loc>
+    <loc>http://davidleee.com/2018/08/21/storyboard-in-macos/</loc>
     
     <lastmod>2020-05-05T03:43:31.444Z</lastmod>
     
   </url>
   
   <url>
-    <loc>http://davidleee.com/2018/08/22/how-menus-work/</loc>
+    <loc>http://davidleee.com/2018/11/07/login-items-for-macos/</loc>
     
     <lastmod>2020-05-05T03:43:31.443Z</lastmod>
     
   </url>
   
   <url>
-    <loc>http://davidleee.com/2016/04/26/hash-with-salt/</loc>
+    <loc>http://davidleee.com/2018/08/22/how-menus-work/</loc>
     
     <lastmod>2020-05-05T03:43:31.443Z</lastmod>
     
@@ -191,7 +198,7 @@
   </url>
   
   <url>
-    <loc>http://davidleee.com/2018/11/07/login-items-for-macos/</loc>
+    <loc>http://davidleee.com/2017/09/11/Windows-in-macOS/</loc>
     
     <lastmod>2020-05-05T03:43:31.443Z</lastmod>
     
@@ -212,28 +219,14 @@
   </url>
   
   <url>
-    <loc>http://davidleee.com/2017/09/11/Windows-in-macOS/</loc>
+    <loc>http://davidleee.com/2016/04/26/hash-with-salt/</loc>
     
     <lastmod>2020-05-05T03:43:31.443Z</lastmod>
     
   </url>
   
   <url>
-    <loc>http://davidleee.com/2018/10/25/SVG-from-nothing-to-something/</loc>
-    
-    <lastmod>2020-05-05T03:43:31.442Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://davidleee.com/2018/03/08/Symbolicating-Your-iOS-Crash-Reports/</loc>
-    
-    <lastmod>2020-05-05T03:43:31.442Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://davidleee.com/2016/07/07/Introduction-to-3D-drawing-in-core-animation-Part-I/</loc>
+    <loc>http://davidleee.com/2018/04/24/Top-Mistakes-in-RxSwift/</loc>
     
     <lastmod>2020-05-05T03:43:31.442Z</lastmod>
     
@@ -247,6 +240,27 @@
   </url>
   
   <url>
+    <loc>http://davidleee.com/2018/03/08/Symbolicating-Your-iOS-Crash-Reports/</loc>
+    
+    <lastmod>2020-05-05T03:43:31.442Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://davidleee.com/2018/10/25/SVG-from-nothing-to-something/</loc>
+    
+    <lastmod>2020-05-05T03:43:31.442Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://davidleee.com/2016/07/07/Introduction-to-3D-drawing-in-core-animation-Part-I/</loc>
+    
+    <lastmod>2020-05-05T03:43:31.442Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://davidleee.com/2016/05/12/Use-Swift-framework-in-OC-project/</loc>
     
     <lastmod>2020-05-05T03:43:31.442Z</lastmod>
@@ -254,9 +268,16 @@
   </url>
   
   <url>
-    <loc>http://davidleee.com/2018/04/24/Top-Mistakes-in-RxSwift/</loc>
+    <loc>http://davidleee.com/2018/10/19/How-CSS-works/</loc>
     
-    <lastmod>2020-05-05T03:43:31.442Z</lastmod>
+    <lastmod>2020-05-05T03:43:31.441Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://davidleee.com/2017/07/04/Android-unit-test-lib-compare/</loc>
+    
+    <lastmod>2020-05-05T03:43:31.441Z</lastmod>
     
   </url>
   
@@ -268,21 +289,7 @@
   </url>
   
   <url>
-    <loc>http://davidleee.com/2017/03/28/Basic-Gesture-Recognizers/</loc>
-    
-    <lastmod>2020-05-05T03:43:31.441Z</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>http://davidleee.com/2017/07/14/Dive-in-Swift-Optional/</loc>
-    
-    <lastmod>2020-05-05T03:43:31.441Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://davidleee.com/2018/10/19/How-CSS-works/</loc>
     
     <lastmod>2020-05-05T03:43:31.441Z</lastmod>
     
@@ -303,7 +310,7 @@
   </url>
   
   <url>
-    <loc>http://davidleee.com/2017/07/04/Android-unit-test-lib-compare/</loc>
+    <loc>http://davidleee.com/2017/03/28/Basic-Gesture-Recognizers/</loc>
     
     <lastmod>2020-05-05T03:43:31.441Z</lastmod>
     
