@@ -1,102 +1,32 @@
-<!doctype html>
-
-
-
-  
-
-
-<html class="theme-next mist use-motion" lang="zh-Hans">
-<head><meta name="generator" content="Hexo 3.9.0">
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
   <meta charset="UTF-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/favicon.jpg">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon.jpg">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon.jpg">
+  <link rel="mask-icon" href="/favicon.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
 
 
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
 
-<meta http-equiv="Cache-Control" content="no-transform">
-<meta http-equiv="Cache-Control" content="no-siteapp">
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"davidleee.com","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  
-  
-  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
-
-
-
-
-  
-  
-  
-  
-
-  
-    
-    
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-    
-    
-    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
-  
-
-
-
-
-
-
-<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
-
-<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css">
-
-
-  <meta name="keywords" content="Swift,SwiftUI,Image,UIView,UIViewRepresentable,MKMapView,Spacer,">
-
-
-
-
-
-  <link rel="alternate" href="/atom.xml" title="Lee 的笔记本" type="application/atom+xml">
-
-
-
-
-  <link rel="shortcut icon" type="image/x-icon" href="/favicon.jpg?v=5.1.0">
-
-
-
-
-
-
-<meta name="description" content="在上一篇文章中，我们了解了 SwiftUI 的 Text  组件，并通过 Stack 系列的组件对内容进行了一些简单的布局。在这篇文章里，我们会认识一个全新的图片组件，并且会尝试利用这两篇文章的知识，结合 MapKit 框架，来实现一个简单的地点详情界面。">
-<meta name="keywords" content="Swift,SwiftUI,Image,UIView,UIViewRepresentable,MKMapView,Spacer">
+  <meta name="description" content="在上一篇文章中，我们了解了 SwiftUI 的 Text  组件，并通过 Stack 系列的组件对内容进行了一些简单的布局。在这篇文章里，我们会认识一个全新的图片组件，并且会尝试利用这两篇文章的知识，结合 MapKit 框架，来实现一个简单的地点详情界面。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="SwiftUI 系列教程（2）—— 与 UIKit 结合的自定义视图">
 <meta property="og:url" content="http://davidleee.com/2019/07/08/swiftui-serial-tutorial-2/index.html">
 <meta property="og:site_name" content="Lee 的笔记本">
 <meta property="og:description" content="在上一篇文章中，我们了解了 SwiftUI 的 Text  组件，并通过 Stack 系列的组件对内容进行了一些简单的布局。在这篇文章里，我们会认识一个全新的图片组件，并且会尝试利用这两篇文章的知识，结合 MapKit 框架，来实现一个简单的地点详情界面。">
-<meta property="og:locale" content="zh-Hans">
+<meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="http://davidleee.com/uploads/swiftui-serial-tutorial-2/BF6A8678-F10F-4633-A932-94B781BE73F9.png">
 <meta property="og:image" content="http://davidleee.com/uploads/swiftui-serial-tutorial-2/8A140752-2AE7-40E5-B320-F9DF7ADECE5C.png">
 <meta property="og:image" content="http://davidleee.com/uploads/swiftui-serial-tutorial-2/03DBC394-DA28-4686-87CA-117FCAC32CC6.png">
@@ -106,334 +36,262 @@
 <meta property="og:image" content="http://davidleee.com/uploads/swiftui-serial-tutorial-2/%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A72019-06-16%E4%B8%8B%E5%8D%887.28.49.png">
 <meta property="og:image" content="http://davidleee.com/uploads/swiftui-serial-tutorial-2/973ba702-85db-4852-851f-86a94cfca002.png">
 <meta property="og:image" content="http://davidleee.com/uploads/swiftui-serial-tutorial-2/EF653793-4B81-42D7-9B53-00790EE31E8F.png">
-<meta property="og:updated_time" content="2020-05-05T03:43:31.444Z">
+<meta property="article:published_time" content="2019-07-08T03:15:32.000Z">
+<meta property="article:modified_time" content="2020-05-05T03:43:31.000Z">
+<meta property="article:author" content="Lee">
+<meta property="article:tag" content="Swift">
+<meta property="article:tag" content="SwiftUI">
+<meta property="article:tag" content="Image">
+<meta property="article:tag" content="UIView">
+<meta property="article:tag" content="UIViewRepresentable">
+<meta property="article:tag" content="MKMapView">
+<meta property="article:tag" content="Spacer">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="SwiftUI 系列教程（2）—— 与 UIKit 结合的自定义视图">
-<meta name="twitter:description" content="在上一篇文章中，我们了解了 SwiftUI 的 Text  组件，并通过 Stack 系列的组件对内容进行了一些简单的布局。在这篇文章里，我们会认识一个全新的图片组件，并且会尝试利用这两篇文章的知识，结合 MapKit 框架，来实现一个简单的地点详情界面。">
 <meta name="twitter:image" content="http://davidleee.com/uploads/swiftui-serial-tutorial-2/BF6A8678-F10F-4633-A932-94B781BE73F9.png">
 
+<link rel="canonical" href="http://davidleee.com/2019/07/08/swiftui-serial-tutorial-2/">
 
 
-<script type="text/javascript" id="hexo.configurations">
-  var NexT = window.NexT || {};
-  var CONFIG = {
-    root: '/',
-    scheme: 'Mist',
-    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
-    fancybox: true,
-    motion: true,
-    duoshuo: {
-      userId: '0',
-      author: '博主'
-    },
-    algolia: {
-      applicationID: '',
-      apiKey: '',
-      indexName: '',
-      hits: {"per_page":10},
-      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
-    }
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
   };
 </script>
 
-
-
-  <link rel="canonical" href="http://davidleee.com/2019/07/08/swiftui-serial-tutorial-2/">
-
-
+  <title>SwiftUI 系列教程（2）—— 与 UIKit 结合的自定义视图 | Lee 的笔记本</title>
+  
 
 
 
-  <title> SwiftUI 系列教程（2）—— 与 UIKit 结合的自定义视图 | Lee 的笔记本 </title>
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="Lee 的笔记本" type="application/atom+xml">
 </head>
 
-<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
-
-  
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  
-  
-    
-  
-
-  <div class="container sidebar-position-left page-post-detail ">
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
     <div class="headband"></div>
 
-    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
-      <div class="header-inner"><div class="site-brand-wrapper">
-  <div class="site-meta ">
-    
-
-    <div class="custom-logo-site-title">
-      <a href="/" class="brand" rel="start">
-        <span class="logo-line-before"><i></i></span>
-        <span class="site-title">Lee 的笔记本</span>
-        <span class="logo-line-after"><i></i></span>
-      </a>
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
     </div>
-      
-        <h1 class="site-subtitle" itemprop="description"></h1>
-      
   </div>
 
-  <div class="site-nav-toggle">
-    <button>
-      <span class="btn-bar"></span>
-      <span class="btn-bar"></span>
-      <span class="btn-bar"></span>
-    </button>
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Lee 的笔记本</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
   </div>
 </div>
+
+
+
 
 <nav class="site-nav">
-  
-
-  
-    <ul id="menu" class="menu">
-      
-        
+  <ul id="menu" class="main-menu menu">
         <li class="menu-item menu-item-home">
-          <a href="/" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
-            
-            首页
-          </a>
-        </li>
-      
-        
-        <li class="menu-item menu-item-archives">
-          <a href="/archives" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
-            
-            归档
-          </a>
-        </li>
-      
-        
-        <li class="menu-item menu-item-tags">
-          <a href="/tags" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
-            
-            标签
-          </a>
-        </li>
-      
-        
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
         <li class="menu-item menu-item-about">
-          <a href="/about" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
-            
-            关于
-          </a>
-        </li>
-      
 
-      
-        <li class="menu-item menu-item-search">
-          
-            <a href="javascript:;" class="popup-trigger">
-          
-            
-              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
-            
-            搜索
-          </a>
-        </li>
-      
-    </ul>
-  
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
 
-  
-    <div class="site-search">
-      
-  <div class="popup search-popup local-search-popup">
-  <div class="local-search-header clearfix">
-    <span class="search-icon">
-      <i class="fa fa-search"></i>
-    </span>
-    <span class="popup-btn-close">
-      <i class="fa fa-times-circle"></i>
-    </span>
-    <div class="local-search-input-wrapper">
-      <input autocapitalize="off" autocomplete="off" autocorrect="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
-    </div>
-  </div>
-  <div id="local-search-result"></div>
-</div>
+  </li>
+        <li class="menu-item menu-item-tags">
 
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
 
+  </li>
+        <li class="menu-item menu-item-archives">
 
-    </div>
-  
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
 </nav>
 
 
 
- </div>
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
     </header>
 
-    <main id="main" class="main">
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
       <div class="main-inner">
         <div class="content-wrap">
-          <div id="content" class="content">
+          
+
+          <div class="content post posts-expand">
             
 
-  <div id="posts" class="posts-expand">
     
-
-  
-
   
   
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://davidleee.com/2019/07/08/swiftui-serial-tutorial-2/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Lee">
-      <meta itemprop="description" content>
       <meta itemprop="image" content="/avatar.jpg">
+      <meta itemprop="name" content="Lee">
+      <meta itemprop="description" content="快乐的程序猿">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
       <meta itemprop="name" content="Lee 的笔记本">
     </span>
-
-    
       <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-            
-            
-              
-                SwiftUI 系列教程（2）—— 与 UIKit 结合的自定义视图
-              
-            
-          </h2>
-        
+        <h1 class="post-title" itemprop="name headline">
+          SwiftUI 系列教程（2）—— 与 UIKit 结合的自定义视图
+        </h1>
 
         <div class="post-meta">
-          <span class="post-time">
-            
+            <span class="post-meta-item">
               <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
+                <i class="far fa-calendar"></i>
               </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-07-08T11:15:32+08:00">
-                2019-07-08
-              </time>
-            
+              <span class="post-meta-item-text">发表于</span>
 
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2019/07/08/swiftui-serial-tutorial-2/" class="leancloud_visitors" data-flag-title="SwiftUI 系列教程（2）—— 与 UIKit 结合的自定义视图">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数 </span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-
-              
-
-              
+              <time title="创建时间：2019-07-08 11:15:32" itemprop="dateCreated datePublished" datetime="2019-07-08T11:15:32+08:00">2019-07-08</time>
+            </span>
+              <span class="post-meta-item">
                 <span class="post-meta-item-icon">
-                  <i class="fa fa-clock-o"></i>
+                  <i class="far fa-calendar-check"></i>
                 </span>
-                
-                  <span class="post-meta-item-text">阅读时长</span>
-                
-                <span title="阅读时长">
-                  7
-                </span>
-              
-            </div>
-          
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-05-05 11:43:31" itemprop="dateModified" datetime="2020-05-05T11:43:31+08:00">2020-05-05</time>
+              </span>
 
           
+            <span id="/2019/07/08/swiftui-serial-tutorial-2/" class="post-meta-item leancloud_visitors" data-flag-title="SwiftUI 系列教程（2）—— 与 UIKit 结合的自定义视图" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
 
         </div>
       </header>
+
     
-
-
+    
+    
     <div class="post-body" itemprop="articleBody">
 
       
-      
-
-      
         <p>在<a href="/2019/06/12/swiftui-serial-tutorial-1/" title="上一篇文章">上一篇文章</a>中，我们了解了 SwiftUI 的 <code>Text</code>  组件，并通过 <code>Stack</code> 系列的组件对内容进行了一些简单的布局。在这篇文章里，我们会认识一个全新的图片组件，并且会尝试利用这两篇文章的知识，结合 MapKit 框架，来实现一个简单的地点详情界面。</p>
-<a id="more"></a>
+<span id="more"></span>
 <blockquote>
 <p>写完第一篇文章之后，本职的开发任务突然进入了紧张的预发布阶段，搞得早就写好的第二篇文章拖了这么久才完成润色和发布，看来“全网最早”要丢了…</p>
 </blockquote>
 <h2 id="自定义图片视图">自定义图片视图</h2>
 <p>首先把一张地标图片放到 <em>Assets.xcassets</em> 里去，我在百度找了张广州塔的照片：<br>
-<img src="/uploads/swiftui-serial-tutorial-2/BF6A8678-F10F-4633-A932-94B781BE73F9.png" alt></p>
+<img src="/uploads/swiftui-serial-tutorial-2/BF6A8678-F10F-4633-A932-94B781BE73F9.png" alt=""></p>
 <p>然后，我们要为新的图片视图创建一个新的类，就放在上一篇文章的 <em>ContentView.swift</em> 旁边好了。新建文件的时候，选择 <strong>SwiftUI View</strong>：<br>
-<img src="/uploads/swiftui-serial-tutorial-2/8A140752-2AE7-40E5-B320-F9DF7ADECE5C.png" alt></p>
+<img src="/uploads/swiftui-serial-tutorial-2/8A140752-2AE7-40E5-B320-F9DF7ADECE5C.png" alt=""></p>
 <p>取个名字叫 CircleImage，因为我们将要在这里把广州塔裁剪成一个圆。新建的代码内容跟上一章看到的一样，我们把 <code>Text</code> 改成 <code>Image</code>，然后把图片的名字传进去，直接就可以通过预览在画布上看到我们的图片了：<br>
-<img src="/uploads/swiftui-serial-tutorial-2/03DBC394-DA28-4686-87CA-117FCAC32CC6.png" alt></p>
+<img src="/uploads/swiftui-serial-tutorial-2/03DBC394-DA28-4686-87CA-117FCAC32CC6.png" alt=""></p>
 <p>接下来我们在代码里给它加上一个圆形的裁剪。原来的做法有很多了，最快速的做法应该是操作 <code>clipsToBounds</code> 和 <code>cornerRadius</code>，给图片加上长度等于一半宽高的圆角，这还得要求图片是正方形的才能达到满意的显示效果。</p>
 <p>而在 SwiftUI 里，这就是一句话的事情：<br>
-<img src="/uploads/swiftui-serial-tutorial-2/D1D63EE5-2169-40D0-ACAB-F68AE4EED5EB.png" alt></p>
+<img src="/uploads/swiftui-serial-tutorial-2/D1D63EE5-2169-40D0-ACAB-F68AE4EED5EB.png" alt=""></p>
 <p><code>.clipShape()</code> 给图片加了个裁剪的形状，其中 <code>Circle</code> 类型是一个用来当作遮罩的图形，你也可以给它加上填充色或者描边来单独使用，类似于以往通过 <code>CALayer</code> 去实现的效果。</p>
 <p>但这也太大了，我们的屏幕装不下，我们可以再加两行代码，把图片缩放到一个合适的大小：<br>
-<img src="/uploads/swiftui-serial-tutorial-2/E0470CA5-E465-4D53-8E1A-555C180DED64.png" alt></p>
+<img src="/uploads/swiftui-serial-tutorial-2/E0470CA5-E465-4D53-8E1A-555C180DED64.png" alt=""></p>
 <blockquote>
 <p>讲道理，这里设置的宽高应该是一样的，毕竟是个圆嘛…但是我懒得重新截图了，各位童鞋自己调整一下数值就可以了</p>
 </blockquote>
 <p>为了让图片本身在不同背景下都能凸显出来，我们再给它加个描边，这要通过 <code>overlay()</code> 方法去实现；也许再加个阴影吧，用到的是 <code>shadow()</code> 方法；最后出来的效果是这样的：<br>
-<img src="/uploads/swiftui-serial-tutorial-2/1263812F-2159-4AD5-9B21-50A314CFA99C.png" alt></p>
+<img src="/uploads/swiftui-serial-tutorial-2/1263812F-2159-4AD5-9B21-50A314CFA99C.png" alt=""></p>
 <p>是不是醒目多啦？</p>
 <blockquote>
 <p>每当做完一个新视图，我就想对比一下用老方法实现同样的效果有什么不同…</p>
 </blockquote>
-<h2 id="在-swiftui-里使用-uikit">在 SwiftUI 里使用 UIKit</h2>
+<h2 id="在-SwiftUI-里使用-UIKit">在 SwiftUI 里使用 UIKit</h2>
 <p>不知道大家发现了没有，我们在 SwiftUI 里用到的视图全部都是 <code>struct</code>，这意味着它们跟我们原本熟悉的 UIKit 是两套不同的机制，那难道以前开发的视图就完全用不上了吗？</p>
 <p>答案是可以的。</p>
 <p>要在 SwiftUI 里使用 UIView 的子类，只需要把它用一个遵循 <code>UIViewRepresentable</code> 协议的 SwiftUI 视图包裹起来即可。</p>
@@ -441,7 +299,7 @@
 <p>这里举的是 UIKit 的例子，但同样也适用于 AppKit 和 WatchKit。</p>
 </blockquote>
 <p>我们再来创建一个新的 SwiftUI View 来做我们的地图界面，但这一次，我们要改一下内容视图的协议：</p>
-<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> SwiftUI</span><br><span class="line"><span class="keyword">import</span> MapKit <span class="comment">// 引入 MapKit</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">MapView</span> : <span class="title">UIViewRepresentable</span> </span>&#123; <span class="comment">// 把这里的协议改掉</span></span><br><span class="line">    <span class="keyword">var</span> body: some <span class="type">View</span> &#123;</span><br><span class="line">        <span class="type">Text</span>(“<span class="type">Hello</span> <span class="type">World!</span>”)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> SwiftUI</span><br><span class="line"><span class="keyword">import</span> MapKit <span class="comment">// 引入 MapKit</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">MapView</span> : <span class="title">UIViewRepresentable</span> </span>&#123; <span class="comment">// 把这里的协议改掉</span></span><br><span class="line">    <span class="keyword">var</span> body: <span class="keyword">some</span> <span class="type">View</span> &#123;</span><br><span class="line">        <span class="type">Text</span>(“<span class="type">Hello</span> <span class="type">World</span>!”)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>然后你会发现 Xcode 在 <code>UIViewRepresentable</code> 这里报错了，因为这个协议下有两个必须实现的方法：</p>
 <ol>
 <li><code>makeUIView(context:)</code> 用来创建我们的 <code>MKMapView</code></li>
@@ -449,9 +307,9 @@
 </ol>
 <p>那下面我们就来实现一下。再加新代码之前，可以把已经用不上的 <code>body</code> 部分先删掉了。</p>
 <p>对于 <code>makeUIView(context:)</code>，只需要声明它返回的是 <code>MKMapView</code> 然后直接通过构造方法返回一个空对象就可以了：</p>
-<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">makeUIView</span><span class="params">(context: UIViewRepresentableContext&lt;MapView&gt;)</span></span> -&gt; <span class="type">MKMapView</span> &#123;</span><br><span class="line">    <span class="type">MKMapView</span>(frame: .zero)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">makeUIView</span>(<span class="params">context</span>: <span class="type">UIViewRepresentableContext</span>&lt;<span class="type">MapView</span>&gt;)</span> -&gt; <span class="type">MKMapView</span> &#123;</span><br><span class="line">    <span class="type">MKMapView</span>(frame: .zero)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p><code>updateUIView(_:context:)</code> 要做的事情就比较多了，我们一步步说：</p>
-<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">updateUIView</span><span class="params">(<span class="number">_</span> uiView: MKMapView, context: UIViewRepresentableContext&lt;MapView&gt;)</span></span> &#123;</span><br><span class="line"><span class="comment">// 1</span></span><br><span class="line">    <span class="keyword">let</span> coordinate = <span class="type">CLLocationCoordinate2D</span>(latitude: <span class="number">23.112223</span>, longitude: <span class="number">113.331084</span>)</span><br><span class="line"><span class="comment">// 2</span></span><br><span class="line">    <span class="keyword">let</span> span = <span class="type">MKCoordinateSpan</span>(latitudeDelta: <span class="number">0.01</span>, longitudeDelta: <span class="number">0.01</span>)</span><br><span class="line"><span class="comment">// 3</span></span><br><span class="line">    <span class="keyword">let</span> region = <span class="type">MKCoordinateRegion</span>(center: coordinate, span: span)</span><br><span class="line">    uiView.setRegion(region, animated: <span class="literal">true</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">updateUIView</span>(<span class="keyword">_</span> <span class="params">uiView</span>: <span class="type">MKMapView</span>, <span class="params">context</span>: <span class="type">UIViewRepresentableContext</span>&lt;<span class="type">MapView</span>&gt;)</span> &#123;</span><br><span class="line"><span class="comment">// 1</span></span><br><span class="line">    <span class="keyword">let</span> coordinate <span class="operator">=</span> <span class="type">CLLocationCoordinate2D</span>(latitude: <span class="number">23.112223</span>, longitude: <span class="number">113.331084</span>)</span><br><span class="line"><span class="comment">// 2</span></span><br><span class="line">    <span class="keyword">let</span> span <span class="operator">=</span> <span class="type">MKCoordinateSpan</span>(latitudeDelta: <span class="number">0.01</span>, longitudeDelta: <span class="number">0.01</span>)</span><br><span class="line"><span class="comment">// 3</span></span><br><span class="line">    <span class="keyword">let</span> region <span class="operator">=</span> <span class="type">MKCoordinateRegion</span>(center: coordinate, span: span)</span><br><span class="line">    uiView.setRegion(region, animated: <span class="literal">true</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <ol>
 <li>先把表示广州塔坐标的对象给构造出来（这是我在网上查的，等会预览的时候看看准不准）</li>
 <li>构造一个用来标识地图的缩放等级的对象，数值越小地图拉得越近</li>
@@ -459,15 +317,15 @@
 </ol>
 <p>赶紧预览一下看看效果吧！你会发现画布上空白一片…</p>
 <p>那是因为预览默认是静态模式的，它只能完整渲染 SwiftUI 的视图。因为我们现在用到了 UIView 的子类，所以要把预览切换到实时模式（右下角红框里的按钮）：<br>
-<img src="/uploads/swiftui-serial-tutorial-2/%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A72019-06-16%E4%B8%8B%E5%8D%887.28.49.png" alt></p>
+<img src="/uploads/swiftui-serial-tutorial-2/%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A72019-06-16%E4%B8%8B%E5%8D%887.28.49.png" alt=""></p>
 <p>emmmm…塔呢？这定位看起来也不是很准啊。</p>
-<h2 id="把一切都组装起来吧">把一切都组装起来吧！</h2>
+<h2 id="把一切都组装起来吧！">把一切都组装起来吧！</h2>
 <p>先看看预期实现的效果图：<br>
-<img src="/uploads/swiftui-serial-tutorial-2/973ba702-85db-4852-851f-86a94cfca002.png" alt></p>
+<img src="/uploads/swiftui-serial-tutorial-2/973ba702-85db-4852-851f-86a94cfca002.png" alt=""></p>
 <p>然后花一点时间思考一下怎么弄，我们这两篇文章的知识是完全足够了的。</p>
 <p>好啦！公布答案！</p>
 <p>我们会在上一篇文章实现的 <code>ContentView</code> 里直接进行组装，下面来看看分解动作：</p>
-<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">ContentView</span>: <span class="title">View</span> </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> body: some <span class="type">View</span> &#123;</span><br><span class="line">        <span class="type">VStack</span> &#123; <span class="comment">// 1</span></span><br><span class="line">            <span class="type">MapView</span>() </span><br><span class="line">                .edgesIgnoringSafeArea(.top) <span class="comment">// 2.1</span></span><br><span class="line">                .frame(height: <span class="number">300</span>) <span class="comment">// 2.2</span></span><br><span class="line"></span><br><span class="line">            <span class="type">CircleImage</span>()</span><br><span class="line">                .offset(y: -<span class="number">100</span>)</span><br><span class="line">                .padding(.bottom, -<span class="number">100</span>) <span class="comment">// 3</span></span><br><span class="line"></span><br><span class="line">            <span class="type">VStack</span>(alignment: .leading) &#123;</span><br><span class="line">                <span class="type">Text</span>(“<span class="type">Hello</span> <span class="type">SwiftUI</span>”)</span><br><span class="line">                    .font(.title)</span><br><span class="line">                <span class="type">HStack</span>(alignment: .top) &#123;</span><br><span class="line">                    <span class="type">Text</span>(“<span class="type">First</span> <span class="type">Description</span>”)</span><br><span class="line">                        .font(.subheadline)</span><br><span class="line">                    <span class="type">Spacer</span>()</span><br><span class="line">                    <span class="type">Text</span>(“<span class="type">Second</span> <span class="type">Description</span>”)</span><br><span class="line">                        .font(.subheadline)</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            .padding()</span><br><span class="line"></span><br><span class="line">            <span class="type">Spacer</span>() <span class="comment">// 4</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">ContentView</span>: <span class="title">View</span> </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> body: <span class="keyword">some</span> <span class="type">View</span> &#123;</span><br><span class="line">        <span class="type">VStack</span> &#123; <span class="comment">// 1</span></span><br><span class="line">            <span class="type">MapView</span>() </span><br><span class="line">                .edgesIgnoringSafeArea(.top) <span class="comment">// 2.1</span></span><br><span class="line">                .frame(height: <span class="number">300</span>) <span class="comment">// 2.2</span></span><br><span class="line"></span><br><span class="line">            <span class="type">CircleImage</span>()</span><br><span class="line">                .offset(y: <span class="operator">-</span><span class="number">100</span>)</span><br><span class="line">                .padding(.bottom, <span class="operator">-</span><span class="number">100</span>) <span class="comment">// 3</span></span><br><span class="line"></span><br><span class="line">            <span class="type">VStack</span>(alignment: .leading) &#123;</span><br><span class="line">                <span class="type">Text</span>(“<span class="type">Hello</span> <span class="type">SwiftUI</span>”)</span><br><span class="line">                    .font(.title)</span><br><span class="line">                <span class="type">HStack</span>(alignment: .top) &#123;</span><br><span class="line">                    <span class="type">Text</span>(“<span class="type">First</span> <span class="type">Description</span>”)</span><br><span class="line">                        .font(.subheadline)</span><br><span class="line">                    <span class="type">Spacer</span>()</span><br><span class="line">                    <span class="type">Text</span>(“<span class="type">Second</span> <span class="type">Description</span>”)</span><br><span class="line">                        .font(.subheadline)</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            .padding()</span><br><span class="line"></span><br><span class="line">            <span class="type">Spacer</span>() <span class="comment">// 4</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <ol>
 <li>先用一个 <code>VStack</code> 把所有内容包裹起来，默认情况下 <code>VStack</code> 的内容布局是居中的，所以我们不需要做修改</li>
 <li>针对 <code>MapView</code> 我们要做两个修改
@@ -480,7 +338,7 @@
 <li>做完前三步的操作后，这个 <code>VStack</code> 整体是在竖直方向上居中的，所以加上一个 <code>Spacer</code> 把整体有内容的部分顶到最上面（其实也可以通过 <code>HStack</code> 的 <code>alignment</code>来实现，不过那样代码就没有现在的简单优雅了）</li>
 </ol>
 <p>最终成果：<br>
-<img src="/uploads/swiftui-serial-tutorial-2/EF653793-4B81-42D7-9B53-00790EE31E8F.png" alt></p>
+<img src="/uploads/swiftui-serial-tutorial-2/EF653793-4B81-42D7-9B53-00790EE31E8F.png" alt=""></p>
 <blockquote>
 <p>如果你发现照着实现出来之后，中间圆形部分特别大的话，别担心，你是对的！<br>
 因为文章前面的 <code>CircleImage</code> 确实是为了展示而特意设置得比较大的，所以调整一下里面的宽高即可。</p>
@@ -490,343 +348,179 @@
 <p>既然我们的视图组件已经是通过声明式的写法来构建的了，那我们的数据是不是也该换一种方式绑定到视图上呢？在 JS 上我们可以用 react-redux 这样的数据绑定手段，那 SwiftUI 是不是该搭配 RxSwift 来使用了？</p>
 <p>这些问题都将在下一篇文章里为大家解答！</p>
 <h2 id="参考链接">参考链接</h2>
-<p><a href="https://developer.apple.com/tutorials/swiftui/creating-and-combining-views" target="_blank" rel="noopener">SwiftUI | Creating and Combining Views</a><br>
-<a href="https://developer.apple.com/videos/play/wwdc2019/216/" target="_blank" rel="noopener">SwiftUI Essentials - WWDC 2019 - Videos - Apple Developer</a></p>
+<p><a target="_blank" rel="noopener" href="https://developer.apple.com/tutorials/swiftui/creating-and-combining-views">SwiftUI | Creating and Combining Views</a><br>
+<a target="_blank" rel="noopener" href="https://developer.apple.com/videos/play/wwdc2019/216/">SwiftUI Essentials - WWDC 2019 - Videos - Apple Developer</a></p>
 
-      
+<div id="gitalk-container"></div>
+<script src="https://cdn.bootcss.com/blueimp-md5/2.12.0/js/md5.min.js"></script><link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css"><script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+
+		<script>
+		var gitalkConfig = {"clientID":"8225264e14e677544541","clientSecret":"ed2a2c6d5043e9f0b41cae78b0d5b4571099de53","repo":"HexoBlogSource","owner":"davidleee","admin":["davidleee"],"distractionFreeMode":false};
+	    gitalkConfig.id = md5(location.pathname);
+		var gitalk = new Gitalk(gitalkConfig);
+	    gitalk.render("gitalk-container");
+	    </script>
     </div>
 
-    <div>
+    
+    
+    
+        <div class="reward-container">
+  <div>你的支持和鼓励，是我分享的最大动力！</div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
       
-        
+      <div style="display: inline-block;">
+        <img src="/uploads/wechatpay.jpeg" alt="Lee 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/uploads/alipay.jpeg" alt="Lee 支付宝">
+        <p>支付宝</p>
+      </div>
 
-      
-    </div>
-
-    <div>
-      
-        
-  <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
-    <div>你的支持和鼓励，是我分享的最大动力！</div>
-    <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
-      <span>赏</span>
-    </button>
-    <div id="QR" style="display: none;">
-      
-        <div id="wechat" style="display: inline-block">
-          <img id="wechat_qr" src="/uploads/wechatpay.jpeg" alt="Lee WeChat Pay">
-          <p>微信打赏</p>
-        </div>
-      
-      
-        <div id="alipay" style="display: inline-block">
-          <img id="alipay_qr" src="/uploads/alipay.jpeg" alt="Lee Alipay">
-          <p>支付宝打赏</p>
-        </div>
-      
-    </div>
   </div>
+</div>
 
 
-      
-    </div>
-
-    <div>
-      
-        
-  <ul class="post-copyright">
-    <li class="post-copyright-author">
-      <strong>本文作者：</strong>
-      Lee
-    </li>
-    <li class="post-copyright-link">
-      <strong>本文链接：</strong>
-      <a href="http://davidleee.com/2019/07/08/swiftui-serial-tutorial-2/" title="SwiftUI 系列教程（2）—— 与 UIKit 结合的自定义视图">http://davidleee.com/2019/07/08/swiftui-serial-tutorial-2/</a>
-    </li>
-    <li class="post-copyright-license">
-      <strong>版权声明： </strong>
-      本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 3.0</a> 许可协议。转载请注明出处！
-    </li>
-  </ul>
-
-
-      
-    </div>
-
-    <footer class="post-footer">
-      
-        <div class="post-tags">
-          
-            <a href="/tags/Swift/" rel="tag"># Swift</a>
-          
-            <a href="/tags/SwiftUI/" rel="tag"># SwiftUI</a>
-          
-            <a href="/tags/Image/" rel="tag"># Image</a>
-          
-            <a href="/tags/UIView/" rel="tag"># UIView</a>
-          
-            <a href="/tags/UIViewRepresentable/" rel="tag"># UIViewRepresentable</a>
-          
-            <a href="/tags/MKMapView/" rel="tag"># MKMapView</a>
-          
-            <a href="/tags/Spacer/" rel="tag"># Spacer</a>
-          
-        </div>
-      
-
-      
-        
-      
-
-      
-        <div class="post-nav">
-          <div class="post-nav-next post-nav-item">
-            
-              <a href="/2019/06/12/swiftui-serial-tutorial-1/" rel="next" title="SwiftUI 系列教程（1）—— 初识 SwiftUI">
-                <i class="fa fa-chevron-left"></i> SwiftUI 系列教程（1）—— 初识 SwiftUI
-              </a>
-            
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Swift/" rel="tag"># Swift</a>
+              <a href="/tags/SwiftUI/" rel="tag"># SwiftUI</a>
+              <a href="/tags/Image/" rel="tag"># Image</a>
+              <a href="/tags/UIView/" rel="tag"># UIView</a>
+              <a href="/tags/UIViewRepresentable/" rel="tag"># UIViewRepresentable</a>
+              <a href="/tags/MKMapView/" rel="tag"># MKMapView</a>
+              <a href="/tags/Spacer/" rel="tag"># Spacer</a>
           </div>
 
-          <span class="post-nav-divider"></span>
+        
 
-          <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2019/07/25/swiftui-serial-tutorial-3/" rel="prev" title="SwiftUI 系列教程（3）—— SwiftUI 数据流">
-                SwiftUI 系列教程（3）—— SwiftUI 数据流 <i class="fa fa-chevron-right"></i>
-              </a>
-            
-          </div>
-        </div>
-      
 
-      
-      
-    </footer>
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2019/06/12/swiftui-serial-tutorial-1/" rel="prev" title="SwiftUI 系列教程（1）—— 初识 SwiftUI">
+      <i class="fa fa-chevron-left"></i> SwiftUI 系列教程（1）—— 初识 SwiftUI
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2019/07/25/swiftui-serial-tutorial-3/" rel="next" title="SwiftUI 系列教程（3）—— SwiftUI 数据流">
+      SwiftUI 系列教程（3）—— SwiftUI 数据流 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
   </article>
+  
+  
+  
 
 
 
-    <div class="post-spread">
-      
-        
-  <div class="bdsharebuttonbox">
-    <a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
-    <a href="#" class="bds_douban" data-cmd="douban" title="分享到豆瓣网"></a>
-    <a href="#" class="bds_sqq" data-cmd="sqq" title="分享到QQ好友"></a>
-    <a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a>
-    <a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a>
-    <a href="#" class="bds_tieba" data-cmd="tieba" title="分享到百度贴吧"></a>
-    <a href="#" class="bds_twi" data-cmd="twi" title="分享到Twitter"></a>
-    <a href="#" class="bds_fbook" data-cmd="fbook" title="分享到Facebook"></a>
-    <a href="#" class="bds_more" data-cmd="more"></a>
-    <a class="bds_count" data-cmd="count"></a>
-  </div>
-  <script>
-    window._bd_share_config = {
-      "common": {
-        "bdText": "",
-        "bdMini": "2",
-        "bdMiniList": false,
-        "bdPic": ""
-      },
-      "share": {
-        "bdSize": "16",
-        "bdStyle": "0"
-      },
-      "image": {
-        "viewList": ["tsina", "douban", "sqq", "qzone", "weixin", "twi", "fbook"],
-        "viewText": "分享到：",
-        "viewSize": "16"
-      }
-    }
-  </script>
+          </div>
+          
 
 <script>
-  with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='//bdimg.share.baidu.com/static/api/js/share.js?cdnversion='+~(-new Date()/36e5)];
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
 </script>
 
-      
-    </div>
-  </div>
-
-
-          </div>
-          
-
-
-          
-  <div class="comments" id="comments">
-    
-  </div>
-
-
         </div>
-        
           
   
-  <div class="sidebar-toggle">
-    <div class="sidebar-toggle-line-wrap">
-      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
-      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
-      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
-    </div>
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
   </div>
 
-  <aside id="sidebar" class="sidebar">
+  <aside class="sidebar">
     <div class="sidebar-inner">
 
-      
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
 
-      
-        <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
-            文章目录
-          </li>
-          <li class="sidebar-nav-overview" data-target="site-overview">
-            站点概览
-          </li>
-        </ul>
-      
-
-      <section class="site-overview sidebar-panel">
-        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
-          <img class="site-author-image" itemprop="image" src="/avatar.jpg" alt="Lee">
-          <p class="site-author-name" itemprop="name">Lee</p>
-           
-              <p class="site-description motion-element" itemprop="description"></p>
-           
-        </div>
-        <nav class="site-state motion-element">
-
-          
-            <div class="site-state-item site-state-posts">
-              <a href="/archives">
-                <span class="site-state-item-count">42</span>
-                <span class="site-state-item-name">日志</span>
-              </a>
-            </div>
-          
-
-          
-
-          
-            
-            
-            <div class="site-state-item site-state-tags">
-              <a href="/tags/index.html">
-                <span class="site-state-item-count">116</span>
-                <span class="site-state-item-name">标签</span>
-              </a>
-            </div>
-          
-
-        </nav>
-
-        
-          <div class="feed-link motion-element">
-            <a href="/atom.xml" rel="alternate">
-              <i class="fa fa-rss"></i>
-              RSS
-            </a>
-          </div>
-        
-
-        <div class="links-of-author motion-element">
-          
-            
-              <span class="links-of-author-item">
-                <a href="https://github.com/davidleee" target="_blank" title="GitHub">
-                  
-                    <i class="fa fa-fw fa-github"></i>
-                  
-                  GitHub
-                </a>
-              </span>
-            
-          
-        </div>
-
-        
-        
-
-        
-        
-          <div class="links-of-blogroll motion-element links-of-blogroll-inline">
-            <div class="links-of-blogroll-title">
-              <i class="fa  fa-fw fa-globe"></i>
-              友情链接
-            </div>
-            <ul class="links-of-blogroll-list">
-              
-                <li class="links-of-blogroll-item">
-                  <a href="http://www.yantinglam.com/" title="Yanting Lam" target="_blank">Yanting Lam</a>
-                </li>
-              
-                <li class="links-of-blogroll-item">
-                  <a href="http://www.enkichen.com/" title="Enki's Notes" target="_blank">Enki's Notes</a>
-                </li>
-              
-                <li class="links-of-blogroll-item">
-                  <a href="http://www.wxtlife.com/" title="Android技术特工队" target="_blank">Android技术特工队</a>
-                </li>
-              
-                <li class="links-of-blogroll-item">
-                  <a href="http://www.devhua.com/" title="Devhua's Blog" target="_blank">Devhua's Blog</a>
-                </li>
-              
-                <li class="links-of-blogroll-item">
-                  <a href="http://www.freehacker.cn" title="小熊糖否" target="_blank">小熊糖否</a>
-                </li>
-              
-                <li class="links-of-blogroll-item">
-                  <a href="https://debbiefu.github.io/" title="Debbie Fu" target="_blank">Debbie Fu</a>
-                </li>
-              
-                <li class="links-of-blogroll-item">
-                  <a href="https://hays.github.io/" title="Hays' Blog" target="_blank">Hays' Blog</a>
-                </li>
-              
-            </ul>
-          </div>
-        
-
-        
-
-
-      </section>
-
-      
       <!--noindex-->
-        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
-          <div class="post-toc">
-
-            
-              
-            
-
-            
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#自定义图片视图"><span class="nav-number">1.</span> <span class="nav-text">自定义图片视图</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#在-swiftui-里使用-uikit"><span class="nav-number">2.</span> <span class="nav-text">在 SwiftUI 里使用 UIKit</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#把一切都组装起来吧"><span class="nav-number">3.</span> <span class="nav-text">把一切都组装起来吧！</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#小结"><span class="nav-number">4.</span> <span class="nav-text">小结</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考链接"><span class="nav-number">5.</span> <span class="nav-text">参考链接</span></a></li></ol></div>
-            
-
-          </div>
-        </section>
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%87%AA%E5%AE%9A%E4%B9%89%E5%9B%BE%E7%89%87%E8%A7%86%E5%9B%BE"><span class="nav-number">1.</span> <span class="nav-text">自定义图片视图</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9C%A8-SwiftUI-%E9%87%8C%E4%BD%BF%E7%94%A8-UIKit"><span class="nav-number">2.</span> <span class="nav-text">在 SwiftUI 里使用 UIKit</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8A%8A%E4%B8%80%E5%88%87%E9%83%BD%E7%BB%84%E8%A3%85%E8%B5%B7%E6%9D%A5%E5%90%A7%EF%BC%81"><span class="nav-number">3.</span> <span class="nav-text">把一切都组装起来吧！</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B0%8F%E7%BB%93"><span class="nav-number">4.</span> <span class="nav-text">小结</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%82%E8%80%83%E9%93%BE%E6%8E%A5"><span class="nav-number">5.</span> <span class="nav-text">参考链接</span></a></li></ol></div>
+      </div>
       <!--/noindex-->
-      
 
-      
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Lee"
+      src="/avatar.jpg">
+  <p class="site-author-name" itemprop="name">Lee</p>
+  <div class="site-description" itemprop="description">快乐的程序猿</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">42</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">116</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/davidleee" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;davidleee" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+
+
+
+      </div>
 
     </div>
   </aside>
+  <div id="sidebar-dimmer"></div>
 
 
-        
       </div>
     </main>
 
-    <footer id="footer" class="footer">
+    <footer class="footer">
       <div class="footer-inner">
-        <div class="copyright">
+        
+
+        
+
+<div class="copyright">
   
   &copy; 
   <span itemprop="copyrightYear">2021</span>
@@ -834,413 +528,195 @@
     <i class="fa fa-heart"></i>
   </span>
   <span class="author" itemprop="copyrightHolder">Lee</span>
-
-  &nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;Hosted by <a href="https://pages.coding.me" style="font-weight: bold">Coding Pages</a>
 </div>
-
-
-<div class="powered-by">
-  Powered by <a class="theme-link" href="https://hexo.io">Hexo</a> 
-</div>
-
-<div class="theme-info">
-  Theme -
-  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
-    NexT.Mist
-  </a>
-</div>
-
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://mist.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> 强力驱动
+  </div>
 
         
 <div class="busuanzi-count">
-  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
-
-  
-    <span class="site-uv">
-      <i class="fa fa-user"></i>
-      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
-      
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
     </span>
-  
-
-  
-    <span class="site-pv">
-      <i class="fa fa-eye"></i>
-      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
-      
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
     </span>
-  
 </div>
 
 
-        
-      </div>
-    </footer>
 
-    
-      <div class="back-to-top">
-        <i class="fa fa-arrow-up"></i>
-        
-      </div>
-    
 
-  </div>
 
-  
 
-<script type="text/javascript">
-  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
-    window.Promise = null;
-  }
-</script>
-
-
-
-
-
-
-
-
-
-  
-
-
-
-
-  
-  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
-
-  
-  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
-
-  
-  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
-
-  
-  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
-
-  
-  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
-
-  
-  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
-
-
-  
-
-
-  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
-
-  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
-
-
-
-  
-  
-
-  
-  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
-<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
-
-
-
-  
-
-
-  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
-
-
-
-  
-
-
-
-  
-
-
-
-
-	
-
-
-
-
-
-  
-
-
-
-
-
-  
-
-
-
-
-
-  
-
-
-
-
-
-
-  
-
-  <script type="text/javascript">
-    // Popup Window;
-    var isfetched = false;
-    // Search DB path;
-    var search_path = "search.xml";
-    if (search_path.length == 0) {
-      search_path = "search.xml";
-    }
-    var path = "/" + search_path;
-    // monitor main search box;
-
-    function proceedsearch() {
-      $("body")
-        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
-        .css('overflow', 'hidden');
-      $('.popup').toggle();
-    }
-    // search function;
-    var searchFunc = function(path, search_id, content_id) {
-      'use strict';
-      $.ajax({
-        url: path,
-        dataType: "xml",
-        async: true,
-        success: function( xmlResponse ) {
-          // get the contents from search data
-          isfetched = true;
-          $('.popup').detach().appendTo('.header-inner');
-          var datas = $( "entry", xmlResponse ).map(function() {
-            return {
-              title: $( "title", this ).text(),
-              content: $("content",this).text(),
-              url: $( "url" , this).text()
-            };
-          }).get();
-          var $input = document.getElementById(search_id);
-          var $resultContent = document.getElementById(content_id);
-          $input.addEventListener('input', function(){
-            var matchcounts = 0;
-            var str='<ul class=\"search-result-list\">';
-            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
-            $resultContent.innerHTML = "";
-            if (this.value.trim().length > 1) {
-              // perform local searching
-              datas.forEach(function(data) {
-                var isMatch = false;
-                var content_index = [];
-                var data_title = data.title.trim().toLowerCase();
-                var data_content = data.content.trim().replace(/<[^>]+>/g,"").toLowerCase();
-                var data_url = decodeURIComponent(data.url);
-                var index_title = -1;
-                var index_content = -1;
-                var first_occur = -1;
-                // only match artiles with not empty titles and contents
-                if(data_title != '') {
-                  keywords.forEach(function(keyword, i) {
-                    index_title = data_title.indexOf(keyword);
-                    index_content = data_content.indexOf(keyword);
-                    if( index_title >= 0 || index_content >= 0 ){
-                      isMatch = true;
-                      if (i == 0) {
-                        first_occur = index_content;
-                      }
-                    }
-
-                  });
-                }
-                // show search results
-                if (isMatch) {
-                  matchcounts += 1;
-                  str += "<li><a href='"+ data_url +"' class='search-result-title'>"+ data_title +"</a>";
-                  var content = data.content.trim().replace(/<[^>]+>/g,"");
-                  if (first_occur >= 0) {
-                    // cut out 100 characters
-                    var start = first_occur - 20;
-                    var end = first_occur + 80;
-                    if(start < 0){
-                      start = 0;
-                    }
-                    if(start == 0){
-                      end = 50;
-                    }
-                    if(end > content.length){
-                      end = content.length;
-                    }
-                    var match_content = content.substring(start, end);
-                    // highlight all keywords
-                    keywords.forEach(function(keyword){
-                      var regS = new RegExp(keyword, "gi");
-                      match_content = match_content.replace(regS, "<b class=\"search-keyword\">"+keyword+"</b>");
-                    });
-
-                    str += "<p class=\"search-result\">" + match_content +"...</p>"
-                  }
-                  str += "</li>";
-                }
-              })};
-            str += "</ul>";
-            if (matchcounts == 0) { str = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>' }
-            if (keywords == "") { str = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>' }
-            $resultContent.innerHTML = str;
-          });
-          proceedsearch();
-        }
-      });}
-
-    // handle and trigger popup window;
-    $('.popup-trigger').click(function(e) {
-      e.stopPropagation();
-      if (isfetched == false) {
-        searchFunc(path, 'local-search-input', 'local-search-result');
-      } else {
-        proceedsearch();
-      };
-    });
-
-    $('.popup-btn-close').click(function(e){
-      $('.popup').hide();
-      $(".local-search-pop-overlay").remove();
-      $('body').css('overflow', '');
-    });
-    $('.popup').click(function(e){
-      e.stopPropagation();
-    });
-  </script>
-
-
-
-
-
-  
-
-  
-  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
-  <script>AV.initialize("rWbFyKbV9jV1Gm1Gplpfydst-gzGzoHsz", "AeJ3NJoYXFmMj6k9LCFSR62a");</script>
-  <script>
-    function showTime(Counter) {
-      var query = new AV.Query(Counter);
-      var entries = [];
-      var $visitors = $(".leancloud_visitors");
-
-      $visitors.each(function () {
-        entries.push( $(this).attr("id").trim() );
-      });
-
-      query.containedIn('url', entries);
-      query.find()
-        .done(function (results) {
-          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
-
-          if (results.length === 0) {
-            $visitors.find(COUNT_CONTAINER_REF).text(0);
-            return;
-          }
-
-          for (var i = 0; i < results.length; i++) {
-            var item = results[i];
-            var url = item.get('url');
-            var time = item.get('time');
-            var element = document.getElementById(url);
-
-            $(element).find(COUNT_CONTAINER_REF).text(time);
-          }
-          for(var i = 0; i < entries.length; i++) {
-            var url = entries[i];
-            var element = document.getElementById(url);
-            var countSpan = $(element).find(COUNT_CONTAINER_REF);
-            if( countSpan.text() == '') {
-              countSpan.text(0);
-            }
-          }
-        })
-        .fail(function (object, error) {
-          console.log("Error: " + error.code + " " + error.message);
-        });
+<script>
+  (function() {
+    function leancloudSelector(url) {
+      url = encodeURI(url);
+      return document.getElementById(url).querySelector('.leancloud-visitors-count');
     }
 
     function addCount(Counter) {
-      var $visitors = $(".leancloud_visitors");
-      var url = $visitors.attr('id').trim();
-      var title = $visitors.attr('data-flag-title').trim();
-      var query = new AV.Query(Counter);
+      var visitors = document.querySelector('.leancloud_visitors');
+      var url = decodeURI(visitors.id);
+      var title = visitors.dataset.flagTitle;
 
-      query.equalTo("url", url);
-      query.find({
-        success: function(results) {
+      Counter('get', '/classes/Counter?where=' + encodeURIComponent(JSON.stringify({ url })))
+        .then(response => response.json())
+        .then(({ results }) => {
           if (results.length > 0) {
             var counter = results[0];
-            counter.fetchWhenSave(true);
-            counter.increment("time");
-            counter.save(null, {
-              success: function(counter) {
-                var $element = $(document.getElementById(url));
-                $element.find('.leancloud-visitors-count').text(counter.get('time'));
-              },
-              error: function(counter, error) {
-                console.log('Failed to save Visitor num, with error message: ' + error.message);
-              }
-            });
+            leancloudSelector(url).innerText = counter.time + 1;
+            Counter('put', '/classes/Counter/' + counter.objectId, { time: { '__op': 'Increment', 'amount': 1 } })
+              .catch(error => {
+                console.error('Failed to save visitor count', error);
+              });
           } else {
-            var newcounter = new Counter();
-            /* Set ACL */
-            var acl = new AV.ACL();
-            acl.setPublicReadAccess(true);
-            acl.setPublicWriteAccess(true);
-            newcounter.setACL(acl);
-            /* End Set ACL */
-            newcounter.set("title", title);
-            newcounter.set("url", url);
-            newcounter.set("time", 1);
-            newcounter.save(null, {
-              success: function(newcounter) {
-                var $element = $(document.getElementById(url));
-                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
-              },
-              error: function(newcounter, error) {
-                console.log('Failed to create');
-              }
-            });
+              Counter('post', '/classes/Counter', { title, url, time: 1 })
+                .then(response => response.json())
+                .then(() => {
+                  leancloudSelector(url).innerText = 1;
+                })
+                .catch(error => {
+                  console.error('Failed to create', error);
+                });
           }
-        },
-        error: function(error) {
-          console.log('Error:' + error.code + " " + error.message);
-        }
-      });
+        })
+        .catch(error => {
+          console.error('LeanCloud Counter Error', error);
+        });
     }
 
-    $(function() {
-      var Counter = AV.Object.extend("Counter");
-      if ($('.leancloud_visitors').length == 1) {
+    function showTime(Counter) {
+      var visitors = document.querySelectorAll('.leancloud_visitors');
+      var entries = [...visitors].map(element => {
+        return decodeURI(element.id);
+      });
+
+      Counter('get', '/classes/Counter?where=' + encodeURIComponent(JSON.stringify({ url: { '$in': entries } })))
+        .then(response => response.json())
+        .then(({ results }) => {
+          for (let url of entries) {
+            let target = results.find(item => item.url === url);
+            leancloudSelector(url).innerText = target ? target.time : 0;
+          }
+        })
+        .catch(error => {
+          console.error('LeanCloud Counter Error', error);
+        });
+    }
+
+    let { app_id, app_key, server_url } = {"enable":true,"app_id":"rWbFyKbV9jV1Gm1Gplpfydst-gzGzoHsz","app_key":"AeJ3NJoYXFmMj6k9LCFSR62a","server_url":null,"security":false};
+    function fetchData(api_server) {
+      var Counter = (method, url, data) => {
+        return fetch(`${api_server}/1.1${url}`, {
+          method,
+          headers: {
+            'X-LC-Id'     : app_id,
+            'X-LC-Key'    : app_key,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(data)
+        });
+      };
+      if (CONFIG.page.isPost) {
+        if (CONFIG.hostname !== location.hostname) return;
         addCount(Counter);
-      } else if ($('.post-title-link').length > 1) {
+      } else if (document.querySelectorAll('.post-title-link').length >= 1) {
         showTime(Counter);
       }
-    });
-  </script>
+    }
+
+    let api_server = app_id.slice(-9) !== '-MdYXbMMI' ? server_url : `https://${app_id.slice(0, 8).toLowerCase()}.api.lncldglobal.com`;
+
+    if (api_server) {
+      fetchData(api_server);
+    } else {
+      fetch('https://app-router.leancloud.cn/2/route?appId=' + app_id)
+        .then(response => response.json())
+        .then(({ api_server }) => {
+          fetchData('https://' + api_server);
+        });
+    }
+  })();
+</script>
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
 
 
 
   
-<script>
-(function(){
-    var bp = document.createElement('script');
-    var curProtocol = window.location.protocol.split(':')[0];
-    if (curProtocol === 'https') {
-        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
-    }
-    else {
-        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
-    }
-    var s = document.getElementsByTagName("script")[0];
-    s.parentNode.insertBefore(bp, s);
-})();
-</script>
+  <script>
+    (function(){
+      var canonicalURL, curProtocol;
+      //Get the <link> tag
+      var x=document.getElementsByTagName("link");
+		//Find the last canonical URL
+		if(x.length > 0){
+			for (i=0;i<x.length;i++){
+				if(x[i].rel.toLowerCase() == 'canonical' && x[i].href){
+					canonicalURL=x[i].href;
+				}
+			}
+		}
+    //Get protocol
+	    if (!canonicalURL){
+	    	curProtocol = window.location.protocol.split(':')[0];
+	    }
+	    else{
+	    	curProtocol = canonicalURL.split(':')[0];
+	    }
+      //Get current URL if the canonical URL does not exist
+	    if (!canonicalURL) canonicalURL = window.location.href;
+	    //Assign script content. Replace current URL with the canonical URL
+      !function(){var e=/([http|https]:\/\/[a-zA-Z0-9\_\.]+\.baidu\.com)/gi,r=canonicalURL,t=document.referrer;if(!e.test(r)){var n=(String(curProtocol).toLowerCase() === 'https')?"https://sp0.baidu.com/9_Q4simg2RQJ8t7jm9iCKT-xh_/s.gif":"//api.share.baidu.com/s.gif";t?(n+="?r="+encodeURIComponent(document.referrer),r&&(n+="&l="+r)):r&&(n+="?l="+r);var i=new Image;i.src=n}}(window);})();
+  </script>
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
 
 
   

@@ -1,444 +1,301 @@
-<!doctype html>
-
-
-
-  
-
-
-<html class="theme-next mist use-motion" lang="zh-Hans">
-<head><meta name="generator" content="Hexo 3.9.0">
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
   <meta charset="UTF-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/favicon.jpg">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon.jpg">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon.jpg">
+  <link rel="mask-icon" href="/favicon.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
 
 
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
 
-<meta http-equiv="Cache-Control" content="no-transform">
-<meta http-equiv="Cache-Control" content="no-siteapp">
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"davidleee.com","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  
-  
-  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
-
-
-
-
-  
-  
-  
-  
-
-  
-    
-    
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-    
-    
-    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
-  
-
-
-
-
-
-
-<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
-
-<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css">
-
-
-  <meta name="keywords" content="svg,xml,markup,react-native,viewbox,clippath,">
-
-
-
-
-
-  <link rel="alternate" href="/atom.xml" title="Lee 的笔记本" type="application/atom+xml">
-
-
-
-
-  <link rel="shortcut icon" type="image/x-icon" href="/favicon.jpg?v=5.1.0">
-
-
-
-
-
-
-<meta name="description" content="最近需要在 React-Native 项目里实现一个填满特定图形的效果，找很久都没发现能满足需求的开源库，于是就打算用 SVG 自己怼一个。好在这方面教程还不少，虽然不能一步到位，但几篇文章加一起也能把效果实现出来，于是在这里把入门过程记录一下，希望帮后来者省点功夫。">
-<meta name="keywords" content="svg,xml,markup,react-native,viewbox,clippath">
+  <meta name="description" content="最近需要在 React-Native 项目里实现一个填满特定图形的效果，找很久都没发现能满足需求的开源库，于是就打算用 SVG 自己怼一个。好在这方面教程还不少，虽然不能一步到位，但几篇文章加一起也能把效果实现出来，于是在这里把入门过程记录一下，希望帮后来者省点功夫。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="SVG 从“完全不懂”到“足够开个入门分享”">
 <meta property="og:url" content="http://davidleee.com/2018/10/25/SVG-from-nothing-to-something/index.html">
 <meta property="og:site_name" content="Lee 的笔记本">
 <meta property="og:description" content="最近需要在 React-Native 项目里实现一个填满特定图形的效果，找很久都没发现能满足需求的开源库，于是就打算用 SVG 自己怼一个。好在这方面教程还不少，虽然不能一步到位，但几篇文章加一起也能把效果实现出来，于是在这里把入门过程记录一下，希望帮后来者省点功夫。">
-<meta property="og:locale" content="zh-Hans">
+<meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="http://davidleee.com/uploads/SVG-from-nothing-to-something/57D524DA-6FD7-4538-A238-B002D099D91A.png">
 <meta property="og:image" content="http://davidleee.com/uploads/SVG-from-nothing-to-something/353B4442-E68D-4F8A-8D53-CE5EEED21F36.png">
-<meta property="og:updated_time" content="2020-05-05T03:43:31.442Z">
+<meta property="article:published_time" content="2018-10-25T07:08:10.000Z">
+<meta property="article:modified_time" content="2020-05-05T03:43:31.000Z">
+<meta property="article:author" content="Lee">
+<meta property="article:tag" content="svg">
+<meta property="article:tag" content="xml">
+<meta property="article:tag" content="markup">
+<meta property="article:tag" content="react-native">
+<meta property="article:tag" content="viewbox">
+<meta property="article:tag" content="clippath">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="SVG 从“完全不懂”到“足够开个入门分享”">
-<meta name="twitter:description" content="最近需要在 React-Native 项目里实现一个填满特定图形的效果，找很久都没发现能满足需求的开源库，于是就打算用 SVG 自己怼一个。好在这方面教程还不少，虽然不能一步到位，但几篇文章加一起也能把效果实现出来，于是在这里把入门过程记录一下，希望帮后来者省点功夫。">
 <meta name="twitter:image" content="http://davidleee.com/uploads/SVG-from-nothing-to-something/57D524DA-6FD7-4538-A238-B002D099D91A.png">
 
+<link rel="canonical" href="http://davidleee.com/2018/10/25/SVG-from-nothing-to-something/">
 
 
-<script type="text/javascript" id="hexo.configurations">
-  var NexT = window.NexT || {};
-  var CONFIG = {
-    root: '/',
-    scheme: 'Mist',
-    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
-    fancybox: true,
-    motion: true,
-    duoshuo: {
-      userId: '0',
-      author: '博主'
-    },
-    algolia: {
-      applicationID: '',
-      apiKey: '',
-      indexName: '',
-      hits: {"per_page":10},
-      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
-    }
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
   };
 </script>
 
-
-
-  <link rel="canonical" href="http://davidleee.com/2018/10/25/SVG-from-nothing-to-something/">
-
-
+  <title>SVG 从“完全不懂”到“足够开个入门分享” | Lee 的笔记本</title>
+  
 
 
 
-  <title> SVG 从“完全不懂”到“足够开个入门分享” | Lee 的笔记本 </title>
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="Lee 的笔记本" type="application/atom+xml">
 </head>
 
-<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
-
-  
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  
-  
-    
-  
-
-  <div class="container sidebar-position-left page-post-detail ">
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
     <div class="headband"></div>
 
-    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
-      <div class="header-inner"><div class="site-brand-wrapper">
-  <div class="site-meta ">
-    
-
-    <div class="custom-logo-site-title">
-      <a href="/" class="brand" rel="start">
-        <span class="logo-line-before"><i></i></span>
-        <span class="site-title">Lee 的笔记本</span>
-        <span class="logo-line-after"><i></i></span>
-      </a>
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
     </div>
-      
-        <h1 class="site-subtitle" itemprop="description"></h1>
-      
   </div>
 
-  <div class="site-nav-toggle">
-    <button>
-      <span class="btn-bar"></span>
-      <span class="btn-bar"></span>
-      <span class="btn-bar"></span>
-    </button>
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Lee 的笔记本</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
   </div>
 </div>
+
+
+
 
 <nav class="site-nav">
-  
-
-  
-    <ul id="menu" class="menu">
-      
-        
+  <ul id="menu" class="main-menu menu">
         <li class="menu-item menu-item-home">
-          <a href="/" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
-            
-            首页
-          </a>
-        </li>
-      
-        
-        <li class="menu-item menu-item-archives">
-          <a href="/archives" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
-            
-            归档
-          </a>
-        </li>
-      
-        
-        <li class="menu-item menu-item-tags">
-          <a href="/tags" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
-            
-            标签
-          </a>
-        </li>
-      
-        
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
         <li class="menu-item menu-item-about">
-          <a href="/about" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
-            
-            关于
-          </a>
-        </li>
-      
 
-      
-        <li class="menu-item menu-item-search">
-          
-            <a href="javascript:;" class="popup-trigger">
-          
-            
-              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
-            
-            搜索
-          </a>
-        </li>
-      
-    </ul>
-  
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
 
-  
-    <div class="site-search">
-      
-  <div class="popup search-popup local-search-popup">
-  <div class="local-search-header clearfix">
-    <span class="search-icon">
-      <i class="fa fa-search"></i>
-    </span>
-    <span class="popup-btn-close">
-      <i class="fa fa-times-circle"></i>
-    </span>
-    <div class="local-search-input-wrapper">
-      <input autocapitalize="off" autocomplete="off" autocorrect="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
-    </div>
-  </div>
-  <div id="local-search-result"></div>
-</div>
+  </li>
+        <li class="menu-item menu-item-tags">
 
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
 
+  </li>
+        <li class="menu-item menu-item-archives">
 
-    </div>
-  
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
 </nav>
 
 
 
- </div>
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
     </header>
 
-    <main id="main" class="main">
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
       <div class="main-inner">
         <div class="content-wrap">
-          <div id="content" class="content">
+          
+
+          <div class="content post posts-expand">
             
 
-  <div id="posts" class="posts-expand">
     
-
-  
-
   
   
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://davidleee.com/2018/10/25/SVG-from-nothing-to-something/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Lee">
-      <meta itemprop="description" content>
       <meta itemprop="image" content="/avatar.jpg">
+      <meta itemprop="name" content="Lee">
+      <meta itemprop="description" content="快乐的程序猿">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
       <meta itemprop="name" content="Lee 的笔记本">
     </span>
-
-    
       <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-            
-            
-              
-                SVG 从“完全不懂”到“足够开个入门分享”
-              
-            
-          </h2>
-        
+        <h1 class="post-title" itemprop="name headline">
+          SVG 从“完全不懂”到“足够开个入门分享”
+        </h1>
 
         <div class="post-meta">
-          <span class="post-time">
-            
+            <span class="post-meta-item">
               <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
+                <i class="far fa-calendar"></i>
               </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-10-25T15:08:10+08:00">
-                2018-10-25
-              </time>
-            
+              <span class="post-meta-item-text">发表于</span>
 
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2018/10/25/SVG-from-nothing-to-something/" class="leancloud_visitors" data-flag-title="SVG 从“完全不懂”到“足够开个入门分享”">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数 </span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-
-              
-
-              
+              <time title="创建时间：2018-10-25 15:08:10" itemprop="dateCreated datePublished" datetime="2018-10-25T15:08:10+08:00">2018-10-25</time>
+            </span>
+              <span class="post-meta-item">
                 <span class="post-meta-item-icon">
-                  <i class="fa fa-clock-o"></i>
+                  <i class="far fa-calendar-check"></i>
                 </span>
-                
-                  <span class="post-meta-item-text">阅读时长</span>
-                
-                <span title="阅读时长">
-                  7
-                </span>
-              
-            </div>
-          
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-05-05 11:43:31" itemprop="dateModified" datetime="2020-05-05T11:43:31+08:00">2020-05-05</time>
+              </span>
 
           
+            <span id="/2018/10/25/SVG-from-nothing-to-something/" class="post-meta-item leancloud_visitors" data-flag-title="SVG 从“完全不懂”到“足够开个入门分享”" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
 
         </div>
       </header>
+
     
-
-
+    
+    
     <div class="post-body" itemprop="articleBody">
 
       
-      
-
-      
         <p>最近需要在 React-Native 项目里实现一个填满特定图形的效果，找很久都没发现能满足需求的开源库，于是就打算用 SVG 自己怼一个。好在这方面教程还不少，虽然不能一步到位，但几篇文章加一起也能把效果实现出来，于是在这里把入门过程记录一下，希望帮后来者省点功夫。</p>
-<a id="more"></a>
-<h2 id="svg-是个啥？">SVG 是个啥？</h2>
+<span id="more"></span>
+<h2 id="SVG-是个啥？">SVG 是个啥？</h2>
 <p>SVG（Scalable Vector Graphics） 是一种基于 XML 语法的图像格式。跟基于像素处理的图片格式不同，它是基于对图像形状的描述来实现的，本质上是一个文本文件，体积上较小，而且在放大的时候也不会失真。</p>
 <p>因为 SVG 是基于 XML 语法的，所以对于前端开发者来说，写起来应该比较顺手；对于 React-Native 的项目，因为 JSX 的关系，用起 SVG 来也是没有“语言障碍”的。</p>
-<h2 id="svg-长什么样？">SVG 长什么样？</h2>
+<h2 id="SVG-长什么样？">SVG 长什么样？</h2>
 <p>直接上源码：</p>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">svg</span> <span class="attr">width</span>=<span class="string">'100'</span> <span class="attr">height</span>=<span class="string">"100"</span> <span class="attr">viewBox</span>=<span class="string">"0 0 100 100"</span> <span class="attr">version</span>=<span class="string">"1.1"</span> <span class="attr">xmlns</span>=<span class="string">"http://www.w3.org/2000/svg"</span> <span class="attr">xmlns:xlink</span>=<span class="string">"http://www.w3.org/1999/xlink"</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">defs</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">clipPath</span> <span class="attr">id</span>=<span class="string">"heart"</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">path</span> <span class="attr">d</span>=<span class="string">"M81.495,13.923c-11.368-5.261-26.234-0.311-31.489,11.032C44.74,13.612,29.879,8.657,18.511,13.923  C6.402,19.539,0.613,33.883,10.175,50.804c6.792,12.04,18.826,21.111,39.831,37.379c20.993-16.268,33.033-25.344,39.819-37.379  C99.387,33.883,93.598,19.539,81.495,13.923z"</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">clipPath</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">defs</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">rect</span> <span class="attr">x</span>=<span class="string">'0'</span> <span class="attr">y</span>=<span class="string">'0'</span> <span class="attr">fill</span>=<span class="string">'rgb(217,217,217)'</span> <span class="attr">width</span>=<span class="string">"100%"</span> <span class="attr">height</span>=<span class="string">"100%"</span> <span class="attr">clip-path</span>=<span class="string">"url(#heart)"</span> /&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">rect</span> <span class="attr">x</span>=<span class="string">'0%'</span> <span class="attr">y</span>=<span class="string">"50%"</span> <span class="attr">fill</span>=<span class="string">'red'</span> <span class="attr">width</span>=<span class="string">"100%"</span> <span class="attr">height</span>=<span class="string">"100%"</span> <span class="attr">clip-path</span>=<span class="string">"url(#heart)"</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">svg</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">svg</span> <span class="attr">width</span>=<span class="string">&#x27;100&#x27;</span> <span class="attr">height</span>=<span class="string">&quot;100&quot;</span> <span class="attr">viewBox</span>=<span class="string">&quot;0 0 100 100&quot;</span> <span class="attr">version</span>=<span class="string">&quot;1.1&quot;</span> <span class="attr">xmlns</span>=<span class="string">&quot;http://www.w3.org/2000/svg&quot;</span> <span class="attr">xmlns:xlink</span>=<span class="string">&quot;http://www.w3.org/1999/xlink&quot;</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">defs</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">clipPath</span> <span class="attr">id</span>=<span class="string">&quot;heart&quot;</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">path</span> <span class="attr">d</span>=<span class="string">&quot;M81.495,13.923c-11.368-5.261-26.234-0.311-31.489,11.032C44.74,13.612,29.879,8.657,18.511,13.923  C6.402,19.539,0.613,33.883,10.175,50.804c6.792,12.04,18.826,21.111,39.831,37.379c20.993-16.268,33.033-25.344,39.819-37.379  C99.387,33.883,93.598,19.539,81.495,13.923z&quot;</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">clipPath</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">defs</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">rect</span> <span class="attr">x</span>=<span class="string">&#x27;0&#x27;</span> <span class="attr">y</span>=<span class="string">&#x27;0&#x27;</span> <span class="attr">fill</span>=<span class="string">&#x27;rgb(217,217,217)&#x27;</span> <span class="attr">width</span>=<span class="string">&quot;100%&quot;</span> <span class="attr">height</span>=<span class="string">&quot;100%&quot;</span> <span class="attr">clip-path</span>=<span class="string">&quot;url(#heart)&quot;</span> /&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">rect</span> <span class="attr">x</span>=<span class="string">&#x27;0%&#x27;</span> <span class="attr">y</span>=<span class="string">&quot;50%&quot;</span> <span class="attr">fill</span>=<span class="string">&#x27;red&#x27;</span> <span class="attr">width</span>=<span class="string">&quot;100%&quot;</span> <span class="attr">height</span>=<span class="string">&quot;100%&quot;</span> <span class="attr">clip-path</span>=<span class="string">&quot;url(#heart)&quot;</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">svg</span>&gt;</span></span><br></pre></td></tr></table></figure>
 <p>这张 SVG 图渲染出来是这样的：<br>
-<img src="/uploads/SVG-from-nothing-to-something/57D524DA-6FD7-4538-A238-B002D099D91A.png" alt></p>
+<img src="/uploads/SVG-from-nothing-to-something/57D524DA-6FD7-4538-A238-B002D099D91A.png" alt=""></p>
 <blockquote>
 <p>直接把上面的代码保存为文本，就可以用浏览器打开并显示了。macOS 的用户还可以直接空格预览。</p>
 </blockquote>
 <p>配合一些参数的改变，做动画也是分分钟的事情。对于之前没有怎么用过 SVG 的我来说，简直是打开了新世界的大门。</p>
 <p>接下来就让我们一起探究一下上面这个图是怎么来的。</p>
-<h2 id="svg-显示原理">SVG 显示原理</h2>
+<h2 id="SVG-显示原理">SVG 显示原理</h2>
 <p>根据上面的例子，我们可以大胆猜测一下： <code>&lt;path&gt;</code> 标签下 <code>d</code> 属性的值就是用来描绘这个心形的外框路径的。既然描绘路径已经是确定的了，那一张 SVG 图片是怎么实现缩放不失真的特性的呢？<br>
 要回答这个问题，就要让我们先了解一下 SVG 的一些基本显示原理。</p>
-<h3 id="the-svg-canvas">The SVG Canvas</h3>
+<h3 id="The-SVG-Canvas">The SVG Canvas</h3>
 <p>假设我们要将一个 SVG 图形绘制到一张画布（Canvas）上，概念上这张画布应该是无限大的，这样我们的图形才可以是任意大小。然而，实际上 SVG 图片是显示在一个有限的区域里的，就像我们透过窗户看窗外的风景一样，这个有限区域被称为“观察孔”（Viewport）。</p>
-<h3 id="the-viewport">The Viewport</h3>
+<h3 id="The-Viewport">The Viewport</h3>
 <p>“观察孔”指的是 SVG 图片可见的那一部分，想象我们透过窗户看窗外的风景，这个窗子就是外面风景的观察孔。</p>
 <blockquote>
 <p>类似的，我们在浏览网页的时候面对的也是这种情况，网页的大小通常比浏览器的窗口要大，这时候浏览器就是这个网页的观察孔了。</p>
 </blockquote>
 <p>我们通过设置 <code>&lt;svg&gt;</code> 标签的 <code>width</code> 和 <code>height</code> 属性来确定这张 SVG 的观察孔大小，对于上面的心形来说，观察孔是 100x100 的正方形：</p>
-<figure class="highlight svg"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- the viewport will be 100px by 100px --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">svg</span> <span class="attr">width</span>=<span class="string">"100"</span> <span class="attr">height</span>=<span class="string">"100"</span>&gt;</span></span><br><span class="line">		<span class="comment">&lt;!-- SVG content drawn onto the SVG canvas --&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">svg</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;!-- the viewport will be 100px by 100px --&gt;</span><br><span class="line">&lt;svg width=&quot;100&quot; height=&quot;100&quot;&gt;</span><br><span class="line">		&lt;!-- SVG content drawn onto the SVG canvas --&gt;</span><br><span class="line">&lt;/svg&gt;</span><br></pre></td></tr></table></figure>
 <blockquote>
 <p>在 SVG 里，数值的单位是可选的。在我们不主动提供的时候，默认会以 <code>px</code> 为单位。可选的单位有 <code>em</code>、<code>ex</code>、<code>px</code>、<code>pt</code>、<code>pc</code>、<code>cm</code>、<code>mm</code>、<code>in</code> 和百分比。</p>
 </blockquote>
 <h3 id="坐标系统">坐标系统</h3>
 <p>在观察孔的大小确定下来之后，SVG 就会建立一套初始的坐标系统：以最左上角为 <code>(0, 0)</code> 点，x 轴和 y 轴分别向右和向下延伸（就像移动客户端和网页显示里那样）。在这个基础上，我们刚刚创建的观察孔也就有了属于自己的一套位置标识：<code>(x: 0, y: 0, width: 100, height: 100)</code>。</p>
-<h2 id="the-viewbox">The <code>viewbox</code></h2>
+<h2 id="The-viewbox">The <code>viewbox</code></h2>
 <p>在了解了上述知识之后，我们就可以来说说 <code>viewbox</code> 这个属性了。</p>
 <p>我们可以把 <code>viewbox</code> 理解为“真正的坐标系统”，因为它决定了 SVG 图形是怎么绘制到画布上的。一个 SVG 图形的大小可以与观察孔不一样，它可能会完整地显示出来，也可能会被观察孔裁减掉一部分。</p>
 <blockquote>
 <p>就像一张普通图片一样，当你需要把图形完整地放进一个视图里面时，可以调节图片的拉伸模式，一边让图片的大小更为合理。SVG 里对应的属性是 <code>preserveAspectRatio</code>。</p>
 </blockquote>
 <p><code>viewbox</code>  会一次性设置4个参数：</p>
-<figure class="highlight svg"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">svg</span> <span class="attr">viewbox</span>=<span class="string">"&lt;min-x&gt; &lt;min-y&gt; &lt;width&gt; &lt;height&gt;"</span>&gt;</span><span class="tag">&lt;/<span class="name">svg</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;svg viewbox=&quot;&lt;min-x&gt; &lt;min-y&gt; &lt;width&gt; &lt;height&gt;&quot;&gt;&lt;/svg&gt;</span><br></pre></td></tr></table></figure>
 <p>其中，<code>&lt;min-x&gt;</code> 和 <code>&lt;min-y&gt;</code> 不能设置为负数，<code>&lt;width&gt;</code> 和 <code>&lt;height&gt;</code> 设置为 0 的话，元素就压根不会绘制了。</p>
 <p>所以说，<code>viewbox=&quot;0 0 100 100&quot;</code> 就做了下面几件事情：</p>
 <ol>
@@ -448,352 +305,189 @@
 <li>将这个坐标系统<strong>按比例</strong>映射到到初始坐标系统上</li>
 </ol>
 <p>那对于上面的爱心图片来说，我们尝试调整一下 <code>viewbox</code> 的原点，将它设置为 <code>viewbox=&quot;50 50 100 100&quot;</code> 试试：<br>
-<img src="/uploads/SVG-from-nothing-to-something/353B4442-E68D-4F8A-8D53-CE5EEED21F36.png" alt><br>
+<img src="/uploads/SVG-from-nothing-to-something/353B4442-E68D-4F8A-8D53-CE5EEED21F36.png" alt=""><br>
 可以看到，就像地图软件一样，镜头往画面的右下方移动了一段。这也相当于把整个画面往左上方推了过去一点，我们可以通过设置画布的 <code>transform</code> 属性来实现相同的效果：<code>transform=&quot;translate(-50 -50)&quot;</code>。</p>
 <blockquote>
 <p>当设计师给你一张 SVG 图片的时候，其中的图案路径可能是按照一定的大小和位移来绘制的，比如从(10, 10) 点开始画的一张 40x40 的图，这时候你的 <code>viewbox</code> 就应该设置为 <code>viewbox=&quot;10 10 40 40&quot;</code> ，让图片放到最合适的坐标系统上。</p>
 </blockquote>
 <h2 id="小结">小结</h2>
 <p>上面的例子演示了一张 SVG 图的常规操作，限于篇幅原因，还有一些有意思的情况没有展示到，比如当 <code>viewbox</code> 里设置的宽高比与我们在 <code>&lt;svg&gt;</code> 标签里设置的宽高比不一样会发生什么呢？这种情况下，就需要我们去了解一下 <code>preserveAspectRatio</code> 属性了。</p>
-<p>在参考文章 <a href="https://www.sarasoueidan.com/blog/svg-coordinate-systems/" target="_blank" rel="noopener">Understanding SVG Coordinate Systems and Transformations (Part 1) </a> 里，有对这方面更详细的解释，而且作者还提供了非常直观的在线预览工具，相信会对偏向于使用图像思维的同学们更有帮助。</p>
+<p>在参考文章 <a target="_blank" rel="noopener" href="https://www.sarasoueidan.com/blog/svg-coordinate-systems/">Understanding SVG Coordinate Systems and Transformations (Part 1) </a> 里，有对这方面更详细的解释，而且作者还提供了非常直观的在线预览工具，相信会对偏向于使用图像思维的同学们更有帮助。</p>
 <h2 id="参考文章">参考文章</h2>
 <ul>
-<li><a href="https://www.sarasoueidan.com/blog/svg-coordinate-systems/" target="_blank" rel="noopener">Understanding SVG Coordinate Systems and Transformations (Part 1) </a></li>
-<li><a href="http://www.ruanyifeng.com/blog/2018/08/svg.html" target="_blank" rel="noopener">SVG 图像入门教程 - 阮一峰的网络日志</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.sarasoueidan.com/blog/svg-coordinate-systems/">Understanding SVG Coordinate Systems and Transformations (Part 1) </a></li>
+<li><a target="_blank" rel="noopener" href="http://www.ruanyifeng.com/blog/2018/08/svg.html">SVG 图像入门教程 - 阮一峰的网络日志</a></li>
 </ul>
 
-      
+<div id="gitalk-container"></div>
+<script src="https://cdn.bootcss.com/blueimp-md5/2.12.0/js/md5.min.js"></script><link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css"><script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+
+		<script>
+		var gitalkConfig = {"clientID":"8225264e14e677544541","clientSecret":"ed2a2c6d5043e9f0b41cae78b0d5b4571099de53","repo":"HexoBlogSource","owner":"davidleee","admin":["davidleee"],"distractionFreeMode":false};
+	    gitalkConfig.id = md5(location.pathname);
+		var gitalk = new Gitalk(gitalkConfig);
+	    gitalk.render("gitalk-container");
+	    </script>
     </div>
 
-    <div>
+    
+    
+    
+        <div class="reward-container">
+  <div>你的支持和鼓励，是我分享的最大动力！</div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
       
-        
+      <div style="display: inline-block;">
+        <img src="/uploads/wechatpay.jpeg" alt="Lee 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/uploads/alipay.jpeg" alt="Lee 支付宝">
+        <p>支付宝</p>
+      </div>
 
-      
-    </div>
-
-    <div>
-      
-        
-  <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
-    <div>你的支持和鼓励，是我分享的最大动力！</div>
-    <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
-      <span>赏</span>
-    </button>
-    <div id="QR" style="display: none;">
-      
-        <div id="wechat" style="display: inline-block">
-          <img id="wechat_qr" src="/uploads/wechatpay.jpeg" alt="Lee WeChat Pay">
-          <p>微信打赏</p>
-        </div>
-      
-      
-        <div id="alipay" style="display: inline-block">
-          <img id="alipay_qr" src="/uploads/alipay.jpeg" alt="Lee Alipay">
-          <p>支付宝打赏</p>
-        </div>
-      
-    </div>
   </div>
+</div>
 
 
-      
-    </div>
-
-    <div>
-      
-        
-  <ul class="post-copyright">
-    <li class="post-copyright-author">
-      <strong>本文作者：</strong>
-      Lee
-    </li>
-    <li class="post-copyright-link">
-      <strong>本文链接：</strong>
-      <a href="http://davidleee.com/2018/10/25/SVG-from-nothing-to-something/" title="SVG 从“完全不懂”到“足够开个入门分享”">http://davidleee.com/2018/10/25/SVG-from-nothing-to-something/</a>
-    </li>
-    <li class="post-copyright-license">
-      <strong>版权声明： </strong>
-      本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 3.0</a> 许可协议。转载请注明出处！
-    </li>
-  </ul>
-
-
-      
-    </div>
-
-    <footer class="post-footer">
-      
-        <div class="post-tags">
-          
-            <a href="/tags/svg/" rel="tag"># svg</a>
-          
-            <a href="/tags/xml/" rel="tag"># xml</a>
-          
-            <a href="/tags/markup/" rel="tag"># markup</a>
-          
-            <a href="/tags/react-native/" rel="tag"># react-native</a>
-          
-            <a href="/tags/viewbox/" rel="tag"># viewbox</a>
-          
-            <a href="/tags/clippath/" rel="tag"># clippath</a>
-          
-        </div>
-      
-
-      
-        
-      
-
-      
-        <div class="post-nav">
-          <div class="post-nav-next post-nav-item">
-            
-              <a href="/2018/10/19/CSS-syntax/" rel="next" title="CSS 句法">
-                <i class="fa fa-chevron-left"></i> CSS 句法
-              </a>
-            
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/svg/" rel="tag"># svg</a>
+              <a href="/tags/xml/" rel="tag"># xml</a>
+              <a href="/tags/markup/" rel="tag"># markup</a>
+              <a href="/tags/react-native/" rel="tag"># react-native</a>
+              <a href="/tags/viewbox/" rel="tag"># viewbox</a>
+              <a href="/tags/clippath/" rel="tag"># clippath</a>
           </div>
 
-          <span class="post-nav-divider"></span>
+        
 
-          <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2018/11/07/login-items-for-macos/" rel="prev" title="怎么在命令行给 macOS 设置开机启动任务">
-                怎么在命令行给 macOS 设置开机启动任务 <i class="fa fa-chevron-right"></i>
-              </a>
-            
-          </div>
-        </div>
-      
 
-      
-      
-    </footer>
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2018/10/19/CSS-syntax/" rel="prev" title="CSS 句法">
+      <i class="fa fa-chevron-left"></i> CSS 句法
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2018/11/07/login-items-for-macos/" rel="next" title="怎么在命令行给 macOS 设置开机启动任务">
+      怎么在命令行给 macOS 设置开机启动任务 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
   </article>
+  
+  
+  
 
 
 
-    <div class="post-spread">
-      
-        
-  <div class="bdsharebuttonbox">
-    <a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
-    <a href="#" class="bds_douban" data-cmd="douban" title="分享到豆瓣网"></a>
-    <a href="#" class="bds_sqq" data-cmd="sqq" title="分享到QQ好友"></a>
-    <a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a>
-    <a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a>
-    <a href="#" class="bds_tieba" data-cmd="tieba" title="分享到百度贴吧"></a>
-    <a href="#" class="bds_twi" data-cmd="twi" title="分享到Twitter"></a>
-    <a href="#" class="bds_fbook" data-cmd="fbook" title="分享到Facebook"></a>
-    <a href="#" class="bds_more" data-cmd="more"></a>
-    <a class="bds_count" data-cmd="count"></a>
-  </div>
-  <script>
-    window._bd_share_config = {
-      "common": {
-        "bdText": "",
-        "bdMini": "2",
-        "bdMiniList": false,
-        "bdPic": ""
-      },
-      "share": {
-        "bdSize": "16",
-        "bdStyle": "0"
-      },
-      "image": {
-        "viewList": ["tsina", "douban", "sqq", "qzone", "weixin", "twi", "fbook"],
-        "viewText": "分享到：",
-        "viewSize": "16"
-      }
-    }
-  </script>
+          </div>
+          
 
 <script>
-  with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='//bdimg.share.baidu.com/static/api/js/share.js?cdnversion='+~(-new Date()/36e5)];
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
 </script>
 
-      
-    </div>
-  </div>
-
-
-          </div>
-          
-
-
-          
-  <div class="comments" id="comments">
-    
-  </div>
-
-
         </div>
-        
           
   
-  <div class="sidebar-toggle">
-    <div class="sidebar-toggle-line-wrap">
-      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
-      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
-      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
-    </div>
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
   </div>
 
-  <aside id="sidebar" class="sidebar">
+  <aside class="sidebar">
     <div class="sidebar-inner">
 
-      
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
 
-      
-        <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
-            文章目录
-          </li>
-          <li class="sidebar-nav-overview" data-target="site-overview">
-            站点概览
-          </li>
-        </ul>
-      
-
-      <section class="site-overview sidebar-panel">
-        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
-          <img class="site-author-image" itemprop="image" src="/avatar.jpg" alt="Lee">
-          <p class="site-author-name" itemprop="name">Lee</p>
-           
-              <p class="site-description motion-element" itemprop="description"></p>
-           
-        </div>
-        <nav class="site-state motion-element">
-
-          
-            <div class="site-state-item site-state-posts">
-              <a href="/archives">
-                <span class="site-state-item-count">42</span>
-                <span class="site-state-item-name">日志</span>
-              </a>
-            </div>
-          
-
-          
-
-          
-            
-            
-            <div class="site-state-item site-state-tags">
-              <a href="/tags/index.html">
-                <span class="site-state-item-count">116</span>
-                <span class="site-state-item-name">标签</span>
-              </a>
-            </div>
-          
-
-        </nav>
-
-        
-          <div class="feed-link motion-element">
-            <a href="/atom.xml" rel="alternate">
-              <i class="fa fa-rss"></i>
-              RSS
-            </a>
-          </div>
-        
-
-        <div class="links-of-author motion-element">
-          
-            
-              <span class="links-of-author-item">
-                <a href="https://github.com/davidleee" target="_blank" title="GitHub">
-                  
-                    <i class="fa fa-fw fa-github"></i>
-                  
-                  GitHub
-                </a>
-              </span>
-            
-          
-        </div>
-
-        
-        
-
-        
-        
-          <div class="links-of-blogroll motion-element links-of-blogroll-inline">
-            <div class="links-of-blogroll-title">
-              <i class="fa  fa-fw fa-globe"></i>
-              友情链接
-            </div>
-            <ul class="links-of-blogroll-list">
-              
-                <li class="links-of-blogroll-item">
-                  <a href="http://www.yantinglam.com/" title="Yanting Lam" target="_blank">Yanting Lam</a>
-                </li>
-              
-                <li class="links-of-blogroll-item">
-                  <a href="http://www.enkichen.com/" title="Enki's Notes" target="_blank">Enki's Notes</a>
-                </li>
-              
-                <li class="links-of-blogroll-item">
-                  <a href="http://www.wxtlife.com/" title="Android技术特工队" target="_blank">Android技术特工队</a>
-                </li>
-              
-                <li class="links-of-blogroll-item">
-                  <a href="http://www.devhua.com/" title="Devhua's Blog" target="_blank">Devhua's Blog</a>
-                </li>
-              
-                <li class="links-of-blogroll-item">
-                  <a href="http://www.freehacker.cn" title="小熊糖否" target="_blank">小熊糖否</a>
-                </li>
-              
-                <li class="links-of-blogroll-item">
-                  <a href="https://debbiefu.github.io/" title="Debbie Fu" target="_blank">Debbie Fu</a>
-                </li>
-              
-                <li class="links-of-blogroll-item">
-                  <a href="https://hays.github.io/" title="Hays' Blog" target="_blank">Hays' Blog</a>
-                </li>
-              
-            </ul>
-          </div>
-        
-
-        
-
-
-      </section>
-
-      
       <!--noindex-->
-        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
-          <div class="post-toc">
-
-            
-              
-            
-
-            
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#svg-是个啥？"><span class="nav-number">1.</span> <span class="nav-text">SVG 是个啥？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#svg-长什么样？"><span class="nav-number">2.</span> <span class="nav-text">SVG 长什么样？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#svg-显示原理"><span class="nav-number">3.</span> <span class="nav-text">SVG 显示原理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#the-svg-canvas"><span class="nav-number">3.1.</span> <span class="nav-text">The SVG Canvas</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#the-viewport"><span class="nav-number">3.2.</span> <span class="nav-text">The Viewport</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#坐标系统"><span class="nav-number">3.3.</span> <span class="nav-text">坐标系统</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#the-viewbox"><span class="nav-number">4.</span> <span class="nav-text">The viewbox</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#小结"><span class="nav-number">5.</span> <span class="nav-text">小结</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考文章"><span class="nav-number">6.</span> <span class="nav-text">参考文章</span></a></li></ol></div>
-            
-
-          </div>
-        </section>
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#SVG-%E6%98%AF%E4%B8%AA%E5%95%A5%EF%BC%9F"><span class="nav-number">1.</span> <span class="nav-text">SVG 是个啥？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SVG-%E9%95%BF%E4%BB%80%E4%B9%88%E6%A0%B7%EF%BC%9F"><span class="nav-number">2.</span> <span class="nav-text">SVG 长什么样？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SVG-%E6%98%BE%E7%A4%BA%E5%8E%9F%E7%90%86"><span class="nav-number">3.</span> <span class="nav-text">SVG 显示原理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#The-SVG-Canvas"><span class="nav-number">3.1.</span> <span class="nav-text">The SVG Canvas</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#The-Viewport"><span class="nav-number">3.2.</span> <span class="nav-text">The Viewport</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9D%90%E6%A0%87%E7%B3%BB%E7%BB%9F"><span class="nav-number">3.3.</span> <span class="nav-text">坐标系统</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#The-viewbox"><span class="nav-number">4.</span> <span class="nav-text">The viewbox</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B0%8F%E7%BB%93"><span class="nav-number">5.</span> <span class="nav-text">小结</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%82%E8%80%83%E6%96%87%E7%AB%A0"><span class="nav-number">6.</span> <span class="nav-text">参考文章</span></a></li></ol></div>
+      </div>
       <!--/noindex-->
-      
 
-      
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Lee"
+      src="/avatar.jpg">
+  <p class="site-author-name" itemprop="name">Lee</p>
+  <div class="site-description" itemprop="description">快乐的程序猿</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">42</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">116</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/davidleee" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;davidleee" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+
+
+
+      </div>
 
     </div>
   </aside>
+  <div id="sidebar-dimmer"></div>
 
 
-        
       </div>
     </main>
 
-    <footer id="footer" class="footer">
+    <footer class="footer">
       <div class="footer-inner">
-        <div class="copyright">
+        
+
+        
+
+<div class="copyright">
   
   &copy; 
   <span itemprop="copyrightYear">2021</span>
@@ -801,413 +495,195 @@
     <i class="fa fa-heart"></i>
   </span>
   <span class="author" itemprop="copyrightHolder">Lee</span>
-
-  &nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;Hosted by <a href="https://pages.coding.me" style="font-weight: bold">Coding Pages</a>
 </div>
-
-
-<div class="powered-by">
-  Powered by <a class="theme-link" href="https://hexo.io">Hexo</a> 
-</div>
-
-<div class="theme-info">
-  Theme -
-  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
-    NexT.Mist
-  </a>
-</div>
-
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://mist.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> 强力驱动
+  </div>
 
         
 <div class="busuanzi-count">
-  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
-
-  
-    <span class="site-uv">
-      <i class="fa fa-user"></i>
-      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
-      
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
     </span>
-  
-
-  
-    <span class="site-pv">
-      <i class="fa fa-eye"></i>
-      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
-      
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
     </span>
-  
 </div>
 
 
-        
-      </div>
-    </footer>
 
-    
-      <div class="back-to-top">
-        <i class="fa fa-arrow-up"></i>
-        
-      </div>
-    
 
-  </div>
 
-  
 
-<script type="text/javascript">
-  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
-    window.Promise = null;
-  }
-</script>
-
-
-
-
-
-
-
-
-
-  
-
-
-
-
-  
-  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
-
-  
-  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
-
-  
-  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
-
-  
-  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
-
-  
-  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
-
-  
-  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
-
-
-  
-
-
-  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
-
-  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
-
-
-
-  
-  
-
-  
-  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
-<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
-
-
-
-  
-
-
-  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
-
-
-
-  
-
-
-
-  
-
-
-
-
-	
-
-
-
-
-
-  
-
-
-
-
-
-  
-
-
-
-
-
-  
-
-
-
-
-
-
-  
-
-  <script type="text/javascript">
-    // Popup Window;
-    var isfetched = false;
-    // Search DB path;
-    var search_path = "search.xml";
-    if (search_path.length == 0) {
-      search_path = "search.xml";
-    }
-    var path = "/" + search_path;
-    // monitor main search box;
-
-    function proceedsearch() {
-      $("body")
-        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
-        .css('overflow', 'hidden');
-      $('.popup').toggle();
-    }
-    // search function;
-    var searchFunc = function(path, search_id, content_id) {
-      'use strict';
-      $.ajax({
-        url: path,
-        dataType: "xml",
-        async: true,
-        success: function( xmlResponse ) {
-          // get the contents from search data
-          isfetched = true;
-          $('.popup').detach().appendTo('.header-inner');
-          var datas = $( "entry", xmlResponse ).map(function() {
-            return {
-              title: $( "title", this ).text(),
-              content: $("content",this).text(),
-              url: $( "url" , this).text()
-            };
-          }).get();
-          var $input = document.getElementById(search_id);
-          var $resultContent = document.getElementById(content_id);
-          $input.addEventListener('input', function(){
-            var matchcounts = 0;
-            var str='<ul class=\"search-result-list\">';
-            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
-            $resultContent.innerHTML = "";
-            if (this.value.trim().length > 1) {
-              // perform local searching
-              datas.forEach(function(data) {
-                var isMatch = false;
-                var content_index = [];
-                var data_title = data.title.trim().toLowerCase();
-                var data_content = data.content.trim().replace(/<[^>]+>/g,"").toLowerCase();
-                var data_url = decodeURIComponent(data.url);
-                var index_title = -1;
-                var index_content = -1;
-                var first_occur = -1;
-                // only match artiles with not empty titles and contents
-                if(data_title != '') {
-                  keywords.forEach(function(keyword, i) {
-                    index_title = data_title.indexOf(keyword);
-                    index_content = data_content.indexOf(keyword);
-                    if( index_title >= 0 || index_content >= 0 ){
-                      isMatch = true;
-                      if (i == 0) {
-                        first_occur = index_content;
-                      }
-                    }
-
-                  });
-                }
-                // show search results
-                if (isMatch) {
-                  matchcounts += 1;
-                  str += "<li><a href='"+ data_url +"' class='search-result-title'>"+ data_title +"</a>";
-                  var content = data.content.trim().replace(/<[^>]+>/g,"");
-                  if (first_occur >= 0) {
-                    // cut out 100 characters
-                    var start = first_occur - 20;
-                    var end = first_occur + 80;
-                    if(start < 0){
-                      start = 0;
-                    }
-                    if(start == 0){
-                      end = 50;
-                    }
-                    if(end > content.length){
-                      end = content.length;
-                    }
-                    var match_content = content.substring(start, end);
-                    // highlight all keywords
-                    keywords.forEach(function(keyword){
-                      var regS = new RegExp(keyword, "gi");
-                      match_content = match_content.replace(regS, "<b class=\"search-keyword\">"+keyword+"</b>");
-                    });
-
-                    str += "<p class=\"search-result\">" + match_content +"...</p>"
-                  }
-                  str += "</li>";
-                }
-              })};
-            str += "</ul>";
-            if (matchcounts == 0) { str = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>' }
-            if (keywords == "") { str = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>' }
-            $resultContent.innerHTML = str;
-          });
-          proceedsearch();
-        }
-      });}
-
-    // handle and trigger popup window;
-    $('.popup-trigger').click(function(e) {
-      e.stopPropagation();
-      if (isfetched == false) {
-        searchFunc(path, 'local-search-input', 'local-search-result');
-      } else {
-        proceedsearch();
-      };
-    });
-
-    $('.popup-btn-close').click(function(e){
-      $('.popup').hide();
-      $(".local-search-pop-overlay").remove();
-      $('body').css('overflow', '');
-    });
-    $('.popup').click(function(e){
-      e.stopPropagation();
-    });
-  </script>
-
-
-
-
-
-  
-
-  
-  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
-  <script>AV.initialize("rWbFyKbV9jV1Gm1Gplpfydst-gzGzoHsz", "AeJ3NJoYXFmMj6k9LCFSR62a");</script>
-  <script>
-    function showTime(Counter) {
-      var query = new AV.Query(Counter);
-      var entries = [];
-      var $visitors = $(".leancloud_visitors");
-
-      $visitors.each(function () {
-        entries.push( $(this).attr("id").trim() );
-      });
-
-      query.containedIn('url', entries);
-      query.find()
-        .done(function (results) {
-          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
-
-          if (results.length === 0) {
-            $visitors.find(COUNT_CONTAINER_REF).text(0);
-            return;
-          }
-
-          for (var i = 0; i < results.length; i++) {
-            var item = results[i];
-            var url = item.get('url');
-            var time = item.get('time');
-            var element = document.getElementById(url);
-
-            $(element).find(COUNT_CONTAINER_REF).text(time);
-          }
-          for(var i = 0; i < entries.length; i++) {
-            var url = entries[i];
-            var element = document.getElementById(url);
-            var countSpan = $(element).find(COUNT_CONTAINER_REF);
-            if( countSpan.text() == '') {
-              countSpan.text(0);
-            }
-          }
-        })
-        .fail(function (object, error) {
-          console.log("Error: " + error.code + " " + error.message);
-        });
+<script>
+  (function() {
+    function leancloudSelector(url) {
+      url = encodeURI(url);
+      return document.getElementById(url).querySelector('.leancloud-visitors-count');
     }
 
     function addCount(Counter) {
-      var $visitors = $(".leancloud_visitors");
-      var url = $visitors.attr('id').trim();
-      var title = $visitors.attr('data-flag-title').trim();
-      var query = new AV.Query(Counter);
+      var visitors = document.querySelector('.leancloud_visitors');
+      var url = decodeURI(visitors.id);
+      var title = visitors.dataset.flagTitle;
 
-      query.equalTo("url", url);
-      query.find({
-        success: function(results) {
+      Counter('get', '/classes/Counter?where=' + encodeURIComponent(JSON.stringify({ url })))
+        .then(response => response.json())
+        .then(({ results }) => {
           if (results.length > 0) {
             var counter = results[0];
-            counter.fetchWhenSave(true);
-            counter.increment("time");
-            counter.save(null, {
-              success: function(counter) {
-                var $element = $(document.getElementById(url));
-                $element.find('.leancloud-visitors-count').text(counter.get('time'));
-              },
-              error: function(counter, error) {
-                console.log('Failed to save Visitor num, with error message: ' + error.message);
-              }
-            });
+            leancloudSelector(url).innerText = counter.time + 1;
+            Counter('put', '/classes/Counter/' + counter.objectId, { time: { '__op': 'Increment', 'amount': 1 } })
+              .catch(error => {
+                console.error('Failed to save visitor count', error);
+              });
           } else {
-            var newcounter = new Counter();
-            /* Set ACL */
-            var acl = new AV.ACL();
-            acl.setPublicReadAccess(true);
-            acl.setPublicWriteAccess(true);
-            newcounter.setACL(acl);
-            /* End Set ACL */
-            newcounter.set("title", title);
-            newcounter.set("url", url);
-            newcounter.set("time", 1);
-            newcounter.save(null, {
-              success: function(newcounter) {
-                var $element = $(document.getElementById(url));
-                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
-              },
-              error: function(newcounter, error) {
-                console.log('Failed to create');
-              }
-            });
+              Counter('post', '/classes/Counter', { title, url, time: 1 })
+                .then(response => response.json())
+                .then(() => {
+                  leancloudSelector(url).innerText = 1;
+                })
+                .catch(error => {
+                  console.error('Failed to create', error);
+                });
           }
-        },
-        error: function(error) {
-          console.log('Error:' + error.code + " " + error.message);
-        }
-      });
+        })
+        .catch(error => {
+          console.error('LeanCloud Counter Error', error);
+        });
     }
 
-    $(function() {
-      var Counter = AV.Object.extend("Counter");
-      if ($('.leancloud_visitors').length == 1) {
+    function showTime(Counter) {
+      var visitors = document.querySelectorAll('.leancloud_visitors');
+      var entries = [...visitors].map(element => {
+        return decodeURI(element.id);
+      });
+
+      Counter('get', '/classes/Counter?where=' + encodeURIComponent(JSON.stringify({ url: { '$in': entries } })))
+        .then(response => response.json())
+        .then(({ results }) => {
+          for (let url of entries) {
+            let target = results.find(item => item.url === url);
+            leancloudSelector(url).innerText = target ? target.time : 0;
+          }
+        })
+        .catch(error => {
+          console.error('LeanCloud Counter Error', error);
+        });
+    }
+
+    let { app_id, app_key, server_url } = {"enable":true,"app_id":"rWbFyKbV9jV1Gm1Gplpfydst-gzGzoHsz","app_key":"AeJ3NJoYXFmMj6k9LCFSR62a","server_url":null,"security":false};
+    function fetchData(api_server) {
+      var Counter = (method, url, data) => {
+        return fetch(`${api_server}/1.1${url}`, {
+          method,
+          headers: {
+            'X-LC-Id'     : app_id,
+            'X-LC-Key'    : app_key,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(data)
+        });
+      };
+      if (CONFIG.page.isPost) {
+        if (CONFIG.hostname !== location.hostname) return;
         addCount(Counter);
-      } else if ($('.post-title-link').length > 1) {
+      } else if (document.querySelectorAll('.post-title-link').length >= 1) {
         showTime(Counter);
       }
-    });
-  </script>
+    }
+
+    let api_server = app_id.slice(-9) !== '-MdYXbMMI' ? server_url : `https://${app_id.slice(0, 8).toLowerCase()}.api.lncldglobal.com`;
+
+    if (api_server) {
+      fetchData(api_server);
+    } else {
+      fetch('https://app-router.leancloud.cn/2/route?appId=' + app_id)
+        .then(response => response.json())
+        .then(({ api_server }) => {
+          fetchData('https://' + api_server);
+        });
+    }
+  })();
+</script>
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
 
 
 
   
-<script>
-(function(){
-    var bp = document.createElement('script');
-    var curProtocol = window.location.protocol.split(':')[0];
-    if (curProtocol === 'https') {
-        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
-    }
-    else {
-        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
-    }
-    var s = document.getElementsByTagName("script")[0];
-    s.parentNode.insertBefore(bp, s);
-})();
-</script>
+  <script>
+    (function(){
+      var canonicalURL, curProtocol;
+      //Get the <link> tag
+      var x=document.getElementsByTagName("link");
+		//Find the last canonical URL
+		if(x.length > 0){
+			for (i=0;i<x.length;i++){
+				if(x[i].rel.toLowerCase() == 'canonical' && x[i].href){
+					canonicalURL=x[i].href;
+				}
+			}
+		}
+    //Get protocol
+	    if (!canonicalURL){
+	    	curProtocol = window.location.protocol.split(':')[0];
+	    }
+	    else{
+	    	curProtocol = canonicalURL.split(':')[0];
+	    }
+      //Get current URL if the canonical URL does not exist
+	    if (!canonicalURL) canonicalURL = window.location.href;
+	    //Assign script content. Replace current URL with the canonical URL
+      !function(){var e=/([http|https]:\/\/[a-zA-Z0-9\_\.]+\.baidu\.com)/gi,r=canonicalURL,t=document.referrer;if(!e.test(r)){var n=(String(curProtocol).toLowerCase() === 'https')?"https://sp0.baidu.com/9_Q4simg2RQJ8t7jm9iCKT-xh_/s.gif":"//api.share.baidu.com/s.gif";t?(n+="?r="+encodeURIComponent(document.referrer),r&&(n+="&l="+r)):r&&(n+="?l="+r);var i=new Image;i.src=n}}(window);})();
+  </script>
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
 
 
   

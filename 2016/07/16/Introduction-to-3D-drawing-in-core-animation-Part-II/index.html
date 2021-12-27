@@ -1,425 +1,278 @@
-<!doctype html>
-
-
-
-  
-
-
-<html class="theme-next mist use-motion" lang="zh-Hans">
-<head><meta name="generator" content="Hexo 3.9.0">
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
   <meta charset="UTF-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/favicon.jpg">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon.jpg">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon.jpg">
+  <link rel="mask-icon" href="/favicon.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
 
 
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
 
-<meta http-equiv="Cache-Control" content="no-transform">
-<meta http-equiv="Cache-Control" content="no-siteapp">
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"davidleee.com","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  
-  
-  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
-
-
-
-
-  
-  
-  
-  
-
-  
-    
-    
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-    
-    
-    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
-  
-
-
-
-
-
-
-<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
-
-<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css">
-
-
-  <meta name="keywords" content="iOS,Translation,">
-
-
-
-
-
-  <link rel="alternate" href="/atom.xml" title="Lee 的笔记本" type="application/atom+xml">
-
-
-
-
-  <link rel="shortcut icon" type="image/x-icon" href="/favicon.jpg?v=5.1.0">
-
-
-
-
-
-
-<meta name="description" content="这是关于 Core Animation 三维绘图的翻译文第二篇（共两篇），这里会承接上一篇的内容，把之前的成果与手势控制结合起来，完成了一个很有趣的效果，原文是 Think &amp;amp; Build 上的 Introduction to 3D drawing in core animation（Part 2）。想看最终成品可以去原文作者的 Github 上看这个地方，把源码下载回来自己跑一下。">
-<meta name="keywords" content="iOS,Translation">
+  <meta name="description" content="这是关于 Core Animation 三维绘图的翻译文第二篇（共两篇），这里会承接上一篇的内容，把之前的成果与手势控制结合起来，完成了一个很有趣的效果，原文是 Think &amp; Build 上的 Introduction to 3D drawing in core animation（Part 2）。想看最终成品可以去原文作者的 Github 上看这个地方，把源码下载回来自己跑一下。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="【翻译】Core Animation 3D 绘图（下）">
 <meta property="og:url" content="http://davidleee.com/2016/07/16/Introduction-to-3D-drawing-in-core-animation-Part-II/index.html">
 <meta property="og:site_name" content="Lee 的笔记本">
-<meta property="og:description" content="这是关于 Core Animation 三维绘图的翻译文第二篇（共两篇），这里会承接上一篇的内容，把之前的成果与手势控制结合起来，完成了一个很有趣的效果，原文是 Think &amp;amp; Build 上的 Introduction to 3D drawing in core animation（Part 2）。想看最终成品可以去原文作者的 Github 上看这个地方，把源码下载回来自己跑一下。">
-<meta property="og:locale" content="zh-Hans">
+<meta property="og:description" content="这是关于 Core Animation 三维绘图的翻译文第二篇（共两篇），这里会承接上一篇的内容，把之前的成果与手势控制结合起来，完成了一个很有趣的效果，原文是 Think &amp; Build 上的 Introduction to 3D drawing in core animation（Part 2）。想看最终成品可以去原文作者的 Github 上看这个地方，把源码下载回来自己跑一下。">
+<meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="http://davidleee.com/uploads/Introduction-to-3D-drawing-in-core-animation-Part-II/double_side.png">
 <meta property="og:image" content="http://davidleee.com/uploads/Introduction-to-3D-drawing-in-core-animation-Part-II/planes_circle.png">
 <meta property="og:image" content="http://davidleee.com/uploads/Introduction-to-3D-drawing-in-core-animation-Part-II/planes_center.png">
-<meta property="og:updated_time" content="2020-05-05T03:43:31.442Z">
+<meta property="article:published_time" content="2016-07-16T03:37:31.000Z">
+<meta property="article:modified_time" content="2020-05-05T03:43:31.000Z">
+<meta property="article:author" content="Lee">
+<meta property="article:tag" content="iOS">
+<meta property="article:tag" content="Translation">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="【翻译】Core Animation 3D 绘图（下）">
-<meta name="twitter:description" content="这是关于 Core Animation 三维绘图的翻译文第二篇（共两篇），这里会承接上一篇的内容，把之前的成果与手势控制结合起来，完成了一个很有趣的效果，原文是 Think &amp;amp; Build 上的 Introduction to 3D drawing in core animation（Part 2）。想看最终成品可以去原文作者的 Github 上看这个地方，把源码下载回来自己跑一下。">
 <meta name="twitter:image" content="http://davidleee.com/uploads/Introduction-to-3D-drawing-in-core-animation-Part-II/double_side.png">
 
+<link rel="canonical" href="http://davidleee.com/2016/07/16/Introduction-to-3D-drawing-in-core-animation-Part-II/">
 
 
-<script type="text/javascript" id="hexo.configurations">
-  var NexT = window.NexT || {};
-  var CONFIG = {
-    root: '/',
-    scheme: 'Mist',
-    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
-    fancybox: true,
-    motion: true,
-    duoshuo: {
-      userId: '0',
-      author: '博主'
-    },
-    algolia: {
-      applicationID: '',
-      apiKey: '',
-      indexName: '',
-      hits: {"per_page":10},
-      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
-    }
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
   };
 </script>
 
-
-
-  <link rel="canonical" href="http://davidleee.com/2016/07/16/Introduction-to-3D-drawing-in-core-animation-Part-II/">
-
-
+  <title>【翻译】Core Animation 3D 绘图（下） | Lee 的笔记本</title>
+  
 
 
 
-  <title> 【翻译】Core Animation 3D 绘图（下） | Lee 的笔记本 </title>
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="Lee 的笔记本" type="application/atom+xml">
 </head>
 
-<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
-
-  
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  
-  
-    
-  
-
-  <div class="container sidebar-position-left page-post-detail ">
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
     <div class="headband"></div>
 
-    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
-      <div class="header-inner"><div class="site-brand-wrapper">
-  <div class="site-meta ">
-    
-
-    <div class="custom-logo-site-title">
-      <a href="/" class="brand" rel="start">
-        <span class="logo-line-before"><i></i></span>
-        <span class="site-title">Lee 的笔记本</span>
-        <span class="logo-line-after"><i></i></span>
-      </a>
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
     </div>
-      
-        <h1 class="site-subtitle" itemprop="description"></h1>
-      
   </div>
 
-  <div class="site-nav-toggle">
-    <button>
-      <span class="btn-bar"></span>
-      <span class="btn-bar"></span>
-      <span class="btn-bar"></span>
-    </button>
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Lee 的笔记本</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
   </div>
 </div>
+
+
+
 
 <nav class="site-nav">
-  
-
-  
-    <ul id="menu" class="menu">
-      
-        
+  <ul id="menu" class="main-menu menu">
         <li class="menu-item menu-item-home">
-          <a href="/" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
-            
-            首页
-          </a>
-        </li>
-      
-        
-        <li class="menu-item menu-item-archives">
-          <a href="/archives" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
-            
-            归档
-          </a>
-        </li>
-      
-        
-        <li class="menu-item menu-item-tags">
-          <a href="/tags" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
-            
-            标签
-          </a>
-        </li>
-      
-        
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
         <li class="menu-item menu-item-about">
-          <a href="/about" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
-            
-            关于
-          </a>
-        </li>
-      
 
-      
-        <li class="menu-item menu-item-search">
-          
-            <a href="javascript:;" class="popup-trigger">
-          
-            
-              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
-            
-            搜索
-          </a>
-        </li>
-      
-    </ul>
-  
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
 
-  
-    <div class="site-search">
-      
-  <div class="popup search-popup local-search-popup">
-  <div class="local-search-header clearfix">
-    <span class="search-icon">
-      <i class="fa fa-search"></i>
-    </span>
-    <span class="popup-btn-close">
-      <i class="fa fa-times-circle"></i>
-    </span>
-    <div class="local-search-input-wrapper">
-      <input autocapitalize="off" autocomplete="off" autocorrect="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
-    </div>
-  </div>
-  <div id="local-search-result"></div>
-</div>
+  </li>
+        <li class="menu-item menu-item-tags">
 
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
 
+  </li>
+        <li class="menu-item menu-item-archives">
 
-    </div>
-  
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
 </nav>
 
 
 
- </div>
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
     </header>
 
-    <main id="main" class="main">
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
       <div class="main-inner">
         <div class="content-wrap">
-          <div id="content" class="content">
+          
+
+          <div class="content post posts-expand">
             
 
-  <div id="posts" class="posts-expand">
     
-
-  
-
   
   
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://davidleee.com/2016/07/16/Introduction-to-3D-drawing-in-core-animation-Part-II/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Lee">
-      <meta itemprop="description" content>
       <meta itemprop="image" content="/avatar.jpg">
+      <meta itemprop="name" content="Lee">
+      <meta itemprop="description" content="快乐的程序猿">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
       <meta itemprop="name" content="Lee 的笔记本">
     </span>
-
-    
       <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-            
-            
-              
-                【翻译】Core Animation 3D 绘图（下）
-              
-            
-          </h2>
-        
+        <h1 class="post-title" itemprop="name headline">
+          【翻译】Core Animation 3D 绘图（下）
+        </h1>
 
         <div class="post-meta">
-          <span class="post-time">
-            
+            <span class="post-meta-item">
               <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
+                <i class="far fa-calendar"></i>
               </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-07-16T11:37:31+08:00">
-                2016-07-16
-              </time>
-            
+              <span class="post-meta-item-text">发表于</span>
 
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2016/07/16/Introduction-to-3D-drawing-in-core-animation-Part-II/" class="leancloud_visitors" data-flag-title="【翻译】Core Animation 3D 绘图（下）">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数 </span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-
-              
-
-              
+              <time title="创建时间：2016-07-16 11:37:31" itemprop="dateCreated datePublished" datetime="2016-07-16T11:37:31+08:00">2016-07-16</time>
+            </span>
+              <span class="post-meta-item">
                 <span class="post-meta-item-icon">
-                  <i class="fa fa-clock-o"></i>
+                  <i class="far fa-calendar-check"></i>
                 </span>
-                
-                  <span class="post-meta-item-text">阅读时长</span>
-                
-                <span title="阅读时长">
-                  10
-                </span>
-              
-            </div>
-          
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-05-05 11:43:31" itemprop="dateModified" datetime="2020-05-05T11:43:31+08:00">2020-05-05</time>
+              </span>
 
           
+            <span id="/2016/07/16/Introduction-to-3D-drawing-in-core-animation-Part-II/" class="post-meta-item leancloud_visitors" data-flag-title="【翻译】Core Animation 3D 绘图（下）" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
 
         </div>
       </header>
+
     
-
-
+    
+    
     <div class="post-body" itemprop="articleBody">
 
       
-      
-
-      
-        <p>这是关于 Core Animation 三维绘图的翻译文第二篇（共两篇），这里会承接上一篇的内容，把之前的成果与手势控制结合起来，完成了一个很有趣的效果，原文是 Think &amp; Build 上的 <a href="http://www.thinkandbuild.it/introduction-to-3d-drawing-in-core-animation-part-2" target="_blank" rel="noopener">Introduction to 3D drawing in core animation（Part 2）</a>。想看最终成品可以去原文作者的 Github 上看<a href="https://github.com/ariok/TB_3DCoreAnimation" target="_blank" rel="noopener">这个地方</a>，把源码下载回来自己跑一下。</p>
-<a id="more"></a>
+        <p>这是关于 Core Animation 三维绘图的翻译文第二篇（共两篇），这里会承接上一篇的内容，把之前的成果与手势控制结合起来，完成了一个很有趣的效果，原文是 Think &amp; Build 上的 <a target="_blank" rel="noopener" href="http://www.thinkandbuild.it/introduction-to-3d-drawing-in-core-animation-part-2">Introduction to 3D drawing in core animation（Part 2）</a>。想看最终成品可以去原文作者的 Github 上看<a target="_blank" rel="noopener" href="https://github.com/ariok/TB_3DCoreAnimation">这个地方</a>，把源码下载回来自己跑一下。</p>
+<span id="more"></span>
 <blockquote>
 <p>因为翻译这篇文章的时间已经比较久远了，难免有一些错误的地方，欢迎大家指出来共同进步。</p>
 </blockquote>
 <p>在上一篇文章中，我们已经学到了用 Core Animation 来绘制三维图的基础。在接下来的这一部分，我们会用到更深入的技巧，去创造一个交互视图。我们会做一个像行李输送带那样的东西，让用户可以通过手势交互来控制它。</p>
-<h2 id="传送带-概览">“传送带”概览</h2>
+<h2 id="“传送带”概览">“传送带”概览</h2>
 <p>先来挖掘一下这个效果的设计，好让我们清楚怎么去分解它。</p>
-<h3 id="三维的">三维的！</h3>
+<h3 id="三维的！">三维的！</h3>
 <p>首先，我们可以猜到需要用透视图来实现整个画面。因为从用户的角度去看，远方的卡片是立体的。所以，我们会创建一个三维层次（3D hierarchy），正如上一篇文章所描述的那样，使用一个 <code>CATransformLayer</code> 来作为根视图。</p>
 <h3 id="卡片们">卡片们</h3>
 <p>这个传送带由许多卡片（原文是 Plane，暂且这么叫吧）组成。我们会用一个 <code>CAGradientLayer</code> 来表示这些对象。这是 <code>CALayer</code> 的一个子类，不同的是我们可以用一个渐变色来作为它的背景色，而不是常见的单一色彩。</p>
 <p>这些卡片会绕着一个圆心做圆周运动，并且带有旋转的效果。（想象一下机场行李输送带的样子）。</p>
-<h3 id="手势-gesture">手势（Gesture）</h3>
+<h3 id="手势（Gesture）">手势（Gesture）</h3>
 <p>监听用户的手势操作比较简单，使用一个 <code>Gesture Recognizer</code> 就可以了。<br>
 我们要做的就只是跟踪用户的操作，把获取的数据转化为可以用来表示传送带旋转角度的数值。</p>
 <p>好，有了一定的“全局观”之后，我们就可以来耍耍了。启动神圣的 Xcode！</p>
-<h2 id="代码敲起来">代码敲起来！</h2>
+<h2 id="代码敲起来！">代码敲起来！</h2>
 <p>我们从第一个视图控制器的 viewDidLoad 开始：</p>
-<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">- (<span class="keyword">void</span>)viewDidLoad</span><br><span class="line">&#123;</span><br><span class="line">	[<span class="keyword">super</span> viewDidLoad];</span><br><span class="line"></span><br><span class="line">	<span class="comment">//Initialize the TransformLayer</span></span><br><span class="line">	transformLayer = [<span class="built_in">CATransformLayer</span> layer];</span><br><span class="line">	transformLayer.frame = <span class="keyword">self</span>.view.bounds;</span><br><span class="line">	[<span class="keyword">self</span>.view.layer addSublayer:transformLayer];</span><br><span class="line"></span><br><span class="line">	angle = <span class="number">0</span>;</span><br><span class="line">	XPanOffset = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">	<span class="comment">//Create 5 planes</span></span><br><span class="line">	[<span class="keyword">self</span> addPlane];</span><br><span class="line">	[<span class="keyword">self</span> addPlane];</span><br><span class="line">	[<span class="keyword">self</span> addPlane];</span><br><span class="line">	[<span class="keyword">self</span> addPlane];</span><br><span class="line">	[<span class="keyword">self</span> addPlane];</span><br><span class="line"></span><br><span class="line">	<span class="comment">//Force the first animation to set the planes in place</span></span><br><span class="line">	[<span class="keyword">self</span> animate];</span><br><span class="line"></span><br><span class="line">	<span class="comment">//Initialize the Pan gesture recognizer</span></span><br><span class="line">	<span class="built_in">UIPanGestureRecognizer</span> *panGesture =  [[<span class="built_in">UIPanGestureRecognizer</span> alloc]initWithTarget:<span class="keyword">self</span> action:<span class="keyword">@selector</span>(pan:)];</span><br><span class="line">	[<span class="keyword">self</span>.view addGestureRecognizer:panGesture];   </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">- (<span class="keyword">void</span>)viewDidLoad</span><br><span class="line">&#123;</span><br><span class="line">	[<span class="keyword">super</span> viewDidLoad];</span><br><span class="line"></span><br><span class="line">	<span class="comment">//Initialize the TransformLayer</span></span><br><span class="line">	transformLayer = [<span class="built_in">CATransformLayer</span> layer];</span><br><span class="line">	transformLayer.frame = <span class="keyword">self</span>.view.bounds;</span><br><span class="line">	[<span class="keyword">self</span>.view.layer addSublayer:transformLayer];</span><br><span class="line"></span><br><span class="line">	angle = <span class="number">0</span>;</span><br><span class="line">	XPanOffset = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">	<span class="comment">//Create 5 planes</span></span><br><span class="line">	[<span class="keyword">self</span> addPlane];</span><br><span class="line">	[<span class="keyword">self</span> addPlane];</span><br><span class="line">	[<span class="keyword">self</span> addPlane];</span><br><span class="line">	[<span class="keyword">self</span> addPlane];</span><br><span class="line">	[<span class="keyword">self</span> addPlane];</span><br><span class="line"></span><br><span class="line">	<span class="comment">//Force the first animation to set the planes in place</span></span><br><span class="line">	[<span class="keyword">self</span> animate];</span><br><span class="line"></span><br><span class="line">	<span class="comment">//Initialize the Pan gesture recognizer</span></span><br><span class="line">	<span class="built_in">UIPanGestureRecognizer</span> *panGesture =  [[<span class="built_in">UIPanGestureRecognizer</span> alloc]initWithTarget:<span class="keyword">self</span> action:<span class="keyword">@selector</span>(pan:)];</span><br><span class="line">	[<span class="keyword">self</span>.view addGestureRecognizer:panGesture];   </span><br><span class="line">&#125;           </span><br></pre></td></tr></table></figure>
 <p>完成！因为这是主干部分，所以只管读下去，看到分解的细枝末节之后，这里的代码自然就理解了。</p>
 <p>现在我们清楚知道的是，这里创建了一个 <code>CATransformLayer</code> 的对象（transformLayer）来作为根图层；然后我们用 <code>addPlane</code> 这个方法往根图层里面加入了5张卡片；最后我们用 <code>-[panGesture:]</code> 方法来统一管理所有的 Pan 手势。</p>
 <h2 id="把卡片先画出来">把卡片先画出来</h2>
@@ -449,7 +302,7 @@
 <p>所以我们还要让每张卡片作出一定的位移，这样才能把每张卡片放到正确的位置上面去。</p>
 <p>最后一步就是把这些变换作用到卡片上，只要吧 <code>transform</code> 设置为我们计算出来的数值就好了。<br>
 <code>degX</code> 属性最后会加上一个 <code>degForPlane</code>，用来计算下一张卡片要旋转多少。</p>
-<h2 id="pan-gesture">Pan Gesture</h2>
+<h2 id="Pan-Gesture">Pan Gesture</h2>
 <p><code>-[pan]</code> 方法负责管理所有的 pan 手势。这个方法的代码长这样：</p>
 <figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">- (<span class="keyword">void</span>)pan:(<span class="built_in">UIPanGestureRecognizer</span>*)gesture &#123;</span><br><span class="line"></span><br><span class="line">	<span class="comment">//Get the current translation on the X</span></span><br><span class="line">	<span class="keyword">float</span> xOffset = [gesture translationInView:<span class="keyword">self</span>.view].x;</span><br><span class="line"></span><br><span class="line">	<span class="comment">//When gesture begin, reset the offset</span></span><br><span class="line">	<span class="keyword">if</span>(gesture.state == <span class="built_in">UIGestureRecognizerStateBegan</span>) &#123;</span><br><span class="line">		XPanOffset = <span class="number">0</span>;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">//the distance covered since the last gesture event (I slow down a bit the final rotation multiplying by 0.5)</span></span><br><span class="line">	<span class="keyword">float</span> movedBy = xOffset * <span class="number">0.5</span> - XPanOffset;</span><br><span class="line"></span><br><span class="line">	<span class="comment">//Calculate the offset from the previous gesture event</span></span><br><span class="line">	XPanOffset += movedBy;</span><br><span class="line"></span><br><span class="line">	<span class="comment">//Add the offset to the current angle</span></span><br><span class="line">	angle += movedBy;</span><br><span class="line"></span><br><span class="line">	<span class="comment">//Update the plane</span></span><br><span class="line">	[<span class="keyword">self</span> animate];</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>pan 手势是持续性的，这意味着从截获到手势事件开始，<code>pan</code> 方法就会随着手指的移动而不断被调用，直到触摸屏幕的所有手指都抬了起来。</p>
@@ -460,332 +313,173 @@
 <h2 id="总结">总结</h2>
 <p>这只是个使用纯 Core Animation 构建三维视图的简单例子，项目中真实的需求可能要复杂得多，但是 Core Animation 的强大也不止于此。<br>
 现在你可以尽情去实验代码里玩耍了！</p>
-<p>再一次附上原文：<a href="http://www.thinkandbuild.it/introduction-to-3d-drawing-in-core-animation-part-2" target="_blank" rel="noopener">Introduction to 3D drawing in core animation (Part 2)</a></p>
+<p>再一次附上原文：<a target="_blank" rel="noopener" href="http://www.thinkandbuild.it/introduction-to-3d-drawing-in-core-animation-part-2">Introduction to 3D drawing in core animation (Part 2)</a></p>
 
-      
+<div id="gitalk-container"></div>
+<script src="https://cdn.bootcss.com/blueimp-md5/2.12.0/js/md5.min.js"></script><link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css"><script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+
+		<script>
+		var gitalkConfig = {"clientID":"8225264e14e677544541","clientSecret":"ed2a2c6d5043e9f0b41cae78b0d5b4571099de53","repo":"HexoBlogSource","owner":"davidleee","admin":["davidleee"],"distractionFreeMode":false};
+	    gitalkConfig.id = md5(location.pathname);
+		var gitalk = new Gitalk(gitalkConfig);
+	    gitalk.render("gitalk-container");
+	    </script>
     </div>
 
-    <div>
+    
+    
+    
+        <div class="reward-container">
+  <div>你的支持和鼓励，是我分享的最大动力！</div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
       
-        
+      <div style="display: inline-block;">
+        <img src="/uploads/wechatpay.jpeg" alt="Lee 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/uploads/alipay.jpeg" alt="Lee 支付宝">
+        <p>支付宝</p>
+      </div>
 
-      
-    </div>
-
-    <div>
-      
-        
-  <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
-    <div>你的支持和鼓励，是我分享的最大动力！</div>
-    <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
-      <span>赏</span>
-    </button>
-    <div id="QR" style="display: none;">
-      
-        <div id="wechat" style="display: inline-block">
-          <img id="wechat_qr" src="/uploads/wechatpay.jpeg" alt="Lee WeChat Pay">
-          <p>微信打赏</p>
-        </div>
-      
-      
-        <div id="alipay" style="display: inline-block">
-          <img id="alipay_qr" src="/uploads/alipay.jpeg" alt="Lee Alipay">
-          <p>支付宝打赏</p>
-        </div>
-      
-    </div>
   </div>
+</div>
 
 
-      
-    </div>
-
-    <div>
-      
-        
-  <ul class="post-copyright">
-    <li class="post-copyright-author">
-      <strong>本文作者：</strong>
-      Lee
-    </li>
-    <li class="post-copyright-link">
-      <strong>本文链接：</strong>
-      <a href="http://davidleee.com/2016/07/16/Introduction-to-3D-drawing-in-core-animation-Part-II/" title="【翻译】Core Animation 3D 绘图（下）">http://davidleee.com/2016/07/16/Introduction-to-3D-drawing-in-core-animation-Part-II/</a>
-    </li>
-    <li class="post-copyright-license">
-      <strong>版权声明： </strong>
-      本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 3.0</a> 许可协议。转载请注明出处！
-    </li>
-  </ul>
-
-
-      
-    </div>
-
-    <footer class="post-footer">
-      
-        <div class="post-tags">
-          
-            <a href="/tags/iOS/" rel="tag"># iOS</a>
-          
-            <a href="/tags/Translation/" rel="tag"># Translation</a>
-          
-        </div>
-      
-
-      
-        
-      
-
-      
-        <div class="post-nav">
-          <div class="post-nav-next post-nav-item">
-            
-              <a href="/2016/07/07/Introduction-to-3D-drawing-in-core-animation-Part-I/" rel="next" title="【翻译】Core Animation 3D 绘图（上）">
-                <i class="fa fa-chevron-left"></i> 【翻译】Core Animation 3D 绘图（上）
-              </a>
-            
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/iOS/" rel="tag"># iOS</a>
+              <a href="/tags/Translation/" rel="tag"># Translation</a>
           </div>
 
-          <span class="post-nav-divider"></span>
+        
 
-          <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2016/08/27/team-working-with-git/" rel="prev" title="聊聊用 Git 协同合作的事儿">
-                聊聊用 Git 协同合作的事儿 <i class="fa fa-chevron-right"></i>
-              </a>
-            
-          </div>
-        </div>
-      
 
-      
-      
-    </footer>
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2016/07/07/Introduction-to-3D-drawing-in-core-animation-Part-I/" rel="prev" title="【翻译】Core Animation 3D 绘图（上）">
+      <i class="fa fa-chevron-left"></i> 【翻译】Core Animation 3D 绘图（上）
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2016/08/27/team-working-with-git/" rel="next" title="聊聊用 Git 协同合作的事儿">
+      聊聊用 Git 协同合作的事儿 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
   </article>
+  
+  
+  
 
 
 
-    <div class="post-spread">
-      
-        
-  <div class="bdsharebuttonbox">
-    <a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
-    <a href="#" class="bds_douban" data-cmd="douban" title="分享到豆瓣网"></a>
-    <a href="#" class="bds_sqq" data-cmd="sqq" title="分享到QQ好友"></a>
-    <a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a>
-    <a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a>
-    <a href="#" class="bds_tieba" data-cmd="tieba" title="分享到百度贴吧"></a>
-    <a href="#" class="bds_twi" data-cmd="twi" title="分享到Twitter"></a>
-    <a href="#" class="bds_fbook" data-cmd="fbook" title="分享到Facebook"></a>
-    <a href="#" class="bds_more" data-cmd="more"></a>
-    <a class="bds_count" data-cmd="count"></a>
-  </div>
-  <script>
-    window._bd_share_config = {
-      "common": {
-        "bdText": "",
-        "bdMini": "2",
-        "bdMiniList": false,
-        "bdPic": ""
-      },
-      "share": {
-        "bdSize": "16",
-        "bdStyle": "0"
-      },
-      "image": {
-        "viewList": ["tsina", "douban", "sqq", "qzone", "weixin", "twi", "fbook"],
-        "viewText": "分享到：",
-        "viewSize": "16"
-      }
-    }
-  </script>
+          </div>
+          
 
 <script>
-  with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='//bdimg.share.baidu.com/static/api/js/share.js?cdnversion='+~(-new Date()/36e5)];
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
 </script>
 
-      
-    </div>
-  </div>
-
-
-          </div>
-          
-
-
-          
-  <div class="comments" id="comments">
-    
-  </div>
-
-
         </div>
-        
           
   
-  <div class="sidebar-toggle">
-    <div class="sidebar-toggle-line-wrap">
-      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
-      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
-      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
-    </div>
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
   </div>
 
-  <aside id="sidebar" class="sidebar">
+  <aside class="sidebar">
     <div class="sidebar-inner">
 
-      
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
 
-      
-        <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
-            文章目录
-          </li>
-          <li class="sidebar-nav-overview" data-target="site-overview">
-            站点概览
-          </li>
-        </ul>
-      
-
-      <section class="site-overview sidebar-panel">
-        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
-          <img class="site-author-image" itemprop="image" src="/avatar.jpg" alt="Lee">
-          <p class="site-author-name" itemprop="name">Lee</p>
-           
-              <p class="site-description motion-element" itemprop="description"></p>
-           
-        </div>
-        <nav class="site-state motion-element">
-
-          
-            <div class="site-state-item site-state-posts">
-              <a href="/archives">
-                <span class="site-state-item-count">42</span>
-                <span class="site-state-item-name">日志</span>
-              </a>
-            </div>
-          
-
-          
-
-          
-            
-            
-            <div class="site-state-item site-state-tags">
-              <a href="/tags/index.html">
-                <span class="site-state-item-count">116</span>
-                <span class="site-state-item-name">标签</span>
-              </a>
-            </div>
-          
-
-        </nav>
-
-        
-          <div class="feed-link motion-element">
-            <a href="/atom.xml" rel="alternate">
-              <i class="fa fa-rss"></i>
-              RSS
-            </a>
-          </div>
-        
-
-        <div class="links-of-author motion-element">
-          
-            
-              <span class="links-of-author-item">
-                <a href="https://github.com/davidleee" target="_blank" title="GitHub">
-                  
-                    <i class="fa fa-fw fa-github"></i>
-                  
-                  GitHub
-                </a>
-              </span>
-            
-          
-        </div>
-
-        
-        
-
-        
-        
-          <div class="links-of-blogroll motion-element links-of-blogroll-inline">
-            <div class="links-of-blogroll-title">
-              <i class="fa  fa-fw fa-globe"></i>
-              友情链接
-            </div>
-            <ul class="links-of-blogroll-list">
-              
-                <li class="links-of-blogroll-item">
-                  <a href="http://www.yantinglam.com/" title="Yanting Lam" target="_blank">Yanting Lam</a>
-                </li>
-              
-                <li class="links-of-blogroll-item">
-                  <a href="http://www.enkichen.com/" title="Enki's Notes" target="_blank">Enki's Notes</a>
-                </li>
-              
-                <li class="links-of-blogroll-item">
-                  <a href="http://www.wxtlife.com/" title="Android技术特工队" target="_blank">Android技术特工队</a>
-                </li>
-              
-                <li class="links-of-blogroll-item">
-                  <a href="http://www.devhua.com/" title="Devhua's Blog" target="_blank">Devhua's Blog</a>
-                </li>
-              
-                <li class="links-of-blogroll-item">
-                  <a href="http://www.freehacker.cn" title="小熊糖否" target="_blank">小熊糖否</a>
-                </li>
-              
-                <li class="links-of-blogroll-item">
-                  <a href="https://debbiefu.github.io/" title="Debbie Fu" target="_blank">Debbie Fu</a>
-                </li>
-              
-                <li class="links-of-blogroll-item">
-                  <a href="https://hays.github.io/" title="Hays' Blog" target="_blank">Hays' Blog</a>
-                </li>
-              
-            </ul>
-          </div>
-        
-
-        
-
-
-      </section>
-
-      
       <!--noindex-->
-        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
-          <div class="post-toc">
-
-            
-              
-            
-
-            
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#传送带-概览"><span class="nav-number">1.</span> <span class="nav-text">“传送带”概览</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#三维的"><span class="nav-number">1.1.</span> <span class="nav-text">三维的！</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#卡片们"><span class="nav-number">1.2.</span> <span class="nav-text">卡片们</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#手势-gesture"><span class="nav-number">1.3.</span> <span class="nav-text">手势（Gesture）</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#代码敲起来"><span class="nav-number">2.</span> <span class="nav-text">代码敲起来！</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#把卡片先画出来"><span class="nav-number">3.</span> <span class="nav-text">把卡片先画出来</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#给卡片们定个位"><span class="nav-number">4.</span> <span class="nav-text">给卡片们定个位</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#pan-gesture"><span class="nav-number">5.</span> <span class="nav-text">Pan Gesture</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结"><span class="nav-number">6.</span> <span class="nav-text">总结</span></a></li></ol></div>
-            
-
-          </div>
-        </section>
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E2%80%9C%E4%BC%A0%E9%80%81%E5%B8%A6%E2%80%9D%E6%A6%82%E8%A7%88"><span class="nav-number">1.</span> <span class="nav-text">“传送带”概览</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%89%E7%BB%B4%E7%9A%84%EF%BC%81"><span class="nav-number">1.1.</span> <span class="nav-text">三维的！</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8D%A1%E7%89%87%E4%BB%AC"><span class="nav-number">1.2.</span> <span class="nav-text">卡片们</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%89%8B%E5%8A%BF%EF%BC%88Gesture%EF%BC%89"><span class="nav-number">1.3.</span> <span class="nav-text">手势（Gesture）</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%A3%E7%A0%81%E6%95%B2%E8%B5%B7%E6%9D%A5%EF%BC%81"><span class="nav-number">2.</span> <span class="nav-text">代码敲起来！</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8A%8A%E5%8D%A1%E7%89%87%E5%85%88%E7%94%BB%E5%87%BA%E6%9D%A5"><span class="nav-number">3.</span> <span class="nav-text">把卡片先画出来</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BB%99%E5%8D%A1%E7%89%87%E4%BB%AC%E5%AE%9A%E4%B8%AA%E4%BD%8D"><span class="nav-number">4.</span> <span class="nav-text">给卡片们定个位</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Pan-Gesture"><span class="nav-number">5.</span> <span class="nav-text">Pan Gesture</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">6.</span> <span class="nav-text">总结</span></a></li></ol></div>
+      </div>
       <!--/noindex-->
-      
 
-      
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Lee"
+      src="/avatar.jpg">
+  <p class="site-author-name" itemprop="name">Lee</p>
+  <div class="site-description" itemprop="description">快乐的程序猿</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">42</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">116</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/davidleee" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;davidleee" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+
+
+
+      </div>
 
     </div>
   </aside>
+  <div id="sidebar-dimmer"></div>
 
 
-        
       </div>
     </main>
 
-    <footer id="footer" class="footer">
+    <footer class="footer">
       <div class="footer-inner">
-        <div class="copyright">
+        
+
+        
+
+<div class="copyright">
   
   &copy; 
   <span itemprop="copyrightYear">2021</span>
@@ -793,413 +487,195 @@
     <i class="fa fa-heart"></i>
   </span>
   <span class="author" itemprop="copyrightHolder">Lee</span>
-
-  &nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;Hosted by <a href="https://pages.coding.me" style="font-weight: bold">Coding Pages</a>
 </div>
-
-
-<div class="powered-by">
-  Powered by <a class="theme-link" href="https://hexo.io">Hexo</a> 
-</div>
-
-<div class="theme-info">
-  Theme -
-  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
-    NexT.Mist
-  </a>
-</div>
-
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://mist.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> 强力驱动
+  </div>
 
         
 <div class="busuanzi-count">
-  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
-
-  
-    <span class="site-uv">
-      <i class="fa fa-user"></i>
-      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
-      
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
     </span>
-  
-
-  
-    <span class="site-pv">
-      <i class="fa fa-eye"></i>
-      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
-      
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
     </span>
-  
 </div>
 
 
-        
-      </div>
-    </footer>
 
-    
-      <div class="back-to-top">
-        <i class="fa fa-arrow-up"></i>
-        
-      </div>
-    
 
-  </div>
 
-  
 
-<script type="text/javascript">
-  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
-    window.Promise = null;
-  }
-</script>
-
-
-
-
-
-
-
-
-
-  
-
-
-
-
-  
-  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
-
-  
-  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
-
-  
-  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
-
-  
-  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
-
-  
-  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
-
-  
-  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
-
-
-  
-
-
-  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
-
-  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
-
-
-
-  
-  
-
-  
-  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
-<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
-
-
-
-  
-
-
-  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
-
-
-
-  
-
-
-
-  
-
-
-
-
-	
-
-
-
-
-
-  
-
-
-
-
-
-  
-
-
-
-
-
-  
-
-
-
-
-
-
-  
-
-  <script type="text/javascript">
-    // Popup Window;
-    var isfetched = false;
-    // Search DB path;
-    var search_path = "search.xml";
-    if (search_path.length == 0) {
-      search_path = "search.xml";
-    }
-    var path = "/" + search_path;
-    // monitor main search box;
-
-    function proceedsearch() {
-      $("body")
-        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
-        .css('overflow', 'hidden');
-      $('.popup').toggle();
-    }
-    // search function;
-    var searchFunc = function(path, search_id, content_id) {
-      'use strict';
-      $.ajax({
-        url: path,
-        dataType: "xml",
-        async: true,
-        success: function( xmlResponse ) {
-          // get the contents from search data
-          isfetched = true;
-          $('.popup').detach().appendTo('.header-inner');
-          var datas = $( "entry", xmlResponse ).map(function() {
-            return {
-              title: $( "title", this ).text(),
-              content: $("content",this).text(),
-              url: $( "url" , this).text()
-            };
-          }).get();
-          var $input = document.getElementById(search_id);
-          var $resultContent = document.getElementById(content_id);
-          $input.addEventListener('input', function(){
-            var matchcounts = 0;
-            var str='<ul class=\"search-result-list\">';
-            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
-            $resultContent.innerHTML = "";
-            if (this.value.trim().length > 1) {
-              // perform local searching
-              datas.forEach(function(data) {
-                var isMatch = false;
-                var content_index = [];
-                var data_title = data.title.trim().toLowerCase();
-                var data_content = data.content.trim().replace(/<[^>]+>/g,"").toLowerCase();
-                var data_url = decodeURIComponent(data.url);
-                var index_title = -1;
-                var index_content = -1;
-                var first_occur = -1;
-                // only match artiles with not empty titles and contents
-                if(data_title != '') {
-                  keywords.forEach(function(keyword, i) {
-                    index_title = data_title.indexOf(keyword);
-                    index_content = data_content.indexOf(keyword);
-                    if( index_title >= 0 || index_content >= 0 ){
-                      isMatch = true;
-                      if (i == 0) {
-                        first_occur = index_content;
-                      }
-                    }
-
-                  });
-                }
-                // show search results
-                if (isMatch) {
-                  matchcounts += 1;
-                  str += "<li><a href='"+ data_url +"' class='search-result-title'>"+ data_title +"</a>";
-                  var content = data.content.trim().replace(/<[^>]+>/g,"");
-                  if (first_occur >= 0) {
-                    // cut out 100 characters
-                    var start = first_occur - 20;
-                    var end = first_occur + 80;
-                    if(start < 0){
-                      start = 0;
-                    }
-                    if(start == 0){
-                      end = 50;
-                    }
-                    if(end > content.length){
-                      end = content.length;
-                    }
-                    var match_content = content.substring(start, end);
-                    // highlight all keywords
-                    keywords.forEach(function(keyword){
-                      var regS = new RegExp(keyword, "gi");
-                      match_content = match_content.replace(regS, "<b class=\"search-keyword\">"+keyword+"</b>");
-                    });
-
-                    str += "<p class=\"search-result\">" + match_content +"...</p>"
-                  }
-                  str += "</li>";
-                }
-              })};
-            str += "</ul>";
-            if (matchcounts == 0) { str = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>' }
-            if (keywords == "") { str = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>' }
-            $resultContent.innerHTML = str;
-          });
-          proceedsearch();
-        }
-      });}
-
-    // handle and trigger popup window;
-    $('.popup-trigger').click(function(e) {
-      e.stopPropagation();
-      if (isfetched == false) {
-        searchFunc(path, 'local-search-input', 'local-search-result');
-      } else {
-        proceedsearch();
-      };
-    });
-
-    $('.popup-btn-close').click(function(e){
-      $('.popup').hide();
-      $(".local-search-pop-overlay").remove();
-      $('body').css('overflow', '');
-    });
-    $('.popup').click(function(e){
-      e.stopPropagation();
-    });
-  </script>
-
-
-
-
-
-  
-
-  
-  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
-  <script>AV.initialize("rWbFyKbV9jV1Gm1Gplpfydst-gzGzoHsz", "AeJ3NJoYXFmMj6k9LCFSR62a");</script>
-  <script>
-    function showTime(Counter) {
-      var query = new AV.Query(Counter);
-      var entries = [];
-      var $visitors = $(".leancloud_visitors");
-
-      $visitors.each(function () {
-        entries.push( $(this).attr("id").trim() );
-      });
-
-      query.containedIn('url', entries);
-      query.find()
-        .done(function (results) {
-          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
-
-          if (results.length === 0) {
-            $visitors.find(COUNT_CONTAINER_REF).text(0);
-            return;
-          }
-
-          for (var i = 0; i < results.length; i++) {
-            var item = results[i];
-            var url = item.get('url');
-            var time = item.get('time');
-            var element = document.getElementById(url);
-
-            $(element).find(COUNT_CONTAINER_REF).text(time);
-          }
-          for(var i = 0; i < entries.length; i++) {
-            var url = entries[i];
-            var element = document.getElementById(url);
-            var countSpan = $(element).find(COUNT_CONTAINER_REF);
-            if( countSpan.text() == '') {
-              countSpan.text(0);
-            }
-          }
-        })
-        .fail(function (object, error) {
-          console.log("Error: " + error.code + " " + error.message);
-        });
+<script>
+  (function() {
+    function leancloudSelector(url) {
+      url = encodeURI(url);
+      return document.getElementById(url).querySelector('.leancloud-visitors-count');
     }
 
     function addCount(Counter) {
-      var $visitors = $(".leancloud_visitors");
-      var url = $visitors.attr('id').trim();
-      var title = $visitors.attr('data-flag-title').trim();
-      var query = new AV.Query(Counter);
+      var visitors = document.querySelector('.leancloud_visitors');
+      var url = decodeURI(visitors.id);
+      var title = visitors.dataset.flagTitle;
 
-      query.equalTo("url", url);
-      query.find({
-        success: function(results) {
+      Counter('get', '/classes/Counter?where=' + encodeURIComponent(JSON.stringify({ url })))
+        .then(response => response.json())
+        .then(({ results }) => {
           if (results.length > 0) {
             var counter = results[0];
-            counter.fetchWhenSave(true);
-            counter.increment("time");
-            counter.save(null, {
-              success: function(counter) {
-                var $element = $(document.getElementById(url));
-                $element.find('.leancloud-visitors-count').text(counter.get('time'));
-              },
-              error: function(counter, error) {
-                console.log('Failed to save Visitor num, with error message: ' + error.message);
-              }
-            });
+            leancloudSelector(url).innerText = counter.time + 1;
+            Counter('put', '/classes/Counter/' + counter.objectId, { time: { '__op': 'Increment', 'amount': 1 } })
+              .catch(error => {
+                console.error('Failed to save visitor count', error);
+              });
           } else {
-            var newcounter = new Counter();
-            /* Set ACL */
-            var acl = new AV.ACL();
-            acl.setPublicReadAccess(true);
-            acl.setPublicWriteAccess(true);
-            newcounter.setACL(acl);
-            /* End Set ACL */
-            newcounter.set("title", title);
-            newcounter.set("url", url);
-            newcounter.set("time", 1);
-            newcounter.save(null, {
-              success: function(newcounter) {
-                var $element = $(document.getElementById(url));
-                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
-              },
-              error: function(newcounter, error) {
-                console.log('Failed to create');
-              }
-            });
+              Counter('post', '/classes/Counter', { title, url, time: 1 })
+                .then(response => response.json())
+                .then(() => {
+                  leancloudSelector(url).innerText = 1;
+                })
+                .catch(error => {
+                  console.error('Failed to create', error);
+                });
           }
-        },
-        error: function(error) {
-          console.log('Error:' + error.code + " " + error.message);
-        }
-      });
+        })
+        .catch(error => {
+          console.error('LeanCloud Counter Error', error);
+        });
     }
 
-    $(function() {
-      var Counter = AV.Object.extend("Counter");
-      if ($('.leancloud_visitors').length == 1) {
+    function showTime(Counter) {
+      var visitors = document.querySelectorAll('.leancloud_visitors');
+      var entries = [...visitors].map(element => {
+        return decodeURI(element.id);
+      });
+
+      Counter('get', '/classes/Counter?where=' + encodeURIComponent(JSON.stringify({ url: { '$in': entries } })))
+        .then(response => response.json())
+        .then(({ results }) => {
+          for (let url of entries) {
+            let target = results.find(item => item.url === url);
+            leancloudSelector(url).innerText = target ? target.time : 0;
+          }
+        })
+        .catch(error => {
+          console.error('LeanCloud Counter Error', error);
+        });
+    }
+
+    let { app_id, app_key, server_url } = {"enable":true,"app_id":"rWbFyKbV9jV1Gm1Gplpfydst-gzGzoHsz","app_key":"AeJ3NJoYXFmMj6k9LCFSR62a","server_url":null,"security":false};
+    function fetchData(api_server) {
+      var Counter = (method, url, data) => {
+        return fetch(`${api_server}/1.1${url}`, {
+          method,
+          headers: {
+            'X-LC-Id'     : app_id,
+            'X-LC-Key'    : app_key,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(data)
+        });
+      };
+      if (CONFIG.page.isPost) {
+        if (CONFIG.hostname !== location.hostname) return;
         addCount(Counter);
-      } else if ($('.post-title-link').length > 1) {
+      } else if (document.querySelectorAll('.post-title-link').length >= 1) {
         showTime(Counter);
       }
-    });
-  </script>
+    }
+
+    let api_server = app_id.slice(-9) !== '-MdYXbMMI' ? server_url : `https://${app_id.slice(0, 8).toLowerCase()}.api.lncldglobal.com`;
+
+    if (api_server) {
+      fetchData(api_server);
+    } else {
+      fetch('https://app-router.leancloud.cn/2/route?appId=' + app_id)
+        .then(response => response.json())
+        .then(({ api_server }) => {
+          fetchData('https://' + api_server);
+        });
+    }
+  })();
+</script>
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
 
 
 
   
-<script>
-(function(){
-    var bp = document.createElement('script');
-    var curProtocol = window.location.protocol.split(':')[0];
-    if (curProtocol === 'https') {
-        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
-    }
-    else {
-        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
-    }
-    var s = document.getElementsByTagName("script")[0];
-    s.parentNode.insertBefore(bp, s);
-})();
-</script>
+  <script>
+    (function(){
+      var canonicalURL, curProtocol;
+      //Get the <link> tag
+      var x=document.getElementsByTagName("link");
+		//Find the last canonical URL
+		if(x.length > 0){
+			for (i=0;i<x.length;i++){
+				if(x[i].rel.toLowerCase() == 'canonical' && x[i].href){
+					canonicalURL=x[i].href;
+				}
+			}
+		}
+    //Get protocol
+	    if (!canonicalURL){
+	    	curProtocol = window.location.protocol.split(':')[0];
+	    }
+	    else{
+	    	curProtocol = canonicalURL.split(':')[0];
+	    }
+      //Get current URL if the canonical URL does not exist
+	    if (!canonicalURL) canonicalURL = window.location.href;
+	    //Assign script content. Replace current URL with the canonical URL
+      !function(){var e=/([http|https]:\/\/[a-zA-Z0-9\_\.]+\.baidu\.com)/gi,r=canonicalURL,t=document.referrer;if(!e.test(r)){var n=(String(curProtocol).toLowerCase() === 'https')?"https://sp0.baidu.com/9_Q4simg2RQJ8t7jm9iCKT-xh_/s.gif":"//api.share.baidu.com/s.gif";t?(n+="?r="+encodeURIComponent(document.referrer),r&&(n+="&l="+r)):r&&(n+="?l="+r);var i=new Image;i.src=n}}(window);})();
+  </script>
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
 
 
   

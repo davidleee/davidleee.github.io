@@ -4,316 +4,1229 @@
   <url>
     <loc>http://davidleee.com/2021/06/07/techsupport-calendar/</loc>
     
-    <lastmod>2021-06-07T09:37:31.569Z</lastmod>
+    <lastmod>2021-06-07</lastmod>
     
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
   </url>
   
   <url>
     <loc>http://davidleee.com/2021/03/05/techsupport-drinkmore/</loc>
     
-    <lastmod>2021-03-05T06:03:51.581Z</lastmod>
+    <lastmod>2021-03-05</lastmod>
     
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
   </url>
   
   <url>
     <loc>http://davidleee.com/about/index.html</loc>
     
-    <lastmod>2021-03-05T05:46:37.182Z</lastmod>
+    <lastmod>2021-03-05</lastmod>
     
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
   </url>
   
   <url>
     <loc>http://davidleee.com/2021/03/05/privacy/</loc>
     
-    <lastmod>2021-03-05T05:45:59.947Z</lastmod>
+    <lastmod>2021-03-05</lastmod>
     
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
   </url>
   
   <url>
     <loc>http://davidleee.com/2020/07/20/ipc-for-macOS/</loc>
     
-    <lastmod>2020-08-09T14:42:54.698Z</lastmod>
+    <lastmod>2020-08-09</lastmod>
     
-  </url>
-  
-  <url>
-    <loc>http://davidleee.com/tags/index.html</loc>
-    
-    <lastmod>2020-05-05T03:43:31.447Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://davidleee.com/categories/index.html</loc>
-    
-    <lastmod>2020-05-05T03:43:31.447Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://davidleee.com/2018/11/14/yet-another-ios-extension-article/</loc>
-    
-    <lastmod>2020-05-05T03:43:31.446Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://davidleee.com/2018/11/15/yet-another-ios-extension-article-3/</loc>
-    
-    <lastmod>2020-05-05T03:43:31.446Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://davidleee.com/2018/11/14/yet-another-ios-extension-article-2/</loc>
-    
-    <lastmod>2020-05-05T03:43:31.446Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://davidleee.com/2017/01/04/universal-link-problems/</loc>
-    
-    <lastmod>2020-05-05T03:43:31.445Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://davidleee.com/2018/09/10/upgrade-react-navigation-redux-helpers-to-v2/</loc>
-    
-    <lastmod>2020-05-05T03:43:31.445Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://davidleee.com/2018/09/11/the-basic-of-macos-text-view-system/</loc>
-    
-    <lastmod>2020-05-05T03:43:31.445Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://davidleee.com/2016/04/29/using-autolayout-in-uitableviewcells/</loc>
-    
-    <lastmod>2020-05-05T03:43:31.445Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://davidleee.com/2019/08/15/swiftui-serial-tutorial-4/</loc>
-    
-    <lastmod>2020-05-05T03:43:31.445Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://davidleee.com/2016/08/27/team-working-with-git/</loc>
-    
-    <lastmod>2020-05-05T03:43:31.445Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://davidleee.com/2019/07/25/swiftui-serial-tutorial-3/</loc>
-    
-    <lastmod>2020-05-05T03:43:31.445Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://davidleee.com/2016/06/06/push-notification-preparation/</loc>
-    
-    <lastmod>2020-05-05T03:43:31.444Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://davidleee.com/2019/04/12/nstextfield-for-macos/</loc>
-    
-    <lastmod>2020-05-05T03:43:31.444Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://davidleee.com/2016/12/02/messaging-translation/</loc>
-    
-    <lastmod>2020-05-05T03:43:31.444Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://davidleee.com/2017/02/28/network-setup-on-centos/</loc>
-    
-    <lastmod>2020-05-05T03:43:31.444Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://davidleee.com/2019/07/08/swiftui-serial-tutorial-2/</loc>
-    
-    <lastmod>2020-05-05T03:43:31.444Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://davidleee.com/2019/06/12/swiftui-serial-tutorial-1/</loc>
-    
-    <lastmod>2020-05-05T03:43:31.444Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://davidleee.com/2018/08/21/storyboard-in-macos/</loc>
-    
-    <lastmod>2020-05-05T03:43:31.444Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://davidleee.com/2018/11/07/login-items-for-macos/</loc>
-    
-    <lastmod>2020-05-05T03:43:31.443Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://davidleee.com/2018/08/22/how-menus-work/</loc>
-    
-    <lastmod>2020-05-05T03:43:31.443Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://davidleee.com/2016/04/21/get-exif-from-image-ios/</loc>
-    
-    <lastmod>2020-05-05T03:43:31.443Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://davidleee.com/2017/06/23/android-unit-test/</loc>
-    
-    <lastmod>2020-05-05T03:43:31.443Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://davidleee.com/2017/09/11/Windows-in-macOS/</loc>
-    
-    <lastmod>2020-05-05T03:43:31.443Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://davidleee.com/2016/05/09/easy-core-data/</loc>
-    
-    <lastmod>2020-05-05T03:43:31.443Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://davidleee.com/2016/04/26/about-aes-encryption/</loc>
-    
-    <lastmod>2020-05-05T03:43:31.443Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://davidleee.com/2016/04/26/hash-with-salt/</loc>
-    
-    <lastmod>2020-05-05T03:43:31.443Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://davidleee.com/2018/04/24/Top-Mistakes-in-RxSwift/</loc>
-    
-    <lastmod>2020-05-05T03:43:31.442Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://davidleee.com/2016/07/16/Introduction-to-3D-drawing-in-core-animation-Part-II/</loc>
-    
-    <lastmod>2020-05-05T03:43:31.442Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://davidleee.com/2018/03/08/Symbolicating-Your-iOS-Crash-Reports/</loc>
-    
-    <lastmod>2020-05-05T03:43:31.442Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://davidleee.com/2018/10/25/SVG-from-nothing-to-something/</loc>
-    
-    <lastmod>2020-05-05T03:43:31.442Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://davidleee.com/2016/07/07/Introduction-to-3D-drawing-in-core-animation-Part-I/</loc>
-    
-    <lastmod>2020-05-05T03:43:31.442Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://davidleee.com/2016/05/12/Use-Swift-framework-in-OC-project/</loc>
-    
-    <lastmod>2020-05-05T03:43:31.442Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://davidleee.com/2018/10/19/How-CSS-works/</loc>
-    
-    <lastmod>2020-05-05T03:43:31.441Z</lastmod>
-    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
   </url>
   
   <url>
     <loc>http://davidleee.com/2017/07/04/Android-unit-test-lib-compare/</loc>
     
-    <lastmod>2020-05-05T03:43:31.441Z</lastmod>
+    <lastmod>2020-05-05</lastmod>
     
-  </url>
-  
-  <url>
-    <loc>http://davidleee.com/2017/04/20/Build-App-With-Redux/</loc>
-    
-    <lastmod>2020-05-05T03:43:31.441Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://davidleee.com/2017/07/14/Dive-in-Swift-Optional/</loc>
-    
-    <lastmod>2020-05-05T03:43:31.441Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://davidleee.com/2017/03/29/Custom-Gesture-Recognizers/</loc>
-    
-    <lastmod>2020-05-05T03:43:31.441Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://davidleee.com/2018/10/19/CSS-syntax/</loc>
-    
-    <lastmod>2020-05-05T03:43:31.441Z</lastmod>
-    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
   </url>
   
   <url>
     <loc>http://davidleee.com/2017/03/28/Basic-Gesture-Recognizers/</loc>
     
-    <lastmod>2020-05-05T03:43:31.441Z</lastmod>
+    <lastmod>2020-05-05</lastmod>
     
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
   </url>
+  
+  <url>
+    <loc>http://davidleee.com/2017/04/20/Build-App-With-Redux/</loc>
+    
+    <lastmod>2020-05-05</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://davidleee.com/2018/10/19/CSS-syntax/</loc>
+    
+    <lastmod>2020-05-05</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://davidleee.com/2017/03/29/Custom-Gesture-Recognizers/</loc>
+    
+    <lastmod>2020-05-05</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://davidleee.com/2017/07/14/Dive-in-Swift-Optional/</loc>
+    
+    <lastmod>2020-05-05</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://davidleee.com/2018/10/19/How-CSS-works/</loc>
+    
+    <lastmod>2020-05-05</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://davidleee.com/2016/07/16/Introduction-to-3D-drawing-in-core-animation-Part-II/</loc>
+    
+    <lastmod>2020-05-05</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://davidleee.com/2016/07/07/Introduction-to-3D-drawing-in-core-animation-Part-I/</loc>
+    
+    <lastmod>2020-05-05</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://davidleee.com/2018/10/25/SVG-from-nothing-to-something/</loc>
+    
+    <lastmod>2020-05-05</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://davidleee.com/2018/03/08/Symbolicating-Your-iOS-Crash-Reports/</loc>
+    
+    <lastmod>2020-05-05</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://davidleee.com/2018/04/24/Top-Mistakes-in-RxSwift/</loc>
+    
+    <lastmod>2020-05-05</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://davidleee.com/2016/04/26/about-aes-encryption/</loc>
+    
+    <lastmod>2020-05-05</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://davidleee.com/2016/05/12/Use-Swift-framework-in-OC-project/</loc>
+    
+    <lastmod>2020-05-05</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://davidleee.com/2017/06/23/android-unit-test/</loc>
+    
+    <lastmod>2020-05-05</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://davidleee.com/2016/05/09/easy-core-data/</loc>
+    
+    <lastmod>2020-05-05</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://davidleee.com/2016/04/26/hash-with-salt/</loc>
+    
+    <lastmod>2020-05-05</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://davidleee.com/2016/04/21/get-exif-from-image-ios/</loc>
+    
+    <lastmod>2020-05-05</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://davidleee.com/2018/08/22/how-menus-work/</loc>
+    
+    <lastmod>2020-05-05</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://davidleee.com/2018/11/07/login-items-for-macos/</loc>
+    
+    <lastmod>2020-05-05</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://davidleee.com/2016/12/02/messaging-translation/</loc>
+    
+    <lastmod>2020-05-05</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://davidleee.com/2017/02/28/network-setup-on-centos/</loc>
+    
+    <lastmod>2020-05-05</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://davidleee.com/2019/04/12/nstextfield-for-macos/</loc>
+    
+    <lastmod>2020-05-05</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://davidleee.com/2016/06/06/push-notification-preparation/</loc>
+    
+    <lastmod>2020-05-05</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://davidleee.com/2018/08/21/storyboard-in-macos/</loc>
+    
+    <lastmod>2020-05-05</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://davidleee.com/2019/06/12/swiftui-serial-tutorial-1/</loc>
+    
+    <lastmod>2020-05-05</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://davidleee.com/2019/07/08/swiftui-serial-tutorial-2/</loc>
+    
+    <lastmod>2020-05-05</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://davidleee.com/2019/07/25/swiftui-serial-tutorial-3/</loc>
+    
+    <lastmod>2020-05-05</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://davidleee.com/2016/08/27/team-working-with-git/</loc>
+    
+    <lastmod>2020-05-05</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://davidleee.com/2018/09/11/the-basic-of-macos-text-view-system/</loc>
+    
+    <lastmod>2020-05-05</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://davidleee.com/2017/01/04/universal-link-problems/</loc>
+    
+    <lastmod>2020-05-05</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://davidleee.com/2018/09/10/upgrade-react-navigation-redux-helpers-to-v2/</loc>
+    
+    <lastmod>2020-05-05</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://davidleee.com/2016/04/29/using-autolayout-in-uitableviewcells/</loc>
+    
+    <lastmod>2020-05-05</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://davidleee.com/2018/11/15/yet-another-ios-extension-article-3/</loc>
+    
+    <lastmod>2020-05-05</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://davidleee.com/2018/11/14/yet-another-ios-extension-article/</loc>
+    
+    <lastmod>2020-05-05</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://davidleee.com/2018/11/14/yet-another-ios-extension-article-2/</loc>
+    
+    <lastmod>2020-05-05</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://davidleee.com/2017/09/11/Windows-in-macOS/</loc>
+    
+    <lastmod>2020-05-05</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://davidleee.com/2019/08/15/swiftui-serial-tutorial-4/</loc>
+    
+    <lastmod>2020-05-05</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://davidleee.com/tags/index.html</loc>
+    
+    <lastmod>2020-05-05</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://davidleee.com/categories/index.html</loc>
+    
+    <lastmod>2020-05-05</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+
+  <url>
+    <loc>http://davidleee.com/</loc>
+    <lastmod>2021-12-27</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>1.0</priority>
+  </url>
+
+  
+  <url>
+    <loc>http://davidleee.com/tags/Android/</loc>
+    <lastmod>2021-12-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>http://davidleee.com/tags/%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95/</loc>
+    <lastmod>2021-12-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>http://davidleee.com/tags/JUnit/</loc>
+    <lastmod>2021-12-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>http://davidleee.com/tags/Mock/</loc>
+    <lastmod>2021-12-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>http://davidleee.com/tags/iOS/</loc>
+    <lastmod>2021-12-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>http://davidleee.com/tags/Gesture/</loc>
+    <lastmod>2021-12-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>http://davidleee.com/tags/React-Native/</loc>
+    <lastmod>2021-12-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>http://davidleee.com/tags/Redux/</loc>
+    <lastmod>2021-12-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>http://davidleee.com/tags/Flux/</loc>
+    <lastmod>2021-12-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>http://davidleee.com/tags/JavaScript/</loc>
+    <lastmod>2021-12-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>http://davidleee.com/tags/css/</loc>
+    <lastmod>2021-12-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>http://davidleee.com/tags/html/</loc>
+    <lastmod>2021-12-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>http://davidleee.com/tags/web/</loc>
+    <lastmod>2021-12-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>http://davidleee.com/tags/Swift/</loc>
+    <lastmod>2021-12-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>http://davidleee.com/tags/Optional/</loc>
+    <lastmod>2021-12-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>http://davidleee.com/tags/nil/</loc>
+    <lastmod>2021-12-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>http://davidleee.com/tags/dom/</loc>
+    <lastmod>2021-12-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>http://davidleee.com/tags/Translation/</loc>
+    <lastmod>2021-12-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>http://davidleee.com/tags/svg/</loc>
+    <lastmod>2021-12-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>http://davidleee.com/tags/xml/</loc>
+    <lastmod>2021-12-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>http://davidleee.com/tags/markup/</loc>
+    <lastmod>2021-12-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>http://davidleee.com/tags/react-native/</loc>
+    <lastmod>2021-12-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>http://davidleee.com/tags/viewbox/</loc>
+    <lastmod>2021-12-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>http://davidleee.com/tags/clippath/</loc>
+    <lastmod>2021-12-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>http://davidleee.com/tags/Crash/</loc>
+    <lastmod>2021-12-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>http://davidleee.com/tags/Reactive/</loc>
+    <lastmod>2021-12-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>http://davidleee.com/tags/RxSwift/</loc>
+    <lastmod>2021-12-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>http://davidleee.com/tags/%E5%8A%A0%E8%A7%A3%E5%AF%86/</loc>
+    <lastmod>2021-12-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>http://davidleee.com/tags/%E5%AE%89%E5%85%A8/</loc>
+    <lastmod>2021-12-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>http://davidleee.com/tags/AES/</loc>
+    <lastmod>2021-12-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>http://davidleee.com/tags/DES/</loc>
+    <lastmod>2021-12-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>http://davidleee.com/tags/CocoaPods/</loc>
+    <lastmod>2021-12-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>http://davidleee.com/tags/Unit-Test/</loc>
+    <lastmod>2021-12-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>http://davidleee.com/tags/Mockito/</loc>
+    <lastmod>2021-12-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>http://davidleee.com/tags/mock/</loc>
+    <lastmod>2021-12-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>http://davidleee.com/tags/Core-Data/</loc>
+    <lastmod>2021-12-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>http://davidleee.com/tags/Hash/</loc>
+    <lastmod>2021-12-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>http://davidleee.com/tags/Salt/</loc>
+    <lastmod>2021-12-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>http://davidleee.com/tags/Exif/</loc>
+    <lastmod>2021-12-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>http://davidleee.com/tags/macOS/</loc>
+    <lastmod>2021-12-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>http://davidleee.com/tags/AppKit/</loc>
+    <lastmod>2021-12-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>http://davidleee.com/tags/NSMenus/</loc>
+    <lastmod>2021-12-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>http://davidleee.com/tags/NSPopover/</loc>
+    <lastmod>2021-12-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>http://davidleee.com/tags/NSPopupButton/</loc>
+    <lastmod>2021-12-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>http://davidleee.com/tags/Dock/</loc>
+    <lastmod>2021-12-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>http://davidleee.com/tags/NSDockTile/</loc>
+    <lastmod>2021-12-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>http://davidleee.com/tags/NSStatusBar/</loc>
+    <lastmod>2021-12-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>http://davidleee.com/tags/Launch-Daemons/</loc>
+    <lastmod>2021-12-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>http://davidleee.com/tags/Launch-Agent/</loc>
+    <lastmod>2021-12-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>http://davidleee.com/tags/plist/</loc>
+    <lastmod>2021-12-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>http://davidleee.com/tags/launchctl/</loc>
+    <lastmod>2021-12-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>http://davidleee.com/tags/runtime/</loc>
+    <lastmod>2021-12-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>http://davidleee.com/tags/CentOS/</loc>
+    <lastmod>2021-12-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>http://davidleee.com/tags/network/</loc>
+    <lastmod>2021-12-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>http://davidleee.com/tags/nameserver/</loc>
+    <lastmod>2021-12-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>http://davidleee.com/tags/DNS/</loc>
+    <lastmod>2021-12-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>http://davidleee.com/tags/NSTextField/</loc>
+    <lastmod>2021-12-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>http://davidleee.com/tags/NSControl/</loc>
+    <lastmod>2021-12-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>http://davidleee.com/tags/%E5%8D%8F%E8%AE%AE/</loc>
+    <lastmod>2021-12-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>http://davidleee.com/tags/SwiftUI/</loc>
+    <lastmod>2021-12-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>http://davidleee.com/tags/Catalina/</loc>
+    <lastmod>2021-12-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>http://davidleee.com/tags/VStack/</loc>
+    <lastmod>2021-12-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>http://davidleee.com/tags/HStack/</loc>
+    <lastmod>2021-12-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>http://davidleee.com/tags/Image/</loc>
+    <lastmod>2021-12-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>http://davidleee.com/tags/UIView/</loc>
+    <lastmod>2021-12-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>http://davidleee.com/tags/UIViewRepresentable/</loc>
+    <lastmod>2021-12-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>http://davidleee.com/tags/MKMapView/</loc>
+    <lastmod>2021-12-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>http://davidleee.com/tags/Spacer/</loc>
+    <lastmod>2021-12-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>http://davidleee.com/tags/MVC/</loc>
+    <lastmod>2021-12-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>http://davidleee.com/tags/React/</loc>
+    <lastmod>2021-12-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>http://davidleee.com/tags/Property-Wrappers/</loc>
+    <lastmod>2021-12-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>http://davidleee.com/tags/State/</loc>
+    <lastmod>2021-12-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>http://davidleee.com/tags/Binding/</loc>
+    <lastmod>2021-12-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>http://davidleee.com/tags/Git/</loc>
+    <lastmod>2021-12-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>http://davidleee.com/tags/Teamwork/</loc>
+    <lastmod>2021-12-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>http://davidleee.com/tags/%E6%8A%80%E6%9C%AF%E6%94%AF%E6%8C%81/</loc>
+    <lastmod>2021-12-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>http://davidleee.com/tags/%E8%A7%81%E9%97%BB%E5%8E%86/</loc>
+    <lastmod>2021-12-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>http://davidleee.com/tags/%E5%A4%9A%E5%96%9D%E6%B0%B4/</loc>
+    <lastmod>2021-12-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>http://davidleee.com/tags/Cocoa/</loc>
+    <lastmod>2021-12-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>http://davidleee.com/tags/NSTextView/</loc>
+    <lastmod>2021-12-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>http://davidleee.com/tags/Text-System/</loc>
+    <lastmod>2021-12-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>http://davidleee.com/tags/Field-Editor/</loc>
+    <lastmod>2021-12-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>http://davidleee.com/tags/Universal-Link/</loc>
+    <lastmod>2021-12-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>http://davidleee.com/tags/react-navigation/</loc>
+    <lastmod>2021-12-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>http://davidleee.com/tags/redux/</loc>
+    <lastmod>2021-12-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>http://davidleee.com/tags/react-navigation-redux-helpers/</loc>
+    <lastmod>2021-12-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>http://davidleee.com/tags/AutoLayout/</loc>
+    <lastmod>2021-12-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>http://davidleee.com/tags/UITableViewCell/</loc>
+    <lastmod>2021-12-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>http://davidleee.com/tags/ios/</loc>
+    <lastmod>2021-12-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>http://davidleee.com/tags/Today-Extension/</loc>
+    <lastmod>2021-12-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>http://davidleee.com/tags/Widget/</loc>
+    <lastmod>2021-12-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>http://davidleee.com/tags/App-Groups/</loc>
+    <lastmod>2021-12-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>http://davidleee.com/tags/Extension/</loc>
+    <lastmod>2021-12-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>http://davidleee.com/tags/Share/</loc>
+    <lastmod>2021-12-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>http://davidleee.com/tags/NSExtensionItem/</loc>
+    <lastmod>2021-12-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>http://davidleee.com/tags/NSItemProvider/</loc>
+    <lastmod>2021-12-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>http://davidleee.com/tags/UserDefaults/</loc>
+    <lastmod>2021-12-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>http://davidleee.com/tags/FileManager/</loc>
+    <lastmod>2021-12-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>http://davidleee.com/tags/CoreData/</loc>
+    <lastmod>2021-12-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>http://davidleee.com/tags/Window/</loc>
+    <lastmod>2021-12-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>http://davidleee.com/tags/Controller/</loc>
+    <lastmod>2021-12-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>http://davidleee.com/tags/TextView/</loc>
+    <lastmod>2021-12-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>http://davidleee.com/tags/Modal/</loc>
+    <lastmod>2021-12-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>http://davidleee.com/tags/Document/</loc>
+    <lastmod>2021-12-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>http://davidleee.com/tags/Menu/</loc>
+    <lastmod>2021-12-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>http://davidleee.com/tags/XPC/</loc>
+    <lastmod>2021-12-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>http://davidleee.com/tags/launchd/</loc>
+    <lastmod>2021-12-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>http://davidleee.com/tags/SMJobBless/</loc>
+    <lastmod>2021-12-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>http://davidleee.com/tags/List/</loc>
+    <lastmod>2021-12-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>http://davidleee.com/tags/NavigationView/</loc>
+    <lastmod>2021-12-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>http://davidleee.com/tags/NavigationButton/</loc>
+    <lastmod>2021-12-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>http://davidleee.com/tags/Form/</loc>
+    <lastmod>2021-12-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>http://davidleee.com/tags/Picker/</loc>
+    <lastmod>2021-12-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>http://davidleee.com/tags/Toggle/</loc>
+    <lastmod>2021-12-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>http://davidleee.com/tags/Section/</loc>
+    <lastmod>2021-12-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>http://davidleee.com/tags/Stepper/</loc>
+    <lastmod>2021-12-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+
   
 </urlset>
